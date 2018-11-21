@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[HEXO]]></title>
+    <url>%2F2018%2F11%2F22%2FHEXO%2F</url>
+    <content type="text"><![CDATA[hexo 中的 public 目录每次生成静态文件(hexo g)都会重新生成 修改about页面信息需要在 soure-about-index.md 中修改]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[修改wordpress的翻译文件]]></title>
+    <url>%2F2018%2F11%2F20%2F%E4%BF%AE%E6%94%B9wordpress%E7%9A%84%E7%BF%BB%E8%AF%91%E6%96%87%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[之前WordPress博客的首页部分内容翻译错误，就想手动修改一下。 使用 Xftp 登录服务器1、找到wordpress的安装目录 2、在 /wordpress/wp-content/languages/themes 目录下，找到你主题的对应翻译文件。 每个主题都有两个 .mo .po 类型的文件 其中po文件,即Portable Object(可移植对象) 是翻译人员进行编写的翻译文件1234567891011#: inc/main-funtions.php:469msgid &quot;Github&quot;msgstr &quot;Github&quot;#: inc/main-funtions.php:461msgid &quot;LinkedIn&quot;msgstr &quot;领英&quot;#: inc/main-funtions.php:449msgid &quot;Facebook&quot;msgstr &quot;脸书&quot; mo 文件 Machine Object(机器对象) 是由 po 文件编译成的二进制文件,应用程序可以通过读取 .mo 文件进行对应语言的翻译显示。 我们将要修改主题翻译的 .po 文件下载下来。 修改翻译我们只能修改 .po 文件后再将其编译为 .mo 文件，其中编译软件可以使用 Poedit 。使用 Poedit 打开下载的 .po 文件，修改想要修改的翻译内容，修改完成后点击左上角 文件 - 编译为mo - 保存文件。 上传覆盖编译完成后将编译完成的 .mo 文件上传到服务器，将原来的mo文件覆盖。此时重新打开 wordpress 博客首页，翻译就已经生效了。]]></content>
+      <categories>
+        <category>Blog</category>
+        <category>WordPress</category>
+      </categories>
+      <tags>
+        <tag>WordPress</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[hexo 更换主题]]></title>
+    <url>%2F2018%2F11%2F16%2Fhexo-%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[选择主题可以在 有哪些好看的 Hexo 主题? 找个自己喜欢的主题，我选择的是 hexo-theme-next 主题 下载主题打开在 Hexo 根目录 打开 CMD12mkdir theme/nextgit clone https://github.com/theme-next/hexo-theme-next themes/next 安装主题打开 _config.yml 配置文件,修改主题为 next123$ hexo g # 重新生成静态文件$ hexo s # 本地预览效果$ hexo d # 部署到Github]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2018%2F11%2F16%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
