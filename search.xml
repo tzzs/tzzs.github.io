@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[django models中设置字段允许为空]]></title>
+    <url>%2F2018%2F12%2F11%2Fdjango-models%E4%B8%AD%E8%AE%BE%E7%BD%AE%E5%AD%97%E6%AE%B5%E5%85%81%E8%AE%B8%E4%B8%BA%E7%A9%BA%2F</url>
+    <content type="text"><![CDATA[在Django-models中定义数据库字段时，其字段默认是不允许为空的，在直接向数据库中插入非全部字段时，会直接发生下面错误： sqlite3.IntegrityError: NOT NULL constraint failed: bing images.drk 即 sqlite3 完整性错误，其中NOT NULL 约束失败，默认字段不允许为空。 可以通过在models的字段定义上设置 null = True 来解决 1url = models.CharField(max_length=200, null=True) Django中源代码如下：12345678910def formfield(self, **kwargs): # Passing max_length to forms.CharField means that the value's length # will be validated twice. This is considered acceptable since we want # the value in the form field (to pass into widget for example). defaults = &#123;'max_length': self.max_length&#125; # TODO: Handle multiple backends with different feature flags. if self.null and not connection.features.interprets_empty_strings_as_nulls: defaults['empty_value'] = None defaults.update(kwargs) return super().formfield(**defaults)]]></content>
+      <categories>
+        <category>Python</category>
+        <category>Django</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[HEXO]]></title>
     <url>%2F2018%2F11%2F22%2FHEXO%2F</url>
     <content type="text"><![CDATA[hexo 中的 public 目录每次生成静态文件(hexo g)都会重新生成 修改about页面信息需要在 soure-about-index.md 中修改]]></content>
