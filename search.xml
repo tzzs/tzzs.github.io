@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[centos安装python3]]></title>
+    <url>%2F2018%2F12%2F13%2Fcentos%E5%AE%89%E8%A3%85python3%2F</url>
+    <content type="text"><![CDATA[需要运行基于 Python3 的 Django 项目，服务器默认安装的为 python2 ,需要安装Python3 以下命令均为在 root 身份下执行，如果权限不够，请切换管理眼身份，或在每条命令前添加 sudo 。 安装Python3创建目录创建 python3 的下载安装目录1$ mk /usr/local/python3 下载解压可以在 python 的 官网 找到最新的 python3 安装包，然后使用 wget 命令下载下来。这是 Python 3.7.1 的页面，最下面找到下载地址，其中第一个为 tgz 格式的压缩包下载完成后进行解压12$ wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz$ tar -xzvf Python-3.7.1.tgz 安装依赖在 python3 进行编译安装时，需要用到其它的依赖包，要先进行安装 1234$ yum install gcc-c++$ yum install pcre pcre-devel$ yum install zlib zlib-devel$ yum install openssl openssl--devel 编译安装1234$ cd Python-3.7.1$ ./configure --prefix=/usr/local/python3 # 生成makefile --prefix 设置安装路径$ make # 编译$ make install # 安装 配置链接可以使用 which python 来查看原来python的位置12$ which python/usr/bin/python ls -l 查看软链接设置 123lrwxrwxrwx 1 root root 7 Nov 15 00:19 python -&gt; python2lrwxrwxrwx 1 root root 9 Nov 15 00:19 python2 -&gt; python2.7-rwxr-xr-x 1 root root 7216 Jul 13 21:07 python2.7 创建 python3 的软链接1$ ln -s /usr/local/python3/bin/python3 /usr/bin/python3 当前链接情况, python 和 python2 指向 python 2.7.5 ，python3 指向 python 3.7.11234lrwxrwxrwx 1 root root 7 Nov 15 00:19 python -&gt; python2lrwxrwxrwx 1 root root 9 Nov 15 00:19 python2 -&gt; python2.7-rwxr-xr-x 1 root root 7216 Jul 13 21:07 python2.7lrwxrwxrwx 1 root root 30 Dec 13 01:46 python3 -&gt; /usr/local/python3/bin/python3 安装pip3python3.7 已经附带了pip3 ，在 /usr/local/python3/bin 中可以看到 pip3 创建pip3软链接1$ ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3 此时就可以正常使用 python3 ，pip3 来使用 python3.7.1 了。]]></content>
+      <categories>
+        <category>linux - centos</category>
+        <category>python</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[python sqlite3 数据库操作的自动提交]]></title>
     <url>%2F2018%2F12%2F11%2Fpython-sqlite3-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%2F</url>
     <content type="text"><![CDATA[在一个爬虫中使用了Sqlite3数据库，在将内容写入数据库时，可以正常执行，并且使用同一个游标可以正常读出数据，但是数据库中并没有内容。 在网上搜索时发现，是因为sqlite的事务控制导致，其中在执行数据库操作时，会有两种commit状态。 123456789101112131415智能commit状态: 生成方式: 在connect()中不传入 isolation_level, 此时isolation_level==&apos;&apos; 在进行 执行Data Modification Language (DML) 操作(INSERT/UPDATE/DELETE/REPLACE)时, 会自动打开一个事务, 在执行 非DML, 非query (非 SELECT 和上面提到的)语句时, 会隐式执行commit 可以使用 connection.commit()方法来进行提交 注意: 不能和cur.execute(&quot;COMMIT&quot;)共用 自动commit状态: 生成方式: 在connect()中传入 isolation_level=None 这样,在任何DML操作时,都会自动提交 事务处理 connection.execute(&quot;BEGIN TRANSACTION&quot;) connection.execute(&quot;COMMIT&quot;) 如果不使用事务, 批量添加数据非常缓慢 智能commit状态即在下面这种非数据修改操作时，会自动执行commit操作。1result = c.execute("select * from bing_images") 当进行数据库写入时，这种数据修改操作并不会自动提交,需要在执行完成后进行手动提交(需要connection.commit()进行提交)。12c.execute(insert_sql)conn.commit() # connection 自动commit状态在这种情况下，无论是数据修改操作还是非数据修改操作都会自动提交。]]></content>
