@@ -56,7 +56,7 @@
     <url>%2F2018%2F11%2F16%2Fhexo-%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98%2F</url>
     <content type="text"><![CDATA[选择主题可以在 有哪些好看的 Hexo 主题? 找个自己喜欢的主题，我选择的是 hexo-theme-next 主题 下载主题打开在 Hexo 根目录 打开 CMD12mkdir theme/nextgit clone https://github.com/theme-next/hexo-theme-next themes/next 安装主题打开 _config.yml 配置文件,修改主题为 next123$ hexo g # 重新生成静态文件$ hexo s # 本地预览效果$ hexo d # 部署到Github]]></content>
       <categories>
-        <category>HEXO</category>
+        <category>Hexo</category>
       </categories>
       <tags>
         <tag>hexo</tag>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ZT</title>
+  
+  <subtitle>KEEP GOING!</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://tzzs.github.io/"/>
+  <updated>2018-12-12T18:37:06.570Z</updated>
+  <id>https://tzzs.github.io/</id>
+  
+  <author>
+    <name>tzzs</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo bug</title>
+    <link href="https://tzzs.github.io/2018/12/13/hexo-bug/"/>
+    <id>https://tzzs.github.io/2018/12/13/hexo-bug/</id>
+    <published>2018-12-12T18:29:22.000Z</published>
+    <updated>2018-12-12T18:37:06.570Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="修改文章的大小写后，重新部署无效"><a href="#修改文章的大小写后，重新部署无效" class="headerlink" title="修改文章的大小写后，重新部署无效"></a>修改文章的大小写后，重新部署无效</h1><p>在初次提交文章后，你想要修改文章名字的大小写和分类时，部署后链接会修改，但是Github上的文章名并没有修改，所以打开链接会导致 404 错误。</p><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>这是因为在Windos和MAC OSX 系统中 Git 会忽略对文件或目录大小写的更改，导致Github上文章名不会更新。</p><h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>可以先将文件名添加字母或修改为其他名字，再次部署后再进行大小写的修改，进行重新部署。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;修改文章的大小写后，重新部署无效&quot;&gt;&lt;a href=&quot;#修改文章的大小写后，重新部署无效&quot; class=&quot;headerlink&quot; title=&quot;修改文章的大小写后，重新部署无效&quot;&gt;&lt;/a&gt;修改文章的大小写后，重新部署无效&lt;/h1&gt;&lt;p&gt;在初次提交文章后，你想要修改
+      
+    
+    </summary>
+    
+      <category term="Hexo" scheme="https://tzzs.github.io/categories/Hexo/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS安装Python</title>
+    <link href="https://tzzs.github.io/2018/12/13/CentOS%E5%AE%89%E8%A3%85Python/"/>
+    <id>https://tzzs.github.io/2018/12/13/CentOS安装Python/</id>
+    <published>2018-12-12T16:17:24.000Z</published>
+    <updated>2018-12-12T18:43:55.778Z</updated>
+    
+    <content type="html"><![CDATA[<p>需要运行基于 Python3 的 Django 项目，服务器默认安装的为 python2 ,需要安装Python3</p><p><strong>以下命令均为在 root 身份下执行，如果权限不够，请切换管理眼身份，或在每条命令前添加 <code>sudo</code> 。</strong></p><h1 id="安装Python3"><a href="#安装Python3" class="headerlink" title="安装Python3"></a>安装Python3</h1><h2 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h2><p>创建 python3 的下载安装目录<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> mk /usr/local/python3</span><br></pre></td></tr></table></figure></p><a id="more"></a><h2 id="下载解压"><a href="#下载解压" class="headerlink" title="下载解压"></a>下载解压</h2><p>可以在 python 的 <a href="https://www.python.org" target="_blank" rel="noopener">官网</a> 找到最新的 python3 安装包，然后使用 <code>wget</code> 命令下载下来。<br>这是 <a href="https://www.python.org/downloads/source/" target="_blank" rel="noopener">Python 3.7.1</a> 的页面，最下面找到下载地址，其中第一个为 tgz 格式的压缩包</p><p><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202018-12-13%20005037.jpg" alt=""></p><p>下载完成后进行解压<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz</span><br><span class="line"><span class="meta">$</span> tar -xzvf Python-3.7.1.tgz</span><br></pre></td></tr></table></figure></p><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>在 python3 进行编译安装时，需要用到其它的依赖包，要先进行安装</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> yum install gcc-c++</span><br><span class="line"><span class="meta">$</span> yum install pcre pcre-devel</span><br><span class="line"><span class="meta">$</span> yum install zlib zlib-devel</span><br><span class="line"><span class="meta">$</span> yum install openssl openssl--devel</span><br></pre></td></tr></table></figure><h2 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cd Python-3.7.1</span><br><span class="line"><span class="meta">$</span> ./configure --prefix=/usr/local/python3 # 生成makefile  --prefix 设置安装路径</span><br><span class="line"><span class="meta">$</span> make # 编译</span><br><span class="line"><span class="meta">$</span> make install # 安装</span><br></pre></td></tr></table></figure><h2 id="配置链接"><a href="#配置链接" class="headerlink" title="配置链接"></a>配置链接</h2><p>可以使用 <code>which python</code> 来查看原来python的位置<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> which python</span><br><span class="line">/usr/bin/python</span><br></pre></td></tr></table></figure></p><p><code>ls -l</code> 查看软链接设置</p><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lrwxrwxrwx  <span class="number">1</span> root root           <span class="number">7</span> Nov <span class="number">15</span> <span class="number">00</span>:<span class="number">19</span> python -&gt; python2</span><br><span class="line">lrwxrwxrwx  <span class="number">1</span> root root           <span class="number">9</span> Nov <span class="number">15</span> <span class="number">00</span>:<span class="number">19</span> python2 -&gt; python2.<span class="number">7</span></span><br><span class="line">-rwxr-xr-x  <span class="number">1</span> root root        <span class="number">7216</span> Jul <span class="number">13</span> <span class="number">21</span>:<span class="number">07</span> python2.<span class="number">7</span></span><br></pre></td></tr></table></figure><p>创建 python3 的软链接<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ln -s /usr/local/python3/bin/python3 /usr/bin/python3</span><br></pre></td></tr></table></figure></p><p>当前链接情况, <code>python</code> 和 <code>python2</code> 指向 python 2.7.5 ，<code>python3</code> 指向 python 3.7.1<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lrwxrwxrwx  <span class="number">1</span> root root           <span class="number">7</span> Nov <span class="number">15</span> <span class="number">00</span>:<span class="number">19</span> python -&gt; python2</span><br><span class="line">lrwxrwxrwx  <span class="number">1</span> root root           <span class="number">9</span> Nov <span class="number">15</span> <span class="number">00</span>:<span class="number">19</span> python2 -&gt; python2.<span class="number">7</span></span><br><span class="line">-rwxr-xr-x  <span class="number">1</span> root root        <span class="number">7216</span> Jul <span class="number">13</span> <span class="number">21</span>:<span class="number">07</span> python2.<span class="number">7</span></span><br><span class="line">lrwxrwxrwx  <span class="number">1</span> root root          <span class="number">30</span> Dec <span class="number">13</span> <span class="number">01</span>:<span class="number">46</span> python3 -&gt; /usr/local/python3/bin/python3</span><br></pre></td></tr></table></figure></p><h1 id="安装pip3"><a href="#安装pip3" class="headerlink" title="安装pip3"></a>安装pip3</h1><p>python3.7 已经附带了pip3 ，在 <code>/usr/local/python3/bin</code> 中可以看到 pip3</p><h2 id="创建pip3软链接"><a href="#创建pip3软链接" class="headerlink" title="创建pip3软链接"></a>创建pip3软链接</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3</span><br></pre></td></tr></table></figure><p>此时就可以正常使用 <code>python3</code> ，<code>pip3</code> 来使用 <code>python3.7.1</code> 了。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;需要运行基于 Python3 的 Django 项目，服务器默认安装的为 python2 ,需要安装Python3&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;以下命令均为在 root 身份下执行，如果权限不够，请切换管理眼身份，或在每条命令前添加 &lt;code&gt;sudo&lt;/code&gt; 。&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;安装Python3&quot;&gt;&lt;a href=&quot;#安装Python3&quot; class=&quot;headerlink&quot; title=&quot;安装Python3&quot;&gt;&lt;/a&gt;安装Python3&lt;/h1&gt;&lt;h2 id=&quot;创建目录&quot;&gt;&lt;a href=&quot;#创建目录&quot; class=&quot;headerlink&quot; title=&quot;创建目录&quot;&gt;&lt;/a&gt;创建目录&lt;/h2&gt;&lt;p&gt;创建 python3 的下载安装目录&lt;br&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;$&lt;/span&gt; mk /usr/local/python3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Linux/CentOS" scheme="https://tzzs.github.io/categories/Linux-CentOS/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>python sqlite3 数据库操作的自动提交</title>
+    <link href="https://tzzs.github.io/2018/12/11/python-sqlite3-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4/"/>
+    <id>https://tzzs.github.io/2018/12/11/python-sqlite3-数据库操作的自动提交/</id>
+    <published>2018-12-10T19:08:54.000Z</published>
+    <updated>2018-12-10T19:25:14.345Z</updated>
+    
+    <content type="html"><![CDATA[<p>在一个爬虫中使用了Sqlite3数据库，在将内容写入数据库时，可以正常执行，并且使用同一个游标可以正常读出数据，但是数据库中并没有内容。</p><p>在网上搜索时发现，是因为sqlite的事务控制导致，其中在执行数据库操作时，会有两种commit状态。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">智能commit状态:</span><br><span class="line">    生成方式: 在connect()中不传入 isolation_level, 此时isolation_level==&apos;&apos;</span><br><span class="line">        在进行 执行Data Modification Language (DML) 操作(INSERT/UPDATE/DELETE/REPLACE)时, 会自动打开一个事务,</span><br><span class="line">        在执行 非DML, 非query (非 SELECT 和上面提到的)语句时, 会隐式执行commit</span><br><span class="line">        可以使用 connection.commit()方法来进行提交</span><br><span class="line">    注意:</span><br><span class="line">        不能和cur.execute(&quot;COMMIT&quot;)共用</span><br><span class="line">    </span><br><span class="line">自动commit状态:</span><br><span class="line">    生成方式: 在connect()中传入 isolation_level=None</span><br><span class="line">        这样,在任何DML操作时,都会自动提交</span><br><span class="line">    事务处理</span><br><span class="line">        connection.execute(&quot;BEGIN TRANSACTION&quot;)</span><br><span class="line">        connection.execute(&quot;COMMIT&quot;)</span><br><span class="line">    如果不使用事务, 批量添加数据非常缓慢</span><br></pre></td></tr></table></figure><h2 id="智能commit状态"><a href="#智能commit状态" class="headerlink" title="智能commit状态"></a>智能commit状态</h2><p>即在下面这种非数据修改操作时，会自动执行commit操作。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = c.execute(<span class="string">"select * from bing_images"</span>)</span><br></pre></td></tr></table></figure></p><p>当进行数据库写入时，这种数据修改操作并不会自动提交,需要在执行完成后进行手动提交(需要connection.commit()进行提交)。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c.execute(insert_sql)</span><br><span class="line">conn.commit() <span class="comment"># connection</span></span><br></pre></td></tr></table></figure></p><h2 id="自动commit状态"><a href="#自动commit状态" class="headerlink" title="自动commit状态"></a>自动commit状态</h2><p>在这种情况下，无论是数据修改操作还是非数据修改操作都会自动提交。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在一个爬虫中使用了Sqlite3数据库，在将内容写入数据库时，可以正常执行，并且使用同一个游标可以正常读出数据，但是数据库中并没有内容。&lt;/p&gt;
+&lt;p&gt;在网上搜索时发现，是因为sqlite的事务控制导致，其中在执行数据库操作时，会有两种commit状态。&lt;/p&gt;
+&lt;figu
+      
+    
+    </summary>
+    
+      <category term="数据库" scheme="https://tzzs.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+      <category term="sqlite3" scheme="https://tzzs.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/sqlite3/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>django models中设置字段允许为空</title>
+    <link href="https://tzzs.github.io/2018/12/11/django-models%E4%B8%AD%E8%AE%BE%E7%BD%AE%E5%AD%97%E6%AE%B5%E5%85%81%E8%AE%B8%E4%B8%BA%E7%A9%BA/"/>
+    <id>https://tzzs.github.io/2018/12/11/django-models中设置字段允许为空/</id>
+    <published>2018-12-10T16:51:01.000Z</published>
+    <updated>2018-12-10T18:17:08.294Z</updated>
+    
+    <content type="html"><![CDATA[<p>在Django-models中定义数据库字段时，其字段默认是不允许为空的，在直接向数据库中插入非全部字段时，会直接发生下面错误：</p><p><em>sqlite3.IntegrityError: NOT NULL constraint failed: bing images.drk</em></p><p>即 sqlite3 完整性错误，其中NOT NULL 约束失败，默认字段不允许为空。</p><p>可以通过在models的字段定义上设置 <code>null = True</code> 来解决 </p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url = models.CharField(max_length=<span class="number">200</span>, null=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure><p>Django中源代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">formfield</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">    <span class="comment"># Passing max_length to forms.CharField means that the value's length</span></span><br><span class="line">    <span class="comment"># will be validated twice. This is considered acceptable since we want</span></span><br><span class="line">    <span class="comment"># the value in the form field (to pass into widget for example).</span></span><br><span class="line">    defaults = &#123;<span class="string">'max_length'</span>: self.max_length&#125;</span><br><span class="line">    <span class="comment"># <span class="doctag">TODO:</span> Handle multiple backends with different feature flags.</span></span><br><span class="line">    <span class="keyword">if</span> self.null <span class="keyword">and</span> <span class="keyword">not</span> connection.features.interprets_empty_strings_as_nulls:</span><br><span class="line">        defaults[<span class="string">'empty_value'</span>] = <span class="keyword">None</span></span><br><span class="line">    defaults.update(kwargs)</span><br><span class="line">    <span class="keyword">return</span> super().formfield(**defaults)</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在Django-models中定义数据库字段时，其字段默认是不允许为空的，在直接向数据库中插入非全部字段时，会直接发生下面错误：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;sqlite3.IntegrityError: NOT NULL constraint failed: bing imag
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="https://tzzs.github.io/categories/Python/"/>
+    
+      <category term="Django" scheme="https://tzzs.github.io/categories/Python/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>HEXO</title>
+    <link href="https://tzzs.github.io/2018/11/22/HEXO/"/>
+    <id>https://tzzs.github.io/2018/11/22/HEXO/</id>
+    <published>2018-11-21T19:03:12.000Z</published>
+    <updated>2018-11-21T19:05:56.252Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>hexo 中的 public 目录每次生成静态文件(hexo g)都会重新生成</li><li>修改about页面信息需要在 soure-about-index.md 中修改</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;hexo 中的 public 目录每次生成静态文件(hexo g)都会重新生成&lt;/li&gt;
+&lt;li&gt;修改about页面信息需要在 soure-about-index.md 中修改&lt;/li&gt;
+&lt;/ul&gt;
+
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>修改wordpress的翻译文件</title>
+    <link href="https://tzzs.github.io/2018/11/20/%E4%BF%AE%E6%94%B9wordpress%E7%9A%84%E7%BF%BB%E8%AF%91%E6%96%87%E4%BB%B6/"/>
+    <id>https://tzzs.github.io/2018/11/20/修改wordpress的翻译文件/</id>
+    <published>2018-11-20T10:31:09.000Z</published>
+    <updated>2018-11-20T11:21:10.304Z</updated>
+    
+    <content type="html"><![CDATA[<p>之前WordPress博客的首页部分内容翻译错误，就想手动修改一下。</p><h1 id="使用-Xftp-登录服务器"><a href="#使用-Xftp-登录服务器" class="headerlink" title="使用 Xftp 登录服务器"></a>使用 Xftp 登录服务器</h1><p>1、找到wordpress的安装目录</p><p>2、在 <em>/wordpress/wp-content/languages/themes</em> 目录下，找到你主题的对应翻译文件。</p><p>每个主题都有两个 .mo .po 类型的文件</p><p><img src="https://s1.ax1x.com/2018/11/20/F9Zas1.jpg" alt="F9Zas1.jpg"></p><p>其中po文件,即Portable Object(可移植对象) 是翻译人员进行编写的翻译文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#: inc/main-funtions.php:469</span><br><span class="line">msgid &quot;Github&quot;</span><br><span class="line">msgstr &quot;Github&quot;</span><br><span class="line"></span><br><span class="line">#: inc/main-funtions.php:461</span><br><span class="line">msgid &quot;LinkedIn&quot;</span><br><span class="line">msgstr &quot;领英&quot;</span><br><span class="line"></span><br><span class="line">#: inc/main-funtions.php:449</span><br><span class="line">msgid &quot;Facebook&quot;</span><br><span class="line">msgstr &quot;脸书&quot;</span><br></pre></td></tr></table></figure></p><p>mo 文件 Machine Object(机器对象) 是由 po 文件编译成的二进制文件,应用程序可以通过读取 .mo 文件进行对应语言的翻译显示。</p><p>我们将要修改主题翻译的 .po 文件下载下来。</p><h1 id="修改翻译"><a href="#修改翻译" class="headerlink" title="修改翻译"></a>修改翻译</h1><p>我们只能修改 .po 文件后再将其编译为 .mo 文件，其中编译软件可以使用 <a href="https://poedit.net/" target="_blank" rel="noopener">Poedit</a> 。<br>使用 <a href="https://poedit.net/" target="_blank" rel="noopener">Poedit</a> 打开下载的 .po 文件，<br><img src="https://s1.ax1x.com/2018/11/20/F9ubNV.jpg" alt="F9ubNV.jpg"><br>修改想要修改的翻译内容，修改完成后点击左上角 文件 - 编译为mo - 保存文件。</p><h1 id="上传覆盖"><a href="#上传覆盖" class="headerlink" title="上传覆盖"></a>上传覆盖</h1><p>编译完成后将编译完成的 .mo 文件上传到服务器，将原来的mo文件覆盖。<br>此时重新打开 wordpress 博客首页，翻译就已经生效了。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;之前WordPress博客的首页部分内容翻译错误，就想手动修改一下。&lt;/p&gt;
+&lt;h1 id=&quot;使用-Xftp-登录服务器&quot;&gt;&lt;a href=&quot;#使用-Xftp-登录服务器&quot; class=&quot;headerlink&quot; title=&quot;使用 Xftp 登录服务器&quot;&gt;&lt;/a&gt;使用 Xf
+      
+    
+    </summary>
+    
+      <category term="Blog" scheme="https://tzzs.github.io/categories/Blog/"/>
+    
+      <category term="WordPress" scheme="https://tzzs.github.io/categories/Blog/WordPress/"/>
+    
+    
+      <category term="WordPress" scheme="https://tzzs.github.io/tags/WordPress/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hexo 更换主题</title>
+    <link href="https://tzzs.github.io/2018/11/16/hexo-%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98/"/>
+    <id>https://tzzs.github.io/2018/11/16/hexo-更换主题/</id>
+    <published>2018-11-16T13:14:38.000Z</published>
+    <updated>2018-12-12T19:34:27.980Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="选择主题"><a href="#选择主题" class="headerlink" title="选择主题"></a>选择主题</h1><p>可以在 <a href="https://www.zhihu.com/question/24422335" target="_blank" rel="noopener">有哪些好看的 Hexo 主题?</a> 找个自己喜欢的主题，我选择的是 <a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">hexo-theme-next</a> 主题</p><h1 id="下载主题"><a href="#下载主题" class="headerlink" title="下载主题"></a>下载主题</h1><p>打开在 Hexo 根目录 打开 CMD<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir theme/next</span><br><span class="line">git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p><h1 id="安装主题"><a href="#安装主题" class="headerlink" title="安装主题"></a>安装主题</h1><p>打开 _config.yml 配置文件,<br><img src="a.jpg" alt="[_config.yml]"><br>修改主题为 next<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g # 重新生成静态文件</span><br><span class="line">$ hexo s # 本地预览效果</span><br><span class="line">$ hexo d # 部署到Github</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;选择主题&quot;&gt;&lt;a href=&quot;#选择主题&quot; class=&quot;headerlink&quot; title=&quot;选择主题&quot;&gt;&lt;/a&gt;选择主题&lt;/h1&gt;&lt;p&gt;可以在 &lt;a href=&quot;https://www.zhihu.com/question/24422335&quot; target=&quot;
+      
+    
+    </summary>
+    
+      <category term="Hexo" scheme="https://tzzs.github.io/categories/Hexo/"/>
+    
+    
+      <category term="hexo" scheme="https://tzzs.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://tzzs.github.io/2018/11/16/hello-world/"/>
+    <id>https://tzzs.github.io/2018/11/16/hello-world/</id>
+    <published>2018-11-15T16:15:43.778Z</published>
+    <updated>2018-11-15T16:15:43.778Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>

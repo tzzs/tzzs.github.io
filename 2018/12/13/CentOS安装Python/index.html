@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -84,9 +84,9 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Gemini',
     version: '6.5.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -111,7 +111,7 @@
   <meta name="description" content="需要运行基于 Python3 的 Django 项目，服务器默认安装的为 python2 ,需要安装Python3 以下命令均为在 root 身份下执行，如果权限不够，请切换管理眼身份，或在每条命令前添加 sudo 。 安装Python3创建目录创建 python3 的下载安装目录1$ mk /usr/local/python3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CentOS安装Python">
-<meta property="og:url" content="http://yoursite.com/2018/12/13/CentOS安装Python/index.html">
+<meta property="og:url" content="https://tzzs.github.io/2018/12/13/CentOS安装Python/index.html">
 <meta property="og:site_name" content="ZT">
 <meta property="og:description" content="需要运行基于 Python3 的 Django 项目，服务器默认安装的为 python2 ,需要安装Python3 以下命令均为在 root 身份下执行，如果权限不够，请切换管理眼身份，或在每条命令前添加 sudo 。 安装Python3创建目录创建 python3 的下载安装目录1$ mk /usr/local/python3">
 <meta property="og:locale" content="zh-CN">
@@ -124,10 +124,12 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="ZT" type="application/atom+xml">
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/12/13/CentOS安装Python/">
+
+  <link rel="canonical" href="https://tzzs.github.io/2018/12/13/CentOS安装Python/">
 
 
 
@@ -203,7 +205,7 @@
     </div>
     
       
-        <p class="site-subtitle">KEEP GOING!</p>
+        <h1 class="site-subtitle" itemprop="description">KEEP GOING!</h1>
       
     
   </div>
@@ -363,13 +365,15 @@
   
 
   
+    <div class="reading-progress-bar"></div>
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/13/CentOS安装Python/">
+    <link itemprop="mainEntityOfPage" href="https://tzzs.github.io/2018/12/13/CentOS安装Python/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="tzzs">
@@ -386,10 +390,10 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CentOS安装Python
+          <h2 class="post-title" itemprop="name headline">CentOS安装Python
               
             
-          </h1>
+          </h2>
         
 
         <div class="post-meta">
@@ -637,7 +641,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -663,6 +667,13 @@
           
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           
             <div class="links-of-author motion-element">
@@ -676,6 +687,17 @@
                     
                   
                   <a href="https://github.com/tzzs" title="GitHub &rarr; https://github.com/tzzs" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:tzzprc@gmail.com" title="E-Mail &rarr; mailto:tzzprc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                 </span>
               
             </div>
@@ -693,7 +715,7 @@
               <ul class="links-of-blogroll-list">
                 
                   <li class="links-of-blogroll-item">
-                    <a href="https://tzz6.xyz" title="https://tzz6.xyz" rel="noopener" target="_blank">ZT</a>
+                    <a href="https://tzz6.xyz" title="https://tzz6.xyz" rel="noopener" target="_blank">Z T</a>
                   </li>
                 
               </ul>
@@ -758,7 +780,7 @@
 
 
 
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div>
 
 
 
@@ -797,6 +819,8 @@
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     
@@ -845,6 +869,8 @@
 
 
 
+  
+
 
 
   
@@ -860,6 +886,11 @@
   
   
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/reading_progress/reading_progress.js"></script>
   
 
 
@@ -900,7 +931,6 @@
 
 
   
-
 
 
 
@@ -1260,6 +1290,13 @@
   
 
   
+  
+
+  
+  
+
+  
+
 
   
   
