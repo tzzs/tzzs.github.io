@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Hexo bug]]></title>
+    <url>%2F2018%2F12%2F13%2Fhexo-bug%2F</url>
+    <content type="text"><![CDATA[修改文章的大小写后，重新部署无效在初次提交文章后，你想要修改文章名字的大小写和分类时，部署后链接会修改，但是Github上的文章名并没有修改，所以打开链接会导致 404 错误。 原因这是因为在Windos和MAC OSX 系统中 Git 会忽略对文件或目录大小写的更改，导致Github上文章名不会更新。 解决办法可以先将文件名添加字母或修改为其他名字，再次部署后再进行大小写的修改，进行重新部署。]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[CentOS安装python3]]></title>
     <url>%2F2018%2F12%2F13%2FCentOS%E5%AE%89%E8%A3%85Python%2F</url>
     <content type="text"><![CDATA[需要运行基于 Python3 的 Django 项目，服务器默认安装的为 python2 ,需要安装Python3 以下命令均为在 root 身份下执行，如果权限不够，请切换管理眼身份，或在每条命令前添加 sudo 。 安装Python3创建目录创建 python3 的下载安装目录1$ mk /usr/local/python3 下载解压可以在 python 的 官网 找到最新的 python3 安装包，然后使用 wget 命令下载下来。这是 Python 3.7.1 的页面，最下面找到下载地址，其中第一个为 tgz 格式的压缩包 下载完成后进行解压12$ wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz$ tar -xzvf Python-3.7.1.tgz 安装依赖在 python3 进行编译安装时，需要用到其它的依赖包，要先进行安装 1234$ yum install gcc-c++$ yum install pcre pcre-devel$ yum install zlib zlib-devel$ yum install openssl openssl--devel 编译安装1234$ cd Python-3.7.1$ ./configure --prefix=/usr/local/python3 # 生成makefile --prefix 设置安装路径$ make # 编译$ make install # 安装 配置链接可以使用 which python 来查看原来python的位置12$ which python/usr/bin/python ls -l 查看软链接设置 123lrwxrwxrwx 1 root root 7 Nov 15 00:19 python -&gt; python2lrwxrwxrwx 1 root root 9 Nov 15 00:19 python2 -&gt; python2.7-rwxr-xr-x 1 root root 7216 Jul 13 21:07 python2.7 创建 python3 的软链接1$ ln -s /usr/local/python3/bin/python3 /usr/bin/python3 当前链接情况, python 和 python2 指向 python 2.7.5 ，python3 指向 python 3.7.11234lrwxrwxrwx 1 root root 7 Nov 15 00:19 python -&gt; python2lrwxrwxrwx 1 root root 9 Nov 15 00:19 python2 -&gt; python2.7-rwxr-xr-x 1 root root 7216 Jul 13 21:07 python2.7lrwxrwxrwx 1 root root 30 Dec 13 01:46 python3 -&gt; /usr/local/python3/bin/python3 安装pip3python3.7 已经附带了pip3 ，在 /usr/local/python3/bin 中可以看到 pip3 创建pip3软链接1$ ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3 此时就可以正常使用 python3 ，pip3 来使用 python3.7.1 了。]]></content>
@@ -48,7 +56,7 @@
     <url>%2F2018%2F11%2F16%2Fhexo-%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98%2F</url>
     <content type="text"><![CDATA[选择主题可以在 有哪些好看的 Hexo 主题? 找个自己喜欢的主题，我选择的是 hexo-theme-next 主题 下载主题打开在 Hexo 根目录 打开 CMD12mkdir theme/nextgit clone https://github.com/theme-next/hexo-theme-next themes/next 安装主题打开 _config.yml 配置文件,修改主题为 next123$ hexo g # 重新生成静态文件$ hexo s # 本地预览效果$ hexo d # 部署到Github]]></content>
       <categories>
-        <category>hexo</category>
+        <category>HEXO</category>
       </categories>
       <tags>
         <tag>hexo</tag>
