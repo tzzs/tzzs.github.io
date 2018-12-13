@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2018%2F12%2F13%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[Hexo bug]]></title>
     <url>%2F2018%2F12%2F13%2Fhexo-bug%2F</url>
     <content type="text"><![CDATA[修改文章的大小写后，重新部署无效在初次提交文章后，你想要修改文章名字的大小写和分类时，部署后链接会修改，但是Github上的文章名并没有修改，所以打开链接会导致 404 错误。 原因这是因为在Windos和MAC OSX 系统中 Git 会忽略对文件或目录大小写的更改，导致Github上文章名不会更新。 解决办法可以先将文件名添加字母或修改为其他名字，再次部署后再进行大小写的修改，进行重新部署。]]></content>
@@ -61,10 +66,5 @@
       <tags>
         <tag>hexo</tag>
       </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2F2018%2F11%2F16%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
   </entry>
 </search>
