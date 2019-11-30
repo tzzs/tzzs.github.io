@@ -1,9 +1,10 @@
 ---
-title: CentOS安装Python
+title: CentOS安装Python3
 date: 2018-12-13 00:17:24
 update:
 categories:
-- [Linux/CentOS]
+- [Linux]
+- [CentOS]
 tags:
 ---
 
@@ -35,10 +36,7 @@ $ tar -xzvf Python-3.7.1.tgz
 在 python3 进行编译安装时，需要用到其它的依赖包，要先进行安装
 
 ```shell
-$ yum install gcc-c++
-$ yum install pcre pcre-devel
-$ yum install zlib zlib-devel
-$ yum install openssl openssl--devel
+$ yum install -y ncurses-libs zlib-devel mysql-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi libffi-devel
 ```
 
 ## 编译安装

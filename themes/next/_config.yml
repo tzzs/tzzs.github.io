@@ -101,7 +101,7 @@ footer:
 # https://creativecommons.org/share-your-work/licensing-types-examples
 # Available: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | zero
 creative_commons:
-  license: by-nc-nd
+  license: by-sa
   sidebar: true
   post: true
 
@@ -140,6 +140,7 @@ menu:
   categories: /categories/ || th
   # tags: /tags/ || tags
   archives: /archives/ || archive
+  TZZ: http://tzz6.xyz || address-card
   about: /about/ || user
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
@@ -157,8 +158,8 @@ menu_settings:
 # Schemes
 # scheme: Muse
 # scheme: Mist
-# scheme: Pisces
-scheme: Gemini
+scheme: Pisces
+# scheme: Gemini
 
 
 # ---------------------------------------------------------------
@@ -176,6 +177,8 @@ site_state: true
 social:
   GitHub: https://github.com/tzzs || github
   E-Mail: mailto:tzzprc@gmail.com || envelope
+  LeetCode: https://leetcode-cn.com/tzz6/ || code
+  Bing2: http://bing.tzz6.xyz || image
   #Weibo: https://weibo.com/yourname || weibo
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
@@ -473,7 +476,7 @@ math:
 # PDF Support
 # Dependencies: https://github.com/theme-next/theme-next-pdf
 pdf:
-  enable: false
+  enable: true
 
   # Default(true) will load PDFObject/PDF.js script on demand
   # That is it only render those page who has 'pdf: true' in Front Matter.
@@ -585,21 +588,21 @@ needmoreshare2:
       iconStyle: default
       boxForm: horizontal
       position: bottomCenter
-      networks: Weibo,Wechat,Douban,QQZone,Twitter,Facebook
+      networks: Weibo,Wechat,Douban,QQZone,Twitter,Facebook,Mailto,Evernote
   float:
     enable: true
     options:
       iconStyle: default
       boxForm: horizontal
       position: middleRight
-      networks: Weibo,Wechat,Douban,QQZone,Twitter,Facebook
+      networks: Weibo,Wechat,Douban,QQZone,Twitter,Facebook,Mailto,Evernote
 
 # Google Webmaster tools verification setting
 # See: https://www.google.com/webmasters
 #google_site_verification:
 
 # Google Analytics
-#google_analytics:
+google_analytics: UA-132580685-2
 
 # Bing Webmaster tools verification setting
 # See: https://www.bing.com/webmaster
@@ -861,7 +864,7 @@ pace_theme: pace-theme-minimal
 # Canvas-nest
 # Dependencies: https://github.com/theme-next/theme-next-canvas-nest
 canvas_nest:
-  enable: true
+  enable: false
   onmobile: true # display on mobile or not
   color: '0,0,255' # RGB values, use ',' to separate
   opacity: 0.5 # the opacity of line: 0~1
@@ -955,7 +958,7 @@ vendors:
   # Example:
   # fontawesome: //cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css
   # fontawesome: //cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css
-  fontawesome:
+  fontawesome: 
 
   # Internal version: 2.4.1
   # See: https://www.algolia.com
