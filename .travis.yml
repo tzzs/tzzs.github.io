@@ -11,26 +11,15 @@ install:
 
 script:
     - hexo clean
-    - hexo g
 
 after_script:
     - set -ev
-    
+
     - git clone https://${GH_REF} .deploy_git
     - cd .deploy_git
     - git checkout master
 
-    - cd ../
-    - mv .deploy_git/.git/ ./public/
-
-    - cd ./public
-
-    - git config user.name "tzzs"
-    - git config user.email "1789803837@qq.com"
-
-    - git add .
-    - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
-    - git push --force --quiet "https://${blog}@${GH_REF}" master:master
+    - hexo g -d
 
 branches:
     only:

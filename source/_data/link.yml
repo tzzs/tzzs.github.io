@@ -1,0 +1,8 @@
+class:
+  class_name: 友情链接
+  link_list:
+    1:
+      name: BING2
+      link: http://bing.tzz6.xyz
+      avatar: http://bing.tzz6.xyz/avatar.png
+      descr: BING2 每日更新
