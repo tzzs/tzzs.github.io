@@ -19,7 +19,7 @@ after_script:
     - hexo g -d
     - ls
     - mv .git/ ./public/
-    - cd /public
+    - cd public;ls
     - git checkout master
     - cd tzzs/tzzs.githu.io/public
     - ls tzzs/tzzs.githu.io/public/
