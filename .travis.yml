@@ -19,7 +19,7 @@ after_script:
     - hexo g -d
     - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
-    - git push --force --quiet "https://GbCwtnsnVJ:${Coding Token}@${Coding}" master:master
+    - git push --force "https://GbCwtnsnVJ:${CodingToken}@${Coding}" master:master
 
 branches:
     only:
