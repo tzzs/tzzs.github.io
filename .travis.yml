@@ -16,8 +16,7 @@ script:
 after_script:
     - set -ev
 
-    - git clone https://${GH_REF} build_hexo
-    - cd build_hexo
+    - cd tzzs/tzzs.githu.io
     - git checkout hexo
     - hexo g -d
 
