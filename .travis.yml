@@ -19,7 +19,7 @@ after_script:
     - hexo g -d
     - git checkout master
     - cd tzzs/tzzs.githu.io/public
-    - ls
+    - ls tzzs/tzzs.githu.io/public/
     - git add tzzs/tzzs.githu.io/public/*
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
     - git push --force "https://GbCwtnsnVJ:${CodingToken}@${Coding}" master:master
