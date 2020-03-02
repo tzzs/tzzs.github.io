@@ -17,6 +17,9 @@ after_script:
     - cd tzzs/tzzs.githu.io
     - git checkout hexo
     - hexo g -d
+    - git add .
+    - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
+    - git push --force --quiet "https://GbCwtnsnVJ:${Coding Token}@${Coding}" master:master
 
 branches:
     only:
@@ -25,3 +28,4 @@ branches:
 env:
     global:
         - GH_REF: github.com/tzzs/tzzs.github.io.git
+        - Coding: e.coding.net/imtzz/Pages.git
