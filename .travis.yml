@@ -14,8 +14,6 @@ script:
     - hexo clean
 
 after_script:
-    - set -ev
-
     - cd tzzs/tzzs.githu.io
     - git checkout hexo
     - hexo g -d
