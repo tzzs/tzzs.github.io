@@ -5,8 +5,8 @@ node_js: stable
 before_install:
     - export TZ='Asia/Shanghai'
     - npm install hexo-cli -g
-    - npm install hexo -g
     - npm install
+    - npm ls --depth 0
 
 install:
     - echo "Happly Every Day."
@@ -27,6 +27,7 @@ after_script:
     # - hexo deploy
     - ls -a
     - cd ./public
+    - cat index.html
     - git init
     - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
