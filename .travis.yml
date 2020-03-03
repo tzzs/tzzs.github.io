@@ -24,6 +24,8 @@ after_script:
     - git config user.email "1789803837@qq.com"
 
     - git checkout -b master
+    - git branch –set-upstream master origin/master
+    - git pull --force
     - ls
     - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
