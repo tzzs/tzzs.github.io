@@ -4,8 +4,8 @@ node_js: stable
 
 before_install:
     - export TZ='Asia/Shanghai'
-    - npm install hexo-cli -g
-    - npm install
+    - npm install hexo-cli --save
+    - npm install --save
     - npm ls --depth 0
 
 install:
