@@ -18,6 +18,8 @@ script:
 after_script:
     - git config user.name "tzzs"
     - git config user.email "1789803837@qq.com"
+    - git config --global user.name "tzzs"
+    - git config --global user.email "1789803837@qq.com"
 
     - sed -i "s/Token1/${GithubToken}/g" ./_config.yml
     - sed -i "s/Token2/${CodingToken}/g" ./_config.yml
