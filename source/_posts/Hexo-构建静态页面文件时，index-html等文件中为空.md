@@ -4,7 +4,7 @@ date: 2020-03-04 02:17:10
 update:
 categories:
 - [Git]
-- [Blog, Hexo]
+- [Blog,Hexo]
 tags:
 - [Git]
 - [Hexo]

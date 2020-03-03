@@ -4,7 +4,7 @@ date: 2018-11-16 21:14:38
 updated:
 comments: true
 categories:
-- [Blog, Hexo]
+- [Blog,Hexo]
 tags:
 - [Hexo]
 ---

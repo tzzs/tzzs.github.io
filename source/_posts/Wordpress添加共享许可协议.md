@@ -3,7 +3,7 @@ title: Wordpress添加共享许可协议
 date: 2019-01-16 07:48:04
 update:
 categories:
-- [Wordpress]
+- [Blog,Wordpress]
 tags:
 ---
 
@@ -23,7 +23,7 @@ tags:
 
 复制下面的html代码
 
-登录到Wordpres后台管理页面，选择 **`外观-编辑-主题文件-主题页脚-footer.php`** 
+登录到Wordpres后台管理页面，选择 **`外观-编辑-主题文件-主题页脚-footer.php`**
 在后一个标签`</p>`之前添加复制的html代码，然后更新文件。
 其它对齐或换行可以根据自己喜好单独调整。
 
@@ -31,7 +31,7 @@ tags:
 		<br />
 		<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />本作品由<span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">TZZ</span>采用<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a>进行许可。基于<a xmlns:dct="http://purl.org/dc/terms/" href="tzz6.xyz" rel="dct:source">tzz6.xyz</a>上的作品创作。
     </p>
-	  
+
   </div>
 </footer>
 </div>

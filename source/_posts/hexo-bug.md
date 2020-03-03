@@ -3,7 +3,7 @@ title: Hexo bug
 date: 2018-12-13 02:29:22
 update:
 categories:
-- [Blog, Hexo]
+- [Blog,Hexo]
 tags:
 - [Hexo]
 ---
