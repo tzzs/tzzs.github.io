@@ -18,11 +18,15 @@ after_script:
     - git checkout hexo
     - hexo g
     - ls
+
+    - git config user.name "tzzs"
+    - git config user.email "1789803837@qq.com"
+
     - git checkout master
     - ls
     - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
-    - git push --force "https://tzzs:${blog}@${GH_REF}"
+    - git push --force "https://${blog}@${GH_REF}"
     # - git push --force "https://tzzchn@outlook.com:${CodingToken}@${Coding}" master:master
 
 branches:
