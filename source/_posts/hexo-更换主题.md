@@ -1,12 +1,12 @@
 ---
 title: hexo 更换主题
 date: 2018-11-16 21:14:38
-updated: 
+updated:
 comments: true
-categories: 
-- Hexo
-tags: 
-- hexo
+categories:
+- [Blog, Hexo]
+tags:
+- [Hexo]
 ---
 
 # 选择主题
@@ -15,7 +15,7 @@ tags:
 
 # 下载主题
 
-打开在 Hexo 根目录 打开 CMD 
+打开在 Hexo 根目录 打开 CMD
 ```shell
 mkdir theme/next
 git clone https://github.com/theme-next/hexo-theme-next themes/next
@@ -30,7 +30,3 @@ $ hexo g # 重新生成静态文件
 $ hexo s # 本地预览效果
 $ hexo d # 部署到Github
 ```
-
-
-
-
