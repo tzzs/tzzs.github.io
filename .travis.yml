@@ -21,10 +21,16 @@ after_script:
     - git config --global user.name "tzzs"
     - git config --global user.email "1789803837@qq.com"
 
-    - sed -i "s/Token1/${GithubToken}/g" ./_config.yml
-    - sed -i "s/Token2/${CodingToken}/g" ./_config.yml
+    # - sed -i "s/Token1/${GithubToken}/g" ./_config.yml
+    # - sed -i "s/Token2/${CodingToken}/g" ./_config.yml
 
-    - hexo deploy
+    # - hexo deploy
+    - cd ./public
+    - git init
+    - git add .
+    - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
+    - git push --force --quiet "https://${GithubToken}@${GH_REF}" master:master
+    - git push --force --quiet "https://${CodingToken}@${Coding}" master:master
 
 branches:
     only:
