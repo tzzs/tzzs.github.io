@@ -11,12 +11,13 @@ install:
     - npm install
 
 script:
+    - ls
     - hexo clean
+    - hexo g
 
 after_script:
     - cd tzzs/tzzs.githu.io
     - git checkout hexo
-    - hexo g
     - ls
 
     - git config user.name "tzzs"
