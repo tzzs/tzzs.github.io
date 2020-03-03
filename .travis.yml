@@ -16,14 +16,14 @@ script:
 after_script:
     - cd tzzs/tzzs.githu.io
     - git checkout hexo
-    - hexo g -d
+    - hexo g
     - ls
-    - git checkout -b master origin/master
-    - git pull --force
+    - git checkout master
     - ls
     - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
-    - git push --force "https://tzzchn@outlook.com:${CodingToken}@${Coding}" master:master
+    - git push --force "https://tzzs:${blog}@${GH_REF}"
+    # - git push --force "https://tzzchn@outlook.com:${CodingToken}@${Coding}" master:master
 
 branches:
     only:

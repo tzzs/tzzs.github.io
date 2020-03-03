@@ -103,6 +103,6 @@ deploy:
   type: git
   repository:
     github: git@github.com:tzzs/tzzs.github.io.git
-    # coding: https://e.coding.net/imtzz/Pages.git
+    coding: https://e.coding.net/imtzz/Pages.git
   branch: master
   message: "Updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
