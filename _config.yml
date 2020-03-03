@@ -90,7 +90,7 @@ douban:
   timeout: 10000
 
 lazyload:
-  enable: false
+  enable: true
 
 # 站点地图
 sitemap:
