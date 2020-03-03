@@ -18,12 +18,11 @@ after_script:
     - git checkout hexo
     - hexo g -d
     - ls
-    - mv .git/ ./public/
-    - cd public;ls
+    - git fetch
     - git checkout master
-    - cd tzzs/tzzs.githu.io/public
-    - ls tzzs/tzzs.githu.io/public/
-    - git add tzzs/tzzs.githu.io/public/*
+    - git pull
+    - ls
+    - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
     - git push --force "https://tzzchn@outlook.com:${CodingToken}@${Coding}" master:master
 
