@@ -6,10 +6,10 @@ before_install:
     - export TZ='Asia/Shanghai'
     - npm install hexo-cli -g
     - npm install hexo -g
-
-install:
     - npm install
 
+install:
+    - echo "Happly Every Day."
 script:
     - ls
     - hexo clean
