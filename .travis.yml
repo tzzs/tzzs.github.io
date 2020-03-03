@@ -23,7 +23,9 @@ after_script:
     - git config user.name "tzzs"
     - git config user.email "1789803837@qq.com"
 
-    - git checkout -b master master
+    - git fetch origin
+    - git checkout -b master
+    - git branch --set-upstream-to=origin/master
     - git pull --force
     - ls
     - git add .
