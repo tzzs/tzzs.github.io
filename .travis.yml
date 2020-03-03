@@ -25,7 +25,7 @@ after_script:
     - ls tzzs/tzzs.githu.io/public/
     - git add tzzs/tzzs.githu.io/public/*
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
-    - git push --force "https://GbCwtnsnVJ:${CodingToken}@${Coding}" master:master
+    - git push --force "https://tzzchn@outlook.com:${CodingToken}@${Coding}" master:master
 
 branches:
     only:
