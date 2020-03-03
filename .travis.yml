@@ -25,8 +25,10 @@ after_script:
     # - sed -i "s/Token2/${CodingToken}/g" ./_config.yml
 
     # - hexo deploy
+    - ls
+    - mv ./.deploy_git ./public
     - cd ./public
-    - git init
+    # - git init
     - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
     - git push "https://${GithubToken}@${GH_REF}" master:master
