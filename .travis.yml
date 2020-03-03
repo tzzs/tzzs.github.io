@@ -11,7 +11,7 @@ before_install:
 install:
     - echo "Happly Every Day."
 script:
-    - ls
+    - ls -a
     - hexo clean
     - hexo g
 
@@ -25,14 +25,13 @@ after_script:
     # - sed -i "s/Token2/${CodingToken}/g" ./_config.yml
 
     # - hexo deploy
-    - ls
-    - mv ./.deploy_git ./public
+    - ls -a
     - cd ./public
-    # - git init
+    - git init
     - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
-    - git push "https://${GithubToken}@${GH_REF}" master:master
-    - git push "https://${CodingToken}@${Coding}" master:master
+    - git push --force "https://${GithubToken}@${GH_REF}" master:master
+    - git push --force "https://${CodingToken}@${Coding}" master:master
 
 branches:
     only:
