@@ -1,9 +1,9 @@
 ---
-title: Wordpress添加共享许可协议
+title: WordPress添加共享许可协议
 date: 2019-01-16 07:48:04
 update:
 categories:
-- [Blog,Wordpress]
+- [Blog,WordPress]
 tags:
 ---
 
