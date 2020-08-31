@@ -28,7 +28,7 @@ after_script:
     # - hexo deploy
     - ls -a
     - cd ./public
-    - cat index.html
+    - head -n 10 index.html
     - git init
     - git add .
     - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
