@@ -5,13 +5,14 @@ update:
 categories:
 - LeetCode
 tags:
+- LeetCode
 ---
 ![题目](https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202018-12-29%20030945.jpg)
 
 > 我采用的策略
 
 1. 去除最后面的0
-    
+
     不断进行 `x % 10 == 0` 判断，如果最后一位为0，则执行 `x //= 10` 。 使用 // 来执行除法，会将产生小数直接抛弃，只剩下整数。
 
 2. 判断正数还是负数
