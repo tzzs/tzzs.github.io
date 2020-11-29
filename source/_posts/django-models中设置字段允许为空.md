@@ -3,9 +3,10 @@ title: django models中设置字段允许为空
 date: 2018-12-11 00:51:01
 update:
 categories:
-- [Python]
-- [Django]
+- [Python, Django]
 tags:
+- Python
+- Django
 ---
 
 在Django-models中定义数据库字段时，其字段默认是不允许为空的，在直接向数据库中插入非全部字段时，会直接发生下面错误：

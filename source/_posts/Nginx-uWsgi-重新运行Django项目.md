@@ -3,10 +3,13 @@ title: Nginx uWsgi 重新运行Django项目
 date: 2019-02-20 22:23:13
 update:
 categories:
-- [NGINX]
+- [Nginx]
 - [uWSGI]
 - [Django]
 tags:
+- Nginx
+- uWSGI
+- Django
 ---
 
 ### 重新启动NGINX

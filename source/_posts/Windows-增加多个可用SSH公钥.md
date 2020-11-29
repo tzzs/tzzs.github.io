@@ -3,6 +3,7 @@ title: Windows 增加多个可用SSH公钥
 date: 2020-02-23 23:40:46
 update:
 categories:
+- [Windows]
 tags:
 - [SSH]
 - [Coding]

@@ -3,7 +3,7 @@ title: CentOS7 PHP5.6 upgrade to PHP7.2
 date: 2019-01-08 20:32:24
 update:
 categories:
-- [CentOS]
+- [Linux, CentOS]
 - [PHP]
 tags:
 ---

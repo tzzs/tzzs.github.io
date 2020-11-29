@@ -3,8 +3,7 @@ title: JDK8 环境下生成WebService Client的问题
 date: 2020-02-10 11:20:53
 update:
 categories:
-- [Java]
-- [WebService]
+- [Java, WebService]
 tags:
 - [JDK8]
 - [WebService]

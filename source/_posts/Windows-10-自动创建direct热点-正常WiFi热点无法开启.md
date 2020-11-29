@@ -3,7 +3,7 @@ title: 'Windows 10 自动创建direct热点,正常WiFi热点无法开启'
 date: 2019-01-05 04:12:54
 update:
 categories:
-- Windows10
+- [Windows, Windows10]
 tags:
 ---
 
