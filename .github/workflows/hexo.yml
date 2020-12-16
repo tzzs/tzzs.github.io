@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ hexo ]
 
+env:
+  TZ: Asia/Shanghai
+
 jobs:
   build:
 
@@ -19,24 +22,21 @@ jobs:
         node-version: [12.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Codes
+      uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    
-    - name: Install dependencies
-      run: npm install
 
-    - name: Prepare
+    - name: Install hexo dependencies
       run: |
-        export TZ='Asia/Shanghai'
-        npm install hexo-cli --save
-        npm install --save
+        npm install hexo-cli -g
+        npm install
         npm ls --depth 0
-        echo "Happly Every Day."
     
-    - name: generate
+    - name: Generate files
       run: |
         hexo clean
-        hexo g
+        hexo generate
