@@ -48,8 +48,8 @@ jobs:
           git init 
           git add .
           git commit -m "Github Action Auto Builder at `date +"%Y-%m-%d %H:%M"`"
-          git push --force "https://${{GithubToken}}@${GH_REF}" master:master
-          git push --force "https://${{CodingToken}}@${Coding}" master:master
+          git push --force "https://${{secrets.GithubToken}}@${GH_REF}" master:master
+          git push --force "https://${{secrets.CodingToken}}@${Coding}" master:master
         env:
           GH_REF: github.com/tzzs/tzzs.github.io.git
           Coding: e.coding.net/imtzz/Pages.git
