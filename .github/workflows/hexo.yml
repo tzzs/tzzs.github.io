@@ -27,8 +27,7 @@ jobs:
     
     - name: Install dependencies
       run: npm install
-    
-    - uses: 
+
     - name: Prepare
       run: |
         export TZ='Asia/Shanghai'
