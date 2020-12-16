@@ -42,9 +42,9 @@ jobs:
 
       - name: Git Repository Update
         run: |
-          ls -a
           cd ./public
-          head -n 10 inde.html
+          ls -a
+          head -n 10 index.html
           git init 
           git add .
           git commit -m "Github Action Auto Builder at `date +"%Y-%m-%d %H:%M"`"
