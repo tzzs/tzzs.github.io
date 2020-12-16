@@ -47,6 +47,8 @@ jobs:
           head -n 10 index.html
           git init 
           git add .
+          git config --global user.name "Github Action"
+          git config --global user.email "1789803837@qq.com"
           git commit -m "Github Action Auto Builder at `date +"%Y-%m-%d %H:%M"`"
           git push --force "https://${{secrets.GithubToken}}@${GH_REF}" master:master
           git push --force "https://${{secrets.CodingToken}}@${Coding}" master:master
