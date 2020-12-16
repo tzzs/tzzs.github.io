@@ -27,7 +27,7 @@ jobs:
         ref: 'hexo'
     
     - name: Prepare
-      run: 
+      run: |
         export TZ='Asia/Shanghai'
         npm install hexo-cli --save
         npm install --save
@@ -35,6 +35,6 @@ jobs:
         echo "Happly Every Day."
     
     - name: generate
-      run:
+      run: |
         hexo clean
         hexo g
