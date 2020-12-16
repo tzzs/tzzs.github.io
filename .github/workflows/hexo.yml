@@ -1,20 +1,19 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Hexo CI
+name: BLOG CI
 
 on:
   push:
-    branches: [ hexo ]
+    branches: [hexo]
   pull_request:
-    branches: [ hexo ]
+    branches: [hexo]
 
 env:
   TZ: Asia/Shanghai
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,21 +21,35 @@ jobs:
         node-version: [12.x]
 
     steps:
-    - name: Checkout Codes
-      uses: actions/checkout@v2
+      - name: Checkout Codes
+        uses: actions/checkout@v2
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Install hexo dependencies
-      run: |
-        npm install hexo-cli -g
-        npm install
-        npm ls --depth 0
-    
-    - name: Generate files
-      run: |
-        hexo clean
-        hexo generate
+      - name: Install Hexo Dependencies
+        run: |
+          npm install hexo-cli -g
+          npm install
+          npm ls --depth 0
+
+      - name: Generate Files
+        run: |
+          hexo clean
+          hexo generate
+
+      - name: Git Repository Update
+        run: |
+          ls -a
+          cd ./public
+          head -n 10 inde.html
+          git init 
+          git add .
+          git commit -m "Github Action Auto Builder at `date +"%Y-%m-%d %H:%M"`"
+          git push --force "https://${{GithubToken}}@${GH_REF}" master:master
+          git push --force "https://${{CodingToken}}@${Coding}" master:master
+        env:
+          GH_REF: github.com/tzzs/tzzs.github.io.git
+          Coding: e.coding.net/imtzz/Pages.git
