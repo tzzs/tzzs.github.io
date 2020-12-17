@@ -77,8 +77,10 @@ jobs:
           USERNAME: ${{secrets.SERVER_USERNAME}}
           KEY: ${{secrets.SERVER_PRIVATE_KEY}}
 
-      - name: Deploy to Server
+      - name: Checkout Codes
         uses: actions/checkout@v2
+
+      - name: Deploy to Server
         run: |
           pwd
           ls
