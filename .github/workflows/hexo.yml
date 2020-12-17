@@ -81,4 +81,6 @@ jobs:
         run: |
           pwd
           ls
+          cd ..
+          ls
           ssh server < deploy.sh 
