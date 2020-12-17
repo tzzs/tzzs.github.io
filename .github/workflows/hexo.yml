@@ -51,9 +51,7 @@ jobs:
           git config --global user.email ${{secrets.EMAIL}}
           git commit -m "Github Action Auto Builder at `date +"%Y-%m-%d %H:%M"`"
           git push --force "https://${{secrets.GITHUBTOKEN}}@${GH_REF}" master:master
-          git remote add coding ${Coding}
-          git remote -v
-          git push --force "https://{{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding}" master:master
+          git push --force "https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding}" master:master
         env:
           GH_REF: github.com/tzzs/tzzs.github.io.git
           Coding: e.coding.net/imtzz/Pages.git
