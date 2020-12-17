@@ -79,6 +79,8 @@ jobs:
 
       - name: Checkout Codes
         uses: actions/checkout@v2
+        with:
+          ref: 'hexo'
 
       - name: Deploy to Server
         run: |
