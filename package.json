@@ -29,6 +29,6 @@
     "hexo-server": "^1.0.0",
     "hexo-util": "^1.8.1",
     "hexo-wordcount": "^6.0.1",
-    "lazysizes": "^5.2.0"
+    "lazysizes": "^5.2.1"
   }
 }
