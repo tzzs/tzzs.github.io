@@ -78,9 +78,8 @@ jobs:
           KEY: ${{secrets.SERVER_PRIVATE_KEY}}
 
       - name: Deploy to Server
+        uses: actions/checkout@v2
         run: |
           pwd
-          ls
-          cd ..
           ls
           ssh server < deploy.sh 
