@@ -84,6 +84,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          git checkout -b master origin/master
           pwd
           ls
           ssh server < deploy.sh 
