@@ -55,3 +55,15 @@ jobs:
         env:
           GH_REF: github.com/tzzs/tzzs.github.io.git
           Coding: e.coding.net/imtzz/Pages.git
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Server
+        run: |
+          echo "${{secrets.SERVER_PRIVATE_KEY}}" > deploy.key
+          mkdir -p ~/.ssh
+          chmod 600 deploy.key
+          ssh-add deploy.key
+          ssh ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_PRIVATE_KEY}} -o StrictHostKeyChecking=no < deploy.sh 
