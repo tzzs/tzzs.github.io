@@ -60,11 +60,23 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Configure SSH 
+        run: |
+          mkdir -p ~/.ssh 
+          echo "$KEY" > ~/.ssh/deploy.key
+          chmod 600 ~/.ssh/deploy.key
+          cat >> ~/.ssh/config <<END
+          Host server
+            HostName $IP
+            User $USERNAME
+            IdentityFile ~/.ssh/deploy.key
+            StrictHostKeyChecking no
+          END
+        env:
+          IP: ${{secrets.SERVER_IP}}
+          USERNAME: ${{secrets.SERVER_USERNAME}}
+          KEY: ${{secrets.SERVER_PRIVATE_KEY}}
+
       - name: Deploy to Server
         run: |
-          eval `ssh-agent -s`
-          echo "${{secrets.SERVER_PRIVATE_KEY}}" > deploy.key
-          mkdir -p ~/.ssh
-          chmod 600 deploy.key
-          ssh-add deploy.key
-          ssh ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_IP}} -o StrictHostKeyChecking=no < deploy.sh 
+          ssh server < deploy.sh 
