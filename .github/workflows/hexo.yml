@@ -67,4 +67,4 @@ jobs:
           mkdir -p ~/.ssh
           chmod 600 deploy.key
           ssh-add deploy.key
-          ssh ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_PRIVATE_KEY}} -o StrictHostKeyChecking=no < deploy.sh 
+          ssh ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_IP}} -o StrictHostKeyChecking=no < deploy.sh 
