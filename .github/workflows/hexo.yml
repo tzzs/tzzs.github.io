@@ -83,6 +83,8 @@ jobs:
           ls
           cd master
           ls
+        env:
+          Coding: e.coding.net/imtzz/Pages.git
 
       - name: Deploy to Server
         run: |
