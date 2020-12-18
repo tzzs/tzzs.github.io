@@ -78,13 +78,11 @@ jobs:
           KEY: ${{secrets.SERVER_PRIVATE_KEY}}
 
       - name: Checkout Codes
-        uses: actions/checkout@v2
-        with:
-          ref: 'hexo'
+        run: |
+          git checkout -b master https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding} master
+          cd master
+          ls
 
       - name: Deploy to Server
         run: |
-          git checkout -b master origin/master
-          pwd
-          ls
           ssh server < deploy.sh 
