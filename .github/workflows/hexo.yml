@@ -79,11 +79,9 @@ jobs:
 
       - name: Checkout Codes
         uses: actions/checkout@v2
-      
-
 
       - name: Deploy to Server
         run: |
           echo "Deploy to Server"
           ls
-          ssh -tt server > /dev/null 2>&1 < deploy.sh 
+          ssh server < deploy.sh > /dev/null 2>&1 
