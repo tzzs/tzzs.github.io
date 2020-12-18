@@ -79,7 +79,8 @@ jobs:
 
       - name: Checkout Codes
         run: |
-          git checkout -b master https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding} master
+          git clone -b master https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding} master
+          ls
           cd master
           ls
 
