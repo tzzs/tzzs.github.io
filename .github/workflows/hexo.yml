@@ -78,17 +78,21 @@ jobs:
           KEY: ${{secrets.SERVER_PRIVATE_KEY}}
 
       - name: Checkout Codes
-        run: |
-          git clone -b master https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding} master
-          ls
-          echo "XXXXXXXXXXX"
-          cd master
-          ls
-          echo "MASTER:"
-          ls master/
-        env:
-          Coding: e.coding.net/imtzz/Pages.git
+        uses: actions/checkout@v2
+      
+      # - name: Checkout Codes
+      #   run: |
+      #     git clone -b hexo https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding} hexo
+      #     ls
+      #     echo "XXXXXXXXXXX"
+      #     cd master
+      #     ls
+      #     echo "MASTER:"
+      #     ls master/
+      #   env:
+      #     Coding: e.coding.net/imtzz/Pages.git
 
       - name: Deploy to Server
         run: |
+          ls
           ssh server < deploy.sh 
