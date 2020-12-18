@@ -81,8 +81,11 @@ jobs:
         run: |
           git clone -b master https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding} master
           ls
+          echo "XXXXXXXXXXX"
           cd master
           ls
+          echo "MASTER:"
+          ls master/
         env:
           Coding: e.coding.net/imtzz/Pages.git
 
