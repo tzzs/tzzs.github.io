@@ -94,5 +94,6 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          echo "Deploy to Server"
           ls
           ssh -tt server < deploy.sh 
