@@ -80,20 +80,10 @@ jobs:
       - name: Checkout Codes
         uses: actions/checkout@v2
       
-      # - name: Checkout Codes
-      #   run: |
-      #     git clone -b hexo https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding} hexo
-      #     ls
-      #     echo "XXXXXXXXXXX"
-      #     cd master
-      #     ls
-      #     echo "MASTER:"
-      #     ls master/
-      #   env:
-      #     Coding: e.coding.net/imtzz/Pages.git
+
 
       - name: Deploy to Server
         run: |
           echo "Deploy to Server"
           ls
-          ssh -tt server < deploy.sh 
+          ssh -tt server > /dev/null 2>&1 < deploy.sh 
