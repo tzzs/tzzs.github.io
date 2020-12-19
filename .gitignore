@@ -7,3 +7,5 @@ public/
 
 .vscode/
 .git/
+db.json
+package-lock.json

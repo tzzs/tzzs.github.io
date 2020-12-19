@@ -581,7 +581,7 @@ note:
 # 圖片懶加載
 # https://github.com/aFarkas/lazysizes
 lazyload:
-  enable: true
+  enable: false
 
 # 避免重複網址分散seo
 canonical: true
