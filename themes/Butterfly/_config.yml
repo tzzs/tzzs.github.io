@@ -286,7 +286,7 @@ qihu_site_verification:
 Flink:
   headline: 友情链接
   info_headline: 我的BLOG资料
-  name: BLOG 名字： ZT
+  name: BLOG 名字： IMTZZ
   address: BLOG 地址： https://tzzs.github.io/
   avatar: BLOG 头像： https://tzzs.github.io/img/avatar.png
   info: BLOG 简介： Keep Going! Always!
@@ -457,11 +457,11 @@ subtitle:
   # source: 3  調用一句网（簡體） http://yijuzhan.com/
   # source: 4  調用今日詩詞（簡體） https://www.jinrishici.com/
   # subtitle 會先顯示 source , 再顯示 sub 的内容
-  source: 2
+  source: 3
   # (如果有英文逗號' , '，請使用轉義字符 &#44;)
-  sub:
-    - Never put off till tomorrow what you can do today
-    - Keep Going! Always!
+  # sub:
+  #   - Never put off till tomorrow what you can do today
+  #   - Keep Going! Always!
 
 ####    側邊欄    ####
 #-------------------------------------
@@ -581,7 +581,7 @@ note:
 # 圖片懶加載
 # https://github.com/aFarkas/lazysizes
 lazyload:
-  enable: false
+  enable: true
 
 # 避免重複網址分散seo
 canonical: true
