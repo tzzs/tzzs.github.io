@@ -1,5 +1,5 @@
 ---
-title: Typero自动上传图片到Tencent Cos
+title: Typero自动上传图片到Tencent COS
 date: 2020-11-29 20:50:21
 update:
 categories:
@@ -53,7 +53,7 @@ tags:
 偏好设置 > 图像 > 上传服务设定 > 上传服务:Custom Command > 自定义命令输入以下命令
 
 ```
-CALL conda.bat activate WEB && python E:/upload_for_md.py
+activate WEB && python E:/upload_for_md.py
 ```
 
 > 注：由于我的环境下存在多个python，所以先使用conda激活指定的python环境，然后进行脚本的调用。脚本需要写绝对路径
