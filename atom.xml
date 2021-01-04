@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>MR. TAN&#39;S BLOG</title>
+  
+  <subtitle>KEEP GOING! ALWAYS!</subtitle>
+  <link href="https://b.imtzz.com/atom.xml" rel="self"/>
+  
+  <link href="https://b.imtzz.com/"/>
+  <updated>2021-01-04T13:23:39.536Z</updated>
+  <id>https://b.imtzz.com/</id>
+  
+  <author>
+    <name>TZZ</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>127.0.0.1 and 0.0.0.0</title>
+    <link href="https://b.imtzz.com/2021/01/04/127-0-0-1-and-0-0-0-0/"/>
+    <id>https://b.imtzz.com/2021/01/04/127-0-0-1-and-0-0-0-0/</id>
+    <published>2021-01-04T12:57:17.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>今天在服务器测试django项目，直接使用的默认命令 <code>python manage.py runserver 8000</code> 启动的，然后项目就会启动在 127.0.0.1:8000 端口上。此时我想使用 ECS 服务器IP访问8000端口，查看运行情况结果访问失败。本来以为是阿里服务器安全规则导致，我重新更新了规则，放开了8000端口结果开始不行。后来才想到，可能是启动IP的问题，导致外界无法访问。</p><h2 id="127-0-0-1"><a href="#127-0-0-1" class="headerlink" title="127.0.0.1"></a>127.0.0.1</h2><p>所有以127开头的IP均为<strong>回环地址</strong>，即我们在主机上发送给127IP的内容都会被主机自己接收，根本发不出去，同样外界也无法通过此IP访问到自己。当我们的项目启动IP为127.0.0.1:8000，则此IP仅能被当前主机访问，外界无法通过8000端口访问。</p><p>正常的数据会类型下面路径传输：</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">数据包 --&gt; IP层 --&gt; 链路层 --&gt; 外部网络</span><br></pre></td></tr></tbody></table></figure></div><p>但是回环地址的数据无法抵达链路层就被IP层获取，返回当前主机指定端口：</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">数据包 --&gt; IP层 --&gt; |拦截|本机8000端口</span><br></pre></td></tr></tbody></table></figure></div><h2 id="0-0-0-0"><a href="#0-0-0-0" class="headerlink" title="0.0.0.0"></a>0.0.0.0</h2><p>0.0.0.0并不是一个真实的IP地址，它表示本机的所有<strong>IPV4的地址</strong>，监听0.0.0.0的端口，就是监听本机的所有IP的端口。当服务启动在0.0.0.0:8000时，就相当于服务器IP的8000端口启动了此服务，此时外界可以通过服务器IP:8000端口访问启动的项目。</p></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;今天在服务器测试django项目，直接使用的默认命令 &lt;code&gt;python manage.py runserver 8000&lt;/code&gt; 启动的，然后项目就会启动在 127.0.0.1:8000 端口上。此时我想使用 </summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://b.imtzz.com/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="https://b.imtzz.com/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title> Nginx server SSL configuration file reference</title>
+    <link href="https://b.imtzz.com/2020/12/19/Nginx-server-SSL-configuration-file-reference/"/>
+    <id>https://b.imtzz.com/2020/12/19/Nginx-server-SSL-configuration-file-reference/</id>
+    <published>2020-12-18T18:02:13.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>以下配置文件供参考，此配置在当前网站可用。</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">server {</span><br><span class="line">  listen 80;</span><br><span class="line">  # 请求域名</span><br><span class="line">  server_name xxx.com;</span><br><span class="line">  # rewrite 用于将所有http请求自动转换为https</span><br><span class="line">  rewrite ^(.*)$ https://$host$1 permanent;</span><br><span class="line">  root /web;</span><br><span class="line">  location / {</span><br><span class="line">    root /web/public;</span><br><span class="line">    index index.html;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">server {</span><br><span class="line">  # Https默认请求端口</span><br><span class="line">  listen       443 ssl;</span><br><span class="line">  # 请求域名</span><br><span class="line">  server_name xxx.com;</span><br><span class="line"></span><br><span class="line">  location / {</span><br><span class="line">    # 项目根目录</span><br><span class="line">    root /web/public;</span><br><span class="line">    # 请求主页名 会与上面的路径拼接获取对应文件</span><br><span class="line">    index index.html;</span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">  # 证书pem与key文件的位置</span><br><span class="line">  ssl_certificate pem_path;</span><br><span class="line">  ssl_certificate_key key_path;</span><br><span class="line">  ssl_session_timeout 5m;</span><br><span class="line">  # 加密套件类型</span><br><span class="line">  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">  # TLS协议类型</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_prefer_server_ciphers on;</span><br><span class="line"></span><br><span class="line">  error_page 404 /404.html;</span><br><span class="line">  location = /40x.html {</span><br><span class="line">    root /web/html;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  error_page 500 502 503 504 /50x.html;</span><br><span class="line">  location = /50x.html {</span><br><span class="line">    root /web/html;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;以下配置文件供参考，此配置在当前网站可用。&lt;/p&gt;
+&lt;div class=&quot;code-area-wrap&quot;&gt;&lt;div class=&quot;highlight-tools&quot;&gt;&lt;i class=&quot;fa fa-angle-down co</summary>
+      
+    
+    
+    
+    <category term="Nginx" scheme="https://b.imtzz.com/categories/Nginx/"/>
+    
+    
+    <category term="Nginx" scheme="https://b.imtzz.com/tags/Nginx/"/>
+    
+    <category term="HTTPS" scheme="https://b.imtzz.com/tags/HTTPS/"/>
+    
+    <category term="SSL" scheme="https://b.imtzz.com/tags/SSL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx 403 error: directory index of [folder] is forbidden</title>
+    <link href="https://b.imtzz.com/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/"/>
+    <id>https://b.imtzz.com/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/</id>
+    <published>2020-12-18T17:53:56.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>今天对服务器上的Nginx配置SSL证书的时候，写了一个很傻的错误，导致它出现 <code>Nginx 403 error: directory index of [folder] is forbidden</code>这个错误，在日志中显示一下内容：</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2020/12/19 01:50:55 [error] 30312#0: *1 directory index of "/web" is forbidden, client: xxx.xxx.xxx.xxx, server: imtzz.com, request: "GET / HTTP/1.1", host: "imtzz.com"</span><br></pre></td></tr></tbody></table></figure></div><p>显示被拒绝，我们本来以为是文件夹权限的问题，发现修改为777后依旧由此错误，最后发现是nginx的conf文件中 index 后面的index.html （写成了 index.hmtl, 导致找不到主页才会访问被拒绝）写错了🙂 ，心态爆炸。</p></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;今天对服务器上的Nginx配置SSL证书的时候，写了一个很傻的错误，导致它出现 &lt;code&gt;Nginx 403 error: directory index of [folder] is forbidden&lt;/code&gt;这个</summary>
+      
+    
+    
+    
+    <category term="Nginx" scheme="https://b.imtzz.com/categories/Nginx/"/>
+    
+    
+    <category term="Https" scheme="https://b.imtzz.com/tags/Https/"/>
+    
+    <category term="Nginx" scheme="https://b.imtzz.com/tags/Nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>配置Github Actions过程中的一些问题</title>
+    <link href="https://b.imtzz.com/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/"/>
+    <id>https://b.imtzz.com/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/</id>
+    <published>2020-12-18T16:29:52.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><ol><li><p>在Actions中切换分支</p> <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">yml</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight yml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">Codes</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">git</span> <span class="string">clone</span> <span class="string">-b</span> <span class="string">hexo</span> <span class="string">https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding}</span> <span class="string">hexo</span></span><br><span class="line">    <span class="string">cd</span> <span class="string">master</span></span><br><span class="line">    <span class="string">ls</span></span><br><span class="line">  <span class="attr">env:</span></span><br><span class="line">    <span class="attr">Coding:</span> <span class="string">e.coding.net/imtzz/Pages.git</span></span><br></pre></td></tr></tbody></table></figure></div></li></ol><ol start="2"><li><p>如何使用SSH登录远程服务器</p><p>服务器：A</p><p>Action 服务器：B</p><ol><li><p>首先需要获取服务器A的密钥，用于CI服务器B远程免密登录，并且对应的服务器A公钥要加在A的<code>~/.ssh/authorized_keys</code>中。</p><pre><code><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></tbody></table></figure></div></code></pre></li><li><p>在Github Secrets中配置以下几项内容</p><pre><code>SERVER_IP：服务器A的IP地址SERVER_USERNAME：要登陆到服务器A使用的用户名（要与密钥匹配）SERVER_PRIVATE_KEY：服务器A密钥（id_rsa），建议复制的时候直接在文件中CTRL+A，全选粘进去。**\*不要缺少BEGIN和END那两行以及最后的空行，全都要。\***</code></pre></li><li><p>StrictHostKeyChecking配置是关闭公钥检查，会自动接受新的公钥，防止需要输入yes时终端CI处理。</p>  <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">yml</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight yml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Configure</span> <span class="string">SSH</span> </span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">      <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">~/.ssh</span> </span><br><span class="line">      <span class="string">echo</span> <span class="string">"${KEY}"</span> <span class="string">&gt;</span> <span class="string">~/.ssh/deploy.key</span></span><br><span class="line">      <span class="string">chmod</span> <span class="number">600</span> <span class="string">~/.ssh/deploy.key</span></span><br><span class="line">      <span class="string">cat</span> <span class="string">&gt;&gt;</span> <span class="string">~/.ssh/config</span> <span class="string">&lt;&lt;END</span></span><br><span class="line">      <span class="string">Host</span> <span class="string">server</span></span><br><span class="line">        <span class="string">HostName</span> <span class="string">$IP</span></span><br><span class="line">        <span class="string">User</span> <span class="string">$USERNAME</span></span><br><span class="line">        <span class="string">IdentityFile</span> <span class="string">~/.ssh/deploy.key</span></span><br><span class="line">        <span class="string">StrictHostKeyChecking</span> <span class="literal">no</span></span><br><span class="line">      <span class="string">END</span></span><br><span class="line">  <span class="attr">env:</span></span><br><span class="line">      <span class="attr">IP:</span> <span class="string">${{secrets.SERVER_IP}}</span></span><br><span class="line">      <span class="attr">USERNAME:</span> <span class="string">${{secrets.SERVER_USERNAME}}</span></span><br><span class="line">      <span class="attr">KEY:</span> <span class="string">${{secrets.SERVER_PRIVATE_KEY}}</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure></div></li></ol></li></ol><ol start="3"><li><p>解决SSH连接服务器执行命令不能自动终止</p><pre><code>在最后执行服务器脚本的时候发现，虽然执行完了，但是无法自己断开连接，就需要对执行命令进行修改，最后如下。deploy.sh 需要执行的脚本，server是上面config文件中配置的名称，将所有输出导向 /dev/null，即可自动关闭。<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh server &lt; deploy.sh &gt; /dev/null 2&gt;&amp;1</span><br></pre></td></tr></tbody></table></figure></div></code></pre></li></ol><ol start="4"><li>其实中间碰到了不少问题，许多问题解决完就忘记了，以后想起来再写吧。</li></ol></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在Actions中切换分支&lt;/p&gt;
+ &lt;div class=&quot;code-area-wrap&quot;&gt;&lt;div class=&quot;highlight-tools&quot;&gt;&lt;i class=&quot;fa fa-angle-down </summary>
+      
+    
+    
+    
+    <category term="CI/CD" scheme="https://b.imtzz.com/categories/CI-CD/"/>
+    
+    
+    <category term="CI/CD" scheme="https://b.imtzz.com/tags/CI-CD/"/>
+    
+    <category term="Github Actions" scheme="https://b.imtzz.com/tags/Github-Actions/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows10下无法更改新应用的保存位置</title>
+    <link href="https://b.imtzz.com/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/"/>
+    <id>https://b.imtzz.com/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/</id>
+    <published>2020-12-16T14:55:34.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>​        前两天重新安装了Windows，今天正好想要从Windows Store里面安装软件，就想起来要修改一下软件安装位置（不然C盘占用的太多了）。但是发现无法修改，抛出错误代码0x80070002。</p><p>​        试了几个方法都没有用，最终在神奇的知乎找到了解决办法。</p><p>解决办法：</p><p>​        删除想要移动的盘符内（我要修改到D盘，就是D盘内）的<code>WindowsApps</code>,  <code>WpSystem</code>,   <code>WUDownloadCache</code>,  <code>用户同名文件夹</code>，删除可能需要管理权限，WindowsApps如果无法删除的话，建议使用强力删除工具进行删除，然后再去设置里修改就完成了。</p></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;​        前两天重新安装了Windows，今天正好想要从Windows Store里面安装软件，就想起来要修改一下软件安装位置（不然C盘占用的太多了）。但是发现无法修改，抛出错误代码0x80070002。&lt;/p&gt;
+&lt;</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/categories/Windows/"/>
+    
+    <category term="Windows10" scheme="https://b.imtzz.com/categories/Windows/Windows10/"/>
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/tags/Windows/"/>
+    
+    <category term="Windows10" scheme="https://b.imtzz.com/tags/Windows10/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows下迁移User下的用户目录到非系统盘</title>
+    <link href="https://b.imtzz.com/2020/12/15/Windows%E4%B8%8B%E8%BF%81%E7%A7%BBUser%E4%B8%8B%E7%9A%84%E7%94%A8%E6%88%B7%E7%9B%AE%E5%BD%95%E5%88%B0%E9%9D%9E%E7%B3%BB%E7%BB%9F%E7%9B%98/"/>
+    <id>https://b.imtzz.com/2020/12/15/Windows%E4%B8%8B%E8%BF%81%E7%A7%BBUser%E4%B8%8B%E7%9A%84%E7%94%A8%E6%88%B7%E7%9B%AE%E5%BD%95%E5%88%B0%E9%9D%9E%E7%B3%BB%E7%BB%9F%E7%9B%98/</id>
+    <published>2020-12-15T15:49:58.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><ol><li><p>先进入Windows的修复模式，进入修复模式的命令行功能。</p><p>如果能够登录Windows, 按住Shift点击重启,则能够直接进入修复模式.</p><p>如果无法进入Windows界面, (我的主板是ASUS, 目前没找到好的办法可以直接从BIOS进入), 可以在见到ASUS图标后, 按住关机键强制重启, 重复三次, 则可进入.</p></li><li><p>使用diskpart命令查看盘符（😭我的Windows里的盘符与diskpart的不一致,导致我重启了N多次）</p><p>此时CMD一般显示的是X盘, 这是正常的不要惊慌.</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 进入diskpart工具</span></span><br><span class="line">diskpart</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看所有的硬盘</span></span><br><span class="line">list disk</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入系统盘所在的硬盘</span></span><br><span class="line">select disk 2 </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看当前硬盘的磁盘盘符 C: D:</span></span><br><span class="line">LIST VOLUME</span><br></pre></td></tr></tbody></table></figure></div></li><li><p>根据查看的盘符编写命令</p><p>想要将C:\Users\XXX 迁移到 D:\Users\XXX</p><p>在diskpart中查看到的盘符分别为 G: 和 H: , 但是这里有个问题要注意, 等下G:\Users设置软链接的时候依旧要链到D:\Users , <strong>这点很重要(因为我重启了好几次)</strong>.</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> robocopy 文件复制   /E 复制子目录(包括空目录) /COPYALL 复制所有文件信息  /XJ 排除接合点(I don<span class="string">'t know what this is.) /XD排除某个文件</span></span></span><br><span class="line">robocopy "G:\Users" "D:\Users" /E /COPYALL /XJ /XD "G:\Users\Administrator"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果上一步复制失败,说有某个文件夹正在使用就可以使用/XD跳过对应的文件夹</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果仅迁移当前用户,则可以仅复制 G:\Users\userName 目录 到 D:\Users\userName</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除G:\Users目录, 应为删除后才能创建软连接</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rmdir 删除文件夹 /S 递归删除 /Q 安静模式,不会确认是否需要删除</span></span><br><span class="line">rmdir "C:\Users" /S /Q</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上两步成功,就基本成功了</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> mklink 创建软链接 /J 链接类型为目录链接</span></span><br><span class="line">mklink "G:\Users" "D:\Users" /J</span><br></pre></td></tr></tbody></table></figure></div></li><li><p>执行完成以上步骤后, 开机确认, 打开C:\Users 确认是否与 D:\Users 内容不同, 如果不相同可能就是mklink链接目录不对(即diskpart中的盘符与Windows开机后的盘符不一致, 按照第三步重新编写命令执行).</p></li></ol></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;先进入Windows的修复模式，进入修复模式的命令行功能。&lt;/p&gt;
+&lt;p&gt;如果能够登录Windows, 按住Shift点击重启,则能够直接进入修复模式.&lt;/p&gt;
+&lt;p&gt;如果无法进入Windows界面, (我</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/categories/Windows/"/>
+    
+    <category term="Windows10" scheme="https://b.imtzz.com/categories/Windows/Windows10/"/>
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/tags/Windows/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Typero自动上传图片到Tencent COS</title>
+    <link href="https://b.imtzz.com/2020/11/29/Typero%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%88%B0Tencent-Cos/"/>
+    <id>https://b.imtzz.com/2020/11/29/Typero%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%88%B0Tencent-Cos/</id>
+    <published>2020-11-29T12:50:21.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><h2 id="Python实现上传脚本"><a href="#Python实现上传脚本" class="headerlink" title="Python实现上传脚本"></a>Python实现上传脚本</h2><ol><li><p>我使用的是腾讯的COS所以直接去官网查找对应的SDK，我是参考以下接口写的，实现也比较简单。</p><p><a href="https://cloud.tencent.com/document/product/436/35151#.E9.AB.98.E7.BA.A7.E6.8E.A5.E5.8F.A3.EF.BC.88.E6.8E.A8.E8.8D.90.EF.BC.89">Python SDK 高级接口</a></p></li><li><p>需要使脚本符合Typero的规范。</p><blockquote><p>You could config a custom command to upload images, using tools that is not listed in above options, or event write your own tools / scripts. Typora will append all images that needs to be uploaded after the custom command you filled.</p><p>Then, Typora will fetch image urls from the last N lines of the standard output of your custom command. (N is the number of images to upload).</p><p>For example, if you write a tool <code>upload-image.sh</code>, then you can input <code>[some path]/upload-image.sh</code> in the command filed. Typora will call <code>[some path]/upload-image.sh "image-path-1" "image-path-2"</code> to upload two images located in <code>image-path-1</code> and <code>image-path-2</code>. Then the command may return something like:</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Upload Success:</span><br><span class="line">http://remote-image-1.png</span><br><span class="line">http://remote-image-2.png</span><br></pre></td></tr></tbody></table></figure></div><p>Then Typora will get the two remote image url from the output, and replace the original local images used in the Markdown document.</p><p>You could click the “Test Uploader” button to verify your custom commands.</p></blockquote><p>   上面内容是Typero的文档中描述的，意思就是需要调用上传命令的时候从命令行中获取图片地址，上传完成后返回对应的在线图片地址。</p>   <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">sys.argv</span><br></pre></td></tr></tbody></table></figure></div><p>可以通过以上方法获取写入的命令行参数，第一位是py文件名，从第二个开始为传输参数。</p></li><li><p>综合以上内容, 以下就是脚本内容了。为了保护密钥的安装，使用了读取配置文件的方法实现密钥的写入。</p><p><a href="https://github.com/tzzs/qcloud_cos/blob/master/upload_for_md.py">https://github.com/tzzs/qcloud_cos/blob/master/upload_for_md.py</a></p></li></ol><h2 id="设置Typero"><a href="#设置Typero" class="headerlink" title="设置Typero"></a>设置Typero</h2><p>偏好设置 &gt; 图像 &gt; 上传服务设定 &gt; 上传服务:Custom Command &gt; 自定义命令输入以下命令</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">activate WEB &amp;&amp; python E:/upload_for_md.py</span><br></pre></td></tr></tbody></table></figure></div><blockquote><p>注：由于我的环境下存在多个python，所以先使用conda激活指定的python环境，然后进行脚本的调用。脚本需要写绝对路径</p></blockquote><p>其它配置只勾选了这个，其它为手动上传（默认），防止放错图片就直接上传了。</p><ul><li><input checked="" disabled="" type="checkbox"> 对本地位置的图片启用上述规则</li></ul></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;Python实现上传脚本&quot;&gt;&lt;a href=&quot;#Python实现上传脚本&quot; class=&quot;headerlink&quot; title=&quot;Python实现上传脚本&quot;&gt;&lt;/a&gt;Python实现上传脚本&lt;/h2&gt;&lt;ol&gt;
+&lt;li</summary>
+      
+    
+    
+    
+    <category term="Python" scheme="https://b.imtzz.com/categories/Python/"/>
+    
+    
+    <category term="Python" scheme="https://b.imtzz.com/tags/Python/"/>
+    
+    <category term="Typora" scheme="https://b.imtzz.com/tags/Typora/"/>
+    
+    <category term="对象存储" scheme="https://b.imtzz.com/tags/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Warning: Accessing non-existent property &#39;lineno&#39; of module exports inside circular dependency</title>
+    <link href="https://b.imtzz.com/2020/09/01/Warning-Accessing-non-existent-property-lineno-of-module-exports-inside-circular-dependency/"/>
+    <id>https://b.imtzz.com/2020/09/01/Warning-Accessing-non-existent-property-lineno-of-module-exports-inside-circular-dependency/</id>
+    <published>2020-08-31T16:01:28.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>这几天更新了Blog，但是持续没有将版本发布出去，本来以为是缓存的问题等几个小时就好了，但是今天仍然无法访问。</p><p>我本地执行 <code>hexo server</code> 发现是能够正常访问的，这应该就是Travis的问题了。</p><p>于是我就去GitHub仓库上看Index.html的内容，发现是空的，此时就能够断定是Hexo编译静态内容出错了，然后去看Travis的持续集成日志，发现了一下错误。</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo clean</span></span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'lineno' of module exports inside circular dependency</span><br><span class="line">(Use `node --trace-warnings ...` to show where the warning was created)</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'column' of module exports inside circular dependency</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'filename' of module exports inside circular dependency</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'lineno' of module exports inside circular dependency</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'column' of module exports inside circular dependency</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'filename' of module exports inside circular dependency</span><br><span class="line">INFO  Deleted database.</span><br></pre></td></tr></tbody></table></figure></div><p>经过查看GitHub上Hexo的issue得知是由于node.js的版本过高导致的，因此我把travis中node.js的版本由 stable 修改为 12 ，至此问题完美解决。</p><p><strong>问题原因</strong></p><p>此问题是由于在Node.js中使用了stylus，同样Hexo基于Node.js实现，因此在stylus中存在循环依赖的情况下hexo也会收到影响，导致命令执行失败。</p><p>此问题已经在新版本中的stylus中修复，不知为何Node.js的Stable版本仍未更新。</p><p><a href="https://github.com/stylus/stylus/pull/2538">stylus pull 代码修复链接</a></p></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;这几天更新了Blog，但是持续没有将版本发布出去，本来以为是缓存的问题等几个小时就好了，但是今天仍然无法访问。&lt;/p&gt;
+&lt;p&gt;我本地执行 &lt;code&gt;hexo server&lt;/code&gt; 发现是能够正常访问的，这应该就是Tr</summary>
+      
+    
+    
+    
+    <category term="Blog" scheme="https://b.imtzz.com/categories/Blog/"/>
+    
+    <category term="Hexo" scheme="https://b.imtzz.com/categories/Blog/Hexo/"/>
+    
+    
+    <category term="Hexo" scheme="https://b.imtzz.com/tags/Hexo/"/>
+    
+    <category term="Node.js" scheme="https://b.imtzz.com/tags/Node-js/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>[LeetCode] single number</title>
+    <link href="https://b.imtzz.com/2020/08/31/LeetCode-single-number/"/>
+    <id>https://b.imtzz.com/2020/08/31/LeetCode-single-number/</id>
+    <published>2020-08-31T15:16:19.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p><a href="https://leetcode-cn.com/problems/single-number/">Single Number</a></p><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p><p><strong>说明</strong></p><p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p><p><strong>示例 1:</strong></p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">输出: <span class="number">1</span></span><br></pre></td></tr></tbody></table></figure></div><p><strong>示例 2:</strong></p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [<span class="number">4</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">输出: <span class="number">4</span></span><br></pre></td></tr></tbody></table></figure></div><p><strong>解题</strong></p><ol><li>由于每个相同的元素都会出现两次，又因为两个相同的元素的异或为0。 a^a = 0</li><li>并且异或存在交换律，因此 a^b^a = b</li><li>因此本题中直接将所有元素进行异或即可。</li></ol><p><strong>代码</strong></p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="keyword">int</span>* nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">    {</span><br><span class="line">        res ^= nums[i];</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://leetcode-cn.com/problems/single-number/&quot;&gt;Single Number&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;给定一个非空整数数组，除了某个元素只出现一次以外，其余每个</summary>
+      
+    
+    
+    
+    <category term="LeetCode" scheme="https://b.imtzz.com/categories/LeetCode/"/>
+    
+    
+    <category term="LeetCode" scheme="https://b.imtzz.com/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言 auto</title>
+    <link href="https://b.imtzz.com/2020/08/26/C%E8%AF%AD%E8%A8%80-auto/"/>
+    <id>https://b.imtzz.com/2020/08/26/C%E8%AF%AD%E8%A8%80-auto/</id>
+    <published>2020-08-26T14:19:04.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><blockquote><p>auto 被解释为一个自动存储变量的关键字，也就是申明一块临时的变量内存。</p></blockquote><p>auto 这个关键字可能平时不会用到，因为在C语言中变量定义的时候默认修饰符就是auto。</p><p>auto关键字声明一个变量为自动变量，并且没有被声明为其它类型的变量都是自动变量。</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">auto</span> <span class="keyword">int</span> b = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">auto</span> c ;</span><br><span class="line">    c = a + b;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div><p>上面代码中的a和b都是自动变量，只是b省略了auto。同时还可以使用auto声明一个变量，如果不增加类型修饰符，则默认为int类型，即上面的变量c为int类型的值。</p><h2 id="C-C"><a href="#C-C" class="headerlink" title="C/C++"></a>C/C++</h2><p>在C++中 auto是不一样的，在C++中auto关键字是类型说明符，通过变量的初始值或者表达式中参与运算的数据类型来推断变量的类型。由于编译器需要推断变量或表达式的类型，所以，在C++中auto定义的变量必须初始化。</p></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;blockquote&gt;
+&lt;p&gt;auto 被解释为一个自动存储变量的关键字，也就是申明一块临时的变量内存。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;auto 这个关键字可能平时不会用到，因为在C语言中变量定义的时候默认修饰符就是</summary>
+      
+    
+    
+    
+    <category term="C" scheme="https://b.imtzz.com/categories/C/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>String to integer atoi</title>
+    <link href="https://b.imtzz.com/2020/04/03/String-to-integer-atoi/"/>
+    <id>https://b.imtzz.com/2020/04/03/String-to-integer-atoi/</id>
+    <published>2020-04-02T18:24:10.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>C语言解法 100%/100%， 欢迎访问我的Github<a href="https://github.com/tzzs/LeetCode-CN">https://github.com/tzzs/LeetCode-CN</a> 。</p><ol><li>找到整数起始位置，即先去掉前面的空格，找到非空格有效字符，标志位置1，即整数计算开始</li><li>开始进行数字的求和，从读取到的第一个数字开始求和，到下一位的时候即为之前的求和<em>10 加上 当前值（例如前面值为1，当前位为5，则目前和为1</em>10+5=15，下一位为3，则求和为15*10+3，153）</li><li>在C语言中将字符转换为int可以直接通过ASCii码进行计算，字符0的ASCii码为48，一直到字符9的ASCii码为57，直接使用字符减去48即为字符对应的整数。</li><li>最终在求和过程中需要判断是否超出最大值，当你计算完可能已经越界，所以需要先判断在进行计算，即进行一个你想计算：先减去当前值，再除以10，判断当前值是否大于计算结果，如果大于则越界。</li><li>最终返回计算结果即可。<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">myAtoi</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>, sflag = <span class="number">0</span>, pos = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;; i++)</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">char</span> s = str[i];</span><br><span class="line">        <span class="comment">// printf("[%c]", s);</span></span><br><span class="line">        <span class="comment">// 未到起始字符</span></span><br><span class="line">        <span class="keyword">if</span> (!sflag) {</span><br><span class="line">            <span class="keyword">if</span> (s == <span class="number">32</span>)</span><br><span class="line">            {</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (s == <span class="string">'+'</span>)</span><br><span class="line">            {</span><br><span class="line">                sflag = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (s == <span class="string">'-'</span>)</span><br><span class="line">            {</span><br><span class="line">                sflag = <span class="number">1</span>;</span><br><span class="line">                pos = <span class="number">-1</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 计算当前字符值并加上res*10</span></span><br><span class="line">        <span class="keyword">if</span> (s &gt;= <span class="number">48</span> &amp;&amp; s &lt;= <span class="number">57</span>)</span><br><span class="line">        {</span><br><span class="line">            sflag = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (pos &lt; <span class="number">0</span>)</span><br><span class="line">            {</span><br><span class="line">                <span class="keyword">if</span> (res &gt;= (INT_MIN + (s - <span class="number">48</span>)) / <span class="number">10</span>)</span><br><span class="line">                {</span><br><span class="line">                    res = res * <span class="number">10</span> - (s - <span class="number">48</span>);</span><br><span class="line">                }</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                {</span><br><span class="line">                    <span class="keyword">return</span> INT_MIN;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            {</span><br><span class="line">                <span class="keyword">if</span> (res &lt;= (INT_MAX - (s - <span class="number">48</span>)) / <span class="number">10</span>)</span><br><span class="line">                {</span><br><span class="line">                    res = res * <span class="number">10</span> + (s - <span class="number">48</span>);</span><br><span class="line">                }</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                {</span><br><span class="line">                    <span class="keyword">return</span> INT_MAX;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        {</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure></div></li></ol></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;C语言解法 100%/100%， 欢迎访问我的Github&lt;a href=&quot;https://github.com/tzzs/LeetCode-CN&quot;&gt;https://github.com/tzzs/LeetCode-CN&lt;/</summary>
+      
+    
+    
+    
+    <category term="C" scheme="https://b.imtzz.com/categories/C/"/>
+    
+    <category term="Algorithm" scheme="https://b.imtzz.com/categories/Algorithm/"/>
+    
+    
+    <category term="LeetCode CN" scheme="https://b.imtzz.com/tags/LeetCode-CN/"/>
+    
+    <category term="Online Judge" scheme="https://b.imtzz.com/tags/Online-Judge/"/>
+    
+    <category term="C" scheme="https://b.imtzz.com/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo 构建静态页面文件时，index.html等文件中为空</title>
+    <link href="https://b.imtzz.com/2020/03/04/Hexo-%E6%9E%84%E5%BB%BA%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E6%96%87%E4%BB%B6%E6%97%B6%EF%BC%8Cindex-html%E7%AD%89%E6%96%87%E4%BB%B6%E4%B8%AD%E4%B8%BA%E7%A9%BA/"/>
+    <id>https://b.imtzz.com/2020/03/04/Hexo-%E6%9E%84%E5%BB%BA%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E6%96%87%E4%BB%B6%E6%97%B6%EF%BC%8Cindex-html%E7%AD%89%E6%96%87%E4%BB%B6%E4%B8%AD%E4%B8%BA%E7%A9%BA/</id>
+    <published>2020-03-03T18:17:10.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><ol><li><p>增加了Pages的自动化构建后，发现页面访问不了了，以为和上次一样是本地的CDN抽风导致无法访问的。后来F12看了一下页面内容只有一行，也以为是加载的问题。去代码仓库看才发现真的只有懒加载的一行js加载代码。</p></li><li><p>后来以为是Travis环境的问题，因为我在本地测试可以正常编译构建成功。</p></li><li><p>在网上看到可能是由于nodejs package依赖的问题，使用命令</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm ls --depth 0</span><br></pre></td></tr></tbody></table></figure></div><p>并且让我真的找到了依赖不存在的问题，然而问题并没有这么简单 ￣へ￣, 安装了所有依赖项依旧有此问题.</p></li><li><p>在一个博客中看到他也出现了此问题,并且最终是由于thems为空导致的,我突然就想起来thems下面的Butterfly文件夹下的所有内容被Git识别成了一个大的文件,去远程仓库看果然是空的.</p></li><li><p>下面就是想办法让Git识别它, 后来发现主要原因就是Butterfly也是一个Git库, 当上层的Git认为它是一个仓库是就把他识别为了一整个文件.</p><p>解决办法就是将Butterfly下的.git文件删除掉,然后Git重新添加整个文件夹.</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rm --cache themes/Butterfly</span><br><span class="line">git add themes/Butterfly</span><br></pre></td></tr></tbody></table></figure></div><p>然后提交本次修改, 等待Travis自动构建部署完成后就能看到界面了.</p></li></ol><p>注: 可能由于浏览器缓存导致你看到的还是之前的空白页,可以按F12,将Network-Disable cache选中,这样它就不会从本机读取缓存了.</p></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;增加了Pages的自动化构建后，发现页面访问不了了，以为和上次一样是本地的CDN抽风导致无法访问的。后来F12看了一下页面内容只有一行，也以为是加载的问题。去代码仓库看才发现真的只有懒加载的一行js加载代码</summary>
+      
+    
+    
+    
+    <category term="Git" scheme="https://b.imtzz.com/categories/Git/"/>
+    
+    <category term="Blog" scheme="https://b.imtzz.com/categories/Blog/"/>
+    
+    <category term="Hexo" scheme="https://b.imtzz.com/categories/Blog/Hexo/"/>
+    
+    
+    <category term="Git" scheme="https://b.imtzz.com/tags/Git/"/>
+    
+    <category term="Hexo" scheme="https://b.imtzz.com/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows 增加多个可用SSH公钥</title>
+    <link href="https://b.imtzz.com/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/"/>
+    <id>https://b.imtzz.com/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/</id>
+    <published>2020-02-23T15:40:46.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>之前由于使用Github Pages作为博客地址导致国内访问速度过慢，增加了腾讯云CDN依旧有大量数据缓存失败，所以更换了国内Coding作为博客镜像（之前用过Gitee Pages，但是普通用户无法自定义域名），在Hexo增加Coding仓库配置时，无法识别新增的SSH公钥，显示 <code>Permission denied (publickey)</code>, 看了一下Coding的官方论坛，他们根本没有解决办法😂，以下为出现问题的过程以及找到的解决办法。</p><h1 id="1-新增公钥"><a href="#1-新增公钥" class="headerlink" title="1. 新增公钥"></a>1. 新增公钥</h1><p>想要通过SSH访问Coding，需要先新增一个公钥，同时在Coding端增加公钥配置</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ssh-agent -t rsa -C <span class="string">"your.email@example.com"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Creates a new ssh key, using the provided email as a label</span></span><br><span class="line"><span class="comment"># Generating public/private rsa key pair.</span></span><br><span class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/Users/you/.ssh/id_rsa): [Press enter]  // 推荐使用默认地址，如果以前的有用，就改为新的名字例如 id_ras_Coding_email@example.com 这个文件路径后面会用到</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):   //此处点击 Enter 键即可，也可以填写密码，填写密码后每次使用 SSH 方式推送代码时都会要求输入密码，由于这个 Key 也不是用于军事目的，所以也无需设置密码。</span><br></pre></td></tr></tbody></table></figure></div><p>然后将生成的<code>.pub</code>公钥添加到Coding的公钥配置中，使用命令测试连接是否成功</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@e.coding.net</span><br></pre></td></tr></tbody></table></figure></div><p>输入 <code>yes</code> 允许新增host，如果显示已经通过则正常，但是我在验证过程中依旧显示</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Permission denied (publickey)</span><br></pre></td></tr></tbody></table></figure></div><h1 id="2-发现解决问题的方法"><a href="#2-发现解决问题的方法" class="headerlink" title="2. 发现解决问题的方法"></a>2. 发现解决问题的方法</h1><p>首先解释一下相关名词</p><h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p>全称 Secure Shell ，一个允许两台电脑之间通过安全的连接进行数据交换的网络协议，通过加密博爱挣了数据库的保密性和完整性。SSH采用公钥加密技术来验证远程主机，以及允许远程主机验证用户。</p><h2 id="ssh-keygen"><a href="#ssh-keygen" class="headerlink" title="ssh-keygen"></a>ssh-keygen</h2><p>用于为SSH生成、管理和转换认证密钥，支持RSA和DSA两种认证密钥，生成密钥就是使用的此命令。</p><h2 id="ssh-agent"><a href="#ssh-agent" class="headerlink" title="ssh-agent"></a>ssh-agent</h2><p>一种用于保存公钥身份验证所使用的私钥的程序，如果私钥交给ssh-agent保管，其它程序需要验证身份的时候可以将验证申请交给ssh-agent来完成整个认证过程。</p><hr><p>同时ssh-agent也可能带来问题，在Windows下尝试使用SSH进行身份验证时就可能出现<code>Permission denied (publickey)</code> 的问题，<strong>主要可能的原因就是公钥未加载到ssh-agent中</strong>，<code>ssh-add -l</code>可以查看相应的ssh key是否被加载，这就到了下一个问题，ssh-add命令无法使用。</p><h1 id="3-发现ssh-add无法使用"><a href="#3-发现ssh-add无法使用" class="headerlink" title="3. 发现ssh-add无法使用"></a>3. 发现ssh-add无法使用</h1><p>输入命令</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">sh</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-add -l</span><br></pre></td></tr></tbody></table></figure></div><p>就出现了 <code> Error connecting to agent: No such file or directory</code> 的问题。</p><p>这是由于Windows下的服务<strong>OpenSSH Authentication Agent</strong> 未启动的原因，</p><ol><li>Windows下键入 WIN+R 输入 services.msc</li><li>找到<strong>OpenSSH Authentication Agent</strong>服务，将启动类型修改为 <strong>自动</strong> ，同时启动此服务。</li></ol><p>此时 <code>ssh-add </code>命令就能够使用了。</p><h1 id="4-将Coding的ssh-key添加到ssh-agent下"><a href="#4-将Coding的ssh-key添加到ssh-agent下" class="headerlink" title="4. 将Coding的ssh key添加到ssh-agent下"></a>4. 将Coding的ssh key添加到ssh-agent下</h1><p>使用以下命令添加ssh key到ssh-agent下</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-add /Users/you/.ssh/id_ras_Coding_email@example.com  <span class="comment"># 这就是上面生成ssh key时写的地址</span></span><br></pre></td></tr></tbody></table></figure></div><p>此时再通过 <code>ssh-add -l</code> 查看ssh-agent中管理的ssh key就有了新增的key。</p><h1 id="5-测试Coding"><a href="#5-测试Coding" class="headerlink" title="5. 测试Coding"></a>5. 测试Coding</h1><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@e.coding.net</span><br></pre></td></tr></tbody></table></figure></div><p>此时就能验证成功了</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Warning: Permanently added <span class="string">'e.coding.net,(RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">Coding 提示: Hello Frank, You'</span>ve connected to Coding.net via SSH. This is a personal key.</span><br><span class="line">Frank，你好，你已经通过 SSH 协议认证 Coding.net 服务，这是一个个人公钥.</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;之前由于使用Github Pages作为博客地址导致国内访问速度过慢，增加了腾讯云CDN依旧有大量数据缓存失败，所以更换了国内Coding作为博客镜像（之前用过Gitee Pages，但是普通用户无法自定义域名），在Hexo</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/categories/Windows/"/>
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/tags/Windows/"/>
+    
+    <category term="SSH" scheme="https://b.imtzz.com/tags/SSH/"/>
+    
+    <category term="Coding" scheme="https://b.imtzz.com/tags/Coding/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JDK8 环境下生成WebService Client的问题</title>
+    <link href="https://b.imtzz.com/2020/02/10/JDK8-%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%94%9F%E6%88%90WebService-Client%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>https://b.imtzz.com/2020/02/10/JDK8-%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%94%9F%E6%88%90WebService-Client%E7%9A%84%E9%97%AE%E9%A2%98/</id>
+    <published>2020-02-10T03:20:53.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>在学习WebService的过程中，用JAVA实现了WebService。但是在使用IDEA生成WebService Client的时候出现了错误。</p><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>JDK：openjdk version “1.8.0_41”</p><p>IDEA：IntelliJ IDEA 2019.3.2 (Ultimate Edition)</p><p>SYSTEM：Windows 10</p><h2 id="错误信息"><a href="#错误信息" class="headerlink" title="错误信息"></a>错误信息</h2><blockquote><p>java.lang.AssertionError: org.xml.sax.SAXParseException; systemId: jar:file:/path/to/glassfish/modules/jaxb-osgi.jar!/com/sun/tools/xjc/reader/xmlschema/bindinfo/binding.xsd; lineNumber: 52; columnNumber: 88; schema_reference: Failed to read schema document ‘<strong>xjc.xsd</strong>‘, because ‘file’ access is not allowed due to restriction set by the <strong>accessExternalSchema</strong> property.</p></blockquote><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>​        错误信息中显示由于 accessExternalSchema 属性设置的限制而不允许 ‘file’ 访问，所以导致读取方案文档 ’xjc.xsd’ 失败。</p><p>​        在搜索解决方法的过程中，发现 jaxb-xjc 在 JDK8 下存在此BUG.<a href="https://bugs.openjdk.java.net/browse/JDK-8020999?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel">xjc fails with permission exception in JDK 8 b98,b99 even if -disableXmlSecurity is set</a> 这是在 openjdk 的 JDK Bug System 提出的bug，并且显示官方已经修复此问题，但不知为何我新下载的Java版本还是有此问题。</p><p>​        在XML解析器初始化之前，JDK会首先搜索系统的porperties配置文件寻找解析器的配置项，如果没有则会搜索<code>$JAVA_HOME/jre/lib</code> (Windows下为 <code>%JAVA_HOME%/jre/lib</code> ) 路径下的 <code>jaxp.properties</code> 文件，如果还没有就会在classpath上的 .jar 包中寻找，如果仍然没有则使用默认配置。</p><p>​    对于此问题我们需要强行修改 accessExternalSchema 的属性设置，以下为问题的解决方案，在<code>$JAVA_HOME/jre/lib</code> (Windows下为 <code>%JAVA_HOME%/jre/lib</code> ) 路径下的<code>jaxp.properties</code>文件(不存在则新建)中新增一行：</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">properties</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight properties"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">javax.xml.accessExternalSchema</span> = <span class="string">all</span></span><br></pre></td></tr></tbody></table></figure></div><p>保存之后，重新去IDEA生成WebService Client即可成功。</p><h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><h3 id="JAXB"><a href="#JAXB" class="headerlink" title="JAXB"></a>JAXB</h3><p>​        Java Architecture for XML Binding，简称JAXB，允许Java开发人员将Java类映射为XML表达方式。JAXB提供两种主要特性：将一个Java对象序列化为XML，以及方向操作，将XML解析成Java对象。</p><h3 id="xjc"><a href="#xjc" class="headerlink" title="xjc"></a>xjc</h3><p>​        XML Java Complier，XML Java编译器，是JAXB的一部分，可以将XML模式或其它类型模式文件转换为Java类。其中JAXB的schemagen 工具与其作用相反，能够执行 xjc 的反向操作，通过一组标注的Java类创建一个XML模式。</p></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;在学习WebService的过程中，用JAVA实现了WebService。但是在使用IDEA生成WebService Client的时候出现了错误。&lt;/p&gt;
+&lt;h2 id=&quot;环境&quot;&gt;&lt;a href=&quot;#环境&quot; class=&quot;</summary>
+      
+    
+    
+    
+    <category term="Java" scheme="https://b.imtzz.com/categories/Java/"/>
+    
+    <category term="WebService" scheme="https://b.imtzz.com/categories/Java/WebService/"/>
+    
+    
+    <category term="JDK8" scheme="https://b.imtzz.com/tags/JDK8/"/>
+    
+    <category term="WebService" scheme="https://b.imtzz.com/tags/WebService/"/>
+    
+    <category term="IDEA" scheme="https://b.imtzz.com/tags/IDEA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>删除电脑文件夹中右键菜单-自定义文件夹选项</title>
+    <link href="https://b.imtzz.com/2019/12/13/%E5%88%A0%E9%99%A4%E7%94%B5%E8%84%91%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E5%A4%B9%E9%80%89%E9%A1%B9/"/>
+    <id>https://b.imtzz.com/2019/12/13/%E5%88%A0%E9%99%A4%E7%94%B5%E8%84%91%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E5%A4%B9%E9%80%89%E9%A1%B9/</id>
+    <published>2019-12-12T16:26:49.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><ol><li>WIN+R 输入 regedit 打开注册表</li><li>找到一下路径 <code>计算机\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer</code></li><li>右键新建DWORD<ul><li>数值名称：NoCustomizeWebView</li><li>数值数据：1</li><li>基数：十六进制</li></ul></li><li>保存，在任务管理器中找到 Windows资源管理器，右键-重新启动。</li></ol></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;ol&gt;
+&lt;li&gt;WIN+R 输入 regedit 打开注册表&lt;/li&gt;
+&lt;li&gt;找到一下路径 &lt;code&gt;计算机\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVers</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/categories/Windows/"/>
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/tags/Windows/"/>
+    
+    <category term="注册表" scheme="https://b.imtzz.com/tags/%E6%B3%A8%E5%86%8C%E8%A1%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Windows 10 启动项注册表位置</title>
+    <link href="https://b.imtzz.com/2019/12/13/Windows-10-%E5%90%AF%E5%8A%A8%E9%A1%B9%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BD%8D%E7%BD%AE/"/>
+    <id>https://b.imtzz.com/2019/12/13/Windows-10-%E5%90%AF%E5%8A%A8%E9%A1%B9%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BD%8D%E7%BD%AE/</id>
+    <published>2019-12-12T16:07:17.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><ol><li>WIN + R 输入 regedit 打开注册表</li><li>地址栏输入：<code>计算机\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</code></li></ol></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;ol&gt;
+&lt;li&gt;WIN + R 输入 regedit 打开注册表&lt;/li&gt;
+&lt;li&gt;地址栏输入：&lt;code&gt;计算机\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVers</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/categories/Windows/"/>
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/tags/Windows/"/>
+    
+    <category term="注册表" scheme="https://b.imtzz.com/tags/%E6%B3%A8%E5%86%8C%E8%A1%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>删除电脑文件夹中右键菜单-授予访问权限选项</title>
+    <link href="https://b.imtzz.com/2019/12/13/%E5%88%A0%E9%99%A4%E7%94%B5%E8%84%91%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95-%E6%8E%88%E4%BA%88%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E9%80%89%E9%A1%B9/"/>
+    <id>https://b.imtzz.com/2019/12/13/%E5%88%A0%E9%99%A4%E7%94%B5%E8%84%91%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95-%E6%8E%88%E4%BA%88%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E9%80%89%E9%A1%B9/</id>
+    <published>2019-12-12T16:06:08.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><h2 id="删除电脑文件夹中右键菜单-授予访问权限-选项"><a href="#删除电脑文件夹中右键菜单-授予访问权限-选项" class="headerlink" title="删除电脑文件夹中右键菜单-授予访问权限 选项"></a>删除电脑文件夹中右键菜单-授予访问权限 选项</h2><ol><li>WIN+R 输入 regedit 打开注册表</li><li>找到一下路径  <code>计算机\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions</code></li><li>在左侧菜单栏点击Shell Extensions</li><li>右键Shell Extensions - 新建 - 项 ，名称为 <code>Blocked</code> </li><li>左侧菜单栏点击Blocked，在右侧空白地区 右键 - 新建 - 字符串值<ul><li>数据名称为：<code>{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6}</code></li><li>数值数据空着即可</li></ul></li><li>保存，在任务管理器中找到 Windows资源管理器，右键-重新启动。</li></ol></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;删除电脑文件夹中右键菜单-授予访问权限-选项&quot;&gt;&lt;a href=&quot;#删除电脑文件夹中右键菜单-授予访问权限-选项&quot; class=&quot;headerlink&quot; title=&quot;删除电脑文件夹中右键菜单-授予访问权限 选项&quot;</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/categories/Windows/"/>
+    
+    
+    <category term="Windows" scheme="https://b.imtzz.com/tags/Windows/"/>
+    
+    <category term="右键菜单" scheme="https://b.imtzz.com/tags/%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SSH连接WSL</title>
+    <link href="https://b.imtzz.com/2019/12/13/SSH%E8%BF%9E%E6%8E%A5WSL/"/>
+    <id>https://b.imtzz.com/2019/12/13/SSH%E8%BF%9E%E6%8E%A5WSL/</id>
+    <published>2019-12-12T16:02:52.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><h2 id="重装-openssh-server"><a href="#重装-openssh-server" class="headerlink" title="重装 openssh-server"></a>重装 openssh-server</h2><p>😭 之前用自带的 ssh 进行连接，发现根本连接不上，所以干脆直接进行重装</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove openssh-server</span><br><span class="line">sudo apt-get install openssh-server</span><br></pre></td></tr></tbody></table></figure></div><h2 id="修改-sshd-config-配置文件"><a href="#修改-sshd-config-配置文件" class="headerlink" title="修改 sshd_config 配置文件"></a>修改 sshd_config 配置文件</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line">在文件中使用 /PasswordAuthentication</span><br><span class="line">将搜索到的这行取消注释 键盘输入i 进入insert模式，删除 # 即可</span><br></pre></td></tr></tbody></table></figure></div><h2 id="重启-ssh-服务"><a href="#重启-ssh-服务" class="headerlink" title="重启 ssh 服务"></a>重启 ssh 服务</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service ssh restart</span><br></pre></td></tr></tbody></table></figure></div><h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><p>ssh 工具中连接配置</p><p>host: 127.0.0.1</p><p>port: 22</p><p>或者直接使用命令行</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh user@127.0.0.1</span><br></pre></td></tr></tbody></table></figure></div><h2 id="user为WSL中用户名，然后回车，如果第一次连接会有提示，输入yes，然后输入密码即可"><a href="#user为WSL中用户名，然后回车，如果第一次连接会有提示，输入yes，然后输入密码即可" class="headerlink" title="user为WSL中用户名，然后回车，如果第一次连接会有提示，输入yes，然后输入密码即可"></a>user为WSL中用户名，然后回车，如果第一次连接会有提示，输入yes，然后输入密码即可</h2></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;重装-openssh-server&quot;&gt;&lt;a href=&quot;#重装-openssh-server&quot; class=&quot;headerlink&quot; title=&quot;重装 openssh-server&quot;&gt;&lt;/a&gt;重装 openssh</summary>
+      
+    
+    
+    
+    <category term="WSL" scheme="https://b.imtzz.com/categories/WSL/"/>
+    
+    
+    <category term="Linux" scheme="https://b.imtzz.com/tags/Linux/"/>
+    
+    <category term="WSL" scheme="https://b.imtzz.com/tags/WSL/"/>
+    
+    <category term="Windows" scheme="https://b.imtzz.com/tags/Windows/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Ubuntu 设置消失</title>
+    <link href="https://b.imtzz.com/2019/08/18/Ubuntu-%E8%AE%BE%E7%BD%AE%E6%B6%88%E5%A4%B1/"/>
+    <id>https://b.imtzz.com/2019/08/18/Ubuntu-%E8%AE%BE%E7%BD%AE%E6%B6%88%E5%A4%B1/</id>
+    <published>2019-08-17T19:19:12.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>在之前由于空间不足，无法加载桌面时，我删除了自带软件thunder bird,后来再次进入系统时，发现系统中心的设置消失了。</p><p>可能是卸载软件时，同时将相关依赖删除了，导致设置丢失。</p><p>以下为解决方法，重新进行桌面的安装</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install ubuntu-desktop</span><br></pre></td></tr></tbody></table></figure></div><p>安装完成即可修复。</p></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;在之前由于空间不足，无法加载桌面时，我删除了自带软件thunder bird,后来再次进入系统时，发现系统中心的设置消失了。&lt;/p&gt;
+&lt;p&gt;可能是卸载软件时，同时将相关依赖删除了，导致设置丢失。&lt;/p&gt;
+&lt;p&gt;以下为解决方法</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://b.imtzz.com/categories/Linux/"/>
+    
+    <category term="Ubuntu" scheme="https://b.imtzz.com/categories/Linux/Ubuntu/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>【派大星的独白】一个关于正常人的故事</title>
+    <link href="https://b.imtzz.com/2019/08/17/%E3%80%90%E6%B4%BE%E5%A4%A7%E6%98%9F%E7%9A%84%E7%8B%AC%E7%99%BD%E3%80%91%E4%B8%80%E4%B8%AA%E5%85%B3%E4%BA%8E%E6%AD%A3%E5%B8%B8%E4%BA%BA%E7%9A%84%E6%95%85%E4%BA%8B/"/>
+    <id>https://b.imtzz.com/2019/08/17/%E3%80%90%E6%B4%BE%E5%A4%A7%E6%98%9F%E7%9A%84%E7%8B%AC%E7%99%BD%E3%80%91%E4%B8%80%E4%B8%AA%E5%85%B3%E4%BA%8E%E6%AD%A3%E5%B8%B8%E4%BA%BA%E7%9A%84%E6%95%85%E4%BA%8B/</id>
+    <published>2019-08-17T10:02:36.000Z</published>
+    <updated>2021-01-04T13:23:39.536Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><blockquote><p>转载自 哔哩哔哩 <a href="https://space.bilibili.com/30222764">@洛温阿特金森</a></p><p>视频地址：<a href="https://www.bilibili.com/video/av60731116/">https://www.bilibili.com/video/av60731116/</a></p></blockquote><iframe src="//player.bilibom/player.html?aili.cid=60731116&amp;cid=106015992&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></body></html>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;blockquote&gt;
+&lt;p&gt;转载自 哔哩哔哩 &lt;a href=&quot;https://space.bilibili.com/30222764&quot;&gt;@洛温阿特金森&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;视频地址：&lt;a href=&quot;https://www</summary>
+      
+    
+    
+    
+    <category term="视频" scheme="https://b.imtzz.com/categories/%E8%A7%86%E9%A2%91/"/>
+    
+    <category term="bilibili" scheme="https://b.imtzz.com/categories/bilibili/"/>
+    
+    
+  </entry>
+  
+</feed>

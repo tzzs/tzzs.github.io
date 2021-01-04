@@ -1,0 +1,1121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>127.0.0.1 and 0.0.0.0</title>
+    <url>/2021/01/04/127-0-0-1-and-0-0-0-0/</url>
+    <content><![CDATA[<html><head></head><body><p>今天在服务器测试django项目，直接使用的默认命令 <code>python manage.py runserver 8000</code> 启动的，然后项目就会启动在 127.0.0.1:8000 端口上。此时我想使用 ECS 服务器IP访问8000端口，查看运行情况结果访问失败。本来以为是阿里服务器安全规则导致，我重新更新了规则，放开了8000端口结果开始不行。后来才想到，可能是启动IP的问题，导致外界无法访问。</p>
+<h2 id="127-0-0-1"><a href="#127-0-0-1" class="headerlink" title="127.0.0.1"></a>127.0.0.1</h2><p>所有以127开头的IP均为<strong>回环地址</strong>，即我们在主机上发送给127IP的内容都会被主机自己接收，根本发不出去，同样外界也无法通过此IP访问到自己。当我们的项目启动IP为127.0.0.1:8000，则此IP仅能被当前主机访问，外界无法通过8000端口访问。</p>
+<p>正常的数据会类型下面路径传输：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">数据包 --&gt; IP层 --&gt; 链路层 --&gt; 外部网络</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<p>但是回环地址的数据无法抵达链路层就被IP层获取，返回当前主机指定端口：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">数据包 --&gt; IP层 --&gt; |拦截|本机8000端口</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="0-0-0-0"><a href="#0-0-0-0" class="headerlink" title="0.0.0.0"></a>0.0.0.0</h2><p>0.0.0.0并不是一个真实的IP地址，它表示本机的所有<strong>IPV4的地址</strong>，监听0.0.0.0的端口，就是监听本机的所有IP的端口。当服务启动在0.0.0.0:8000时，就相当于服务器IP的8000端口启动了此服务，此时外界可以通过服务器IP:8000端口访问启动的项目。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CDN HTTPS 配置</title>
+    <url>/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<html><head></head><body><p>在 <a href="https://console.cloud.tencent.com/cdn/tools/certificate/deploy">CDN-高级工具-证书管理界面</a> 进行配置证书。</p>
+<h2 id="1-选择要配置证书的域名"><a href="#1-选择要配置证书的域名" class="headerlink" title="1.选择要配置证书的域名"></a>1.选择要配置证书的域名</h2><h2 id="2-选择证书"><a href="#2-选择证书" class="headerlink" title="2.选择证书"></a>2.选择证书</h2><p>如果对应的域名在腾讯云托管了证书，可以直接选择使用。</p>
+<p>如果选择自有证书，<code>证书内容</code>中填写 <code>_public.crt</code> 文件中的编码，<code>私钥内容</code>填写 <code>.key</code> 文件中的内容。</p>
+<p><strong>注</strong>：如果出现 <code>证书链无法补齐，您可以自行补齐证书链</code> 问题，可以在 <a href="https://myssl.com/chain_download.html">证书链下载/修复</a> 页面进行证书链补齐，选择 <strong><code>上传证书</code></strong> 选择 <code>_public.crt</code> 结尾的文件上传,即之前填写的证书文件，点击 <strong><code>获取证书链</code></strong> 按钮，即可生成完整的证书链，将生成的证书链复制粘贴到 <code>证书内容</code> 中.</p>
+<a id="more"></a>
+<h2 id="3-选择回源方式"><a href="#3-选择回源方式" class="headerlink" title="3.选择回源方式"></a>3.选择回源方式</h2><p>HTTP: 全部通过HTTP进行回源。</p>
+<p>协议跟随：根据你访问网站的方式进行回源，HTTP方式访问即通过HTTP回源，HTTPS方式访问通过HTTPS进行回源。</p>
+<h2 id="4-提交"><a href="#4-提交" class="headerlink" title="4.提交"></a>4.提交</h2><p>提交后，CDN会进行部署，然后会显示当前的证书状态。如果显示配置成功，可以浏览器访问HTTPS域名（如 <a href="https://tzz6.xyz/">https://tzz6.xyz</a> )测试，如果正常打开，即配置完成。</p>
+</body></html>]]></content>
+      <categories>
+        <category>CDN</category>
+        <category>HTTPS</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CentOS7 PHP5.6 upgrade to PHP7.2</title>
+    <url>/2019/01/08/CentOS7-PHP5-6-upgrade-to-PHP7-2/</url>
+    <content><![CDATA[<html><head></head><body><h1 id="服务器信息"><a href="#服务器信息" class="headerlink" title="服务器信息"></a>服务器信息</h1><p>CentOS 7.5</p>
+<p>Apache 2.4</p>
+<p>PHP 5.6</p>
+<h1 id="查找已安装的-PHP-Package"><a href="#查找已安装的-PHP-Package" class="headerlink" title="查找已安装的 PHP Package"></a>查找已安装的 PHP Package</h1><p>使用<code>yum list installed | grep "php"</code>查找已安装的php package，存档</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">[root@aliyun ~]<span class="comment"># yum list installed | grep "php"</span></span><br><span class="line">Repository base is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository updates is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository extras is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository centosplus is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository base is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository updates is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository extras is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository centosplus is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">php56w.x86_64                        5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-cli.x86_64                    5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-common.x86_64                 5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-fpm.x86_64                    5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-gd.x86_64                     5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-ldap.x86_64                   5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-mbstring.x86_64               5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-mcrypt.x86_64                 5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-mysqlnd.x86_64                5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-pdo.x86_64                    5.6.39-1.w7                     @webtatic  </span><br><span class="line">php56w-xml.x86_64                    5.6.39-1.w7                     @webtatic  </span><br></pre></td></tr></tbody></table></figure></div>
+<a id="more"></a>
+
+<h1 id="删除已安装的PHP-Package"><a href="#删除已安装的PHP-Package" class="headerlink" title="删除已安装的PHP Package"></a>删除已安装的PHP Package</h1><p>使用命令删除已安装的PHP</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">yum remove php-cli mod_php php-common</span><br></pre></td></tr></tbody></table></figure></div>
+
+<h1 id="查找需要的PHP版本"><a href="#查找需要的PHP版本" class="headerlink" title="查找需要的PHP版本"></a>查找需要的PHP版本</h1><p>例如，使用下面的命令可以查找PHP7.2版本的Package</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">yum list | grep <span class="string">"php72"</span></span><br></pre></td></tr></tbody></table></figure></div>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">[root@aliyun ~]<span class="comment"># yum list | grep "php72"</span></span><br><span class="line">Repository base is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository updates is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository extras is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository centosplus is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository base is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository updates is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository extras is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">Repository centosplus is listed more than once <span class="keyword">in</span> the configuration</span><br><span class="line">mod_php72w.x86_64                       7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-bcmath.x86_64                    7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-cli.x86_64                       7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-common.x86_64                    7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-dba.x86_64                       7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-devel.x86_64                     7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-embedded.x86_64                  7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-enchant.x86_64                   7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-fpm.x86_64                       7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-gd.x86_64                        7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-imap.x86_64                      7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-interbase.x86_64                 7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-intl.x86_64                      7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-ldap.x86_64                      7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-mbstring.x86_64                  7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-mysql.x86_64                     7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-mysqlnd.x86_64                   7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-odbc.x86_64                      7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-opcache.x86_64                   7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-pdo.x86_64                       7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-pdo_dblib.x86_64                 7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-pear.noarch                      1:1.10.4-1.w7                   webtatic</span><br><span class="line">php72w-pecl-apcu.x86_64                 5.1.9-1.w7                      webtatic</span><br><span class="line">php72w-pecl-apcu-devel.x86_64           5.1.9-1.w7                      webtatic</span><br><span class="line">php72w-pecl-geoip.x86_64                1.1.1-1.2.w7                    webtatic</span><br><span class="line">php72w-pecl-igbinary.x86_64             2.0.5-1.w7                      webtatic</span><br><span class="line">php72w-pecl-igbinary-devel.x86_64       2.0.5-1.w7                      webtatic</span><br><span class="line">php72w-pecl-imagick.x86_64              3.4.3-1.2.w7                    webtatic</span><br><span class="line">php72w-pecl-imagick-devel.x86_64        3.4.3-1.2.w7                    webtatic</span><br><span class="line">php72w-pecl-libsodium.x86_64            1.0.6-1.2.w7                    webtatic</span><br><span class="line">php72w-pecl-memcached.x86_64            3.0.4-1.w7                      webtatic</span><br><span class="line">php72w-pecl-mongodb.x86_64              1.4.1-1.w7                      webtatic</span><br><span class="line">php72w-pecl-redis.x86_64                3.1.6-1.w7                      webtatic</span><br><span class="line">php72w-pecl-xdebug.x86_64               2.6.0-1.w7                      webtatic</span><br><span class="line">php72w-pgsql.x86_64                     7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-phpdbg.x86_64                    7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-process.x86_64                   7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-pspell.x86_64                    7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-recode.x86_64                    7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-snmp.x86_64                      7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-soap.x86_64                      7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-sodium.x86_64                    7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-tidy.x86_64                      7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-xml.x86_64                       7.2.13-1.w7                     webtatic</span><br><span class="line">php72w-xmlrpc.x86_64                    7.2.13-1.w7                     webtatic</span><br></pre></td></tr></tbody></table></figure></div>
+<h1 id="安装对应的PHP7-2版本Package"><a href="#安装对应的PHP7-2版本Package" class="headerlink" title="安装对应的PHP7.2版本Package"></a>安装对应的PHP7.2版本Package</h1><p><a href="#%E6%9F%A5%E6%89%BE%E5%B7%B2%E5%AE%89%E8%A3%85%E7%9A%84-php-package">根据之前存储的PHP5已安装的Package</a>，安装对应的PHP7.2的Package。</p>
+<p>例如：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">yum install mode_php72w php72w-cli php72w-mysqlnd</span><br><span class="line">yum install php72w-fpm php72w-mbstring php72w-gd php72w-ldap php72w-pdo php72w-xml</span><br></pre></td></tr></tbody></table></figure></div>
+<p>这些就是我服务器上全部需要安装的包。</p>
+<h1 id="重启Apache服务器"><a href="#重启Apache服务器" class="headerlink" title="重启Apache服务器"></a>重启Apache服务器</h1><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">systemctl restart httpd</span><br></pre></td></tr></tbody></table></figure></div>
+<p>生效可能需要几分钟，也可以直接重启服务器。</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>在网站根目录下创建 <code>info.php</code> ,加入以下内容。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">php</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight php"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">phpinfo()</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>通过访问服务器 <code>IP/info.php</code> 或 <code>网址/info.php</code> 查看当前PHP信息。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>CentOS</category>
+        <category>PHP</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CentOS安装Python3</title>
+    <url>/2018/12/13/CentOS%E5%AE%89%E8%A3%85Python/</url>
+    <content><![CDATA[<html><head></head><body><p>需要运行基于 Python3 的 Django 项目，服务器默认安装的为 python2 ,需要安装Python3</p>
+<p><strong>以下命令均为在 root 身份下执行，如果权限不够，请切换管理眼身份，或在每条命令前添加 <code>sudo </code> 。</strong></p>
+<h1 id="安装Python3"><a href="#安装Python3" class="headerlink" title="安装Python3"></a>安装Python3</h1><h2 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h2><p>创建 python3 的下载安装目录</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mk /usr/<span class="built_in">local</span>/python3</span></span><br></pre></td></tr></tbody></table></figure></div>
+<a id="more"></a>
+
+<h2 id="下载解压"><a href="#下载解压" class="headerlink" title="下载解压"></a>下载解压</h2><p>可以在 python 的 <a href="https://www.python.org/">官网</a> 找到最新的 python3 安装包，然后使用 <code>wget</code> 命令下载下来。<br>这是 <a href="https://www.python.org/downloads/source/">Python 3.7.1</a> 的页面，最下面找到下载地址，其中第一个为 tgz 格式的压缩包</p>
+<p><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202018-12-13%20005037.jpg" data-fancybox="group" data-caption="undefined" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202018-12-13%20005037.jpg"></a></p>
+<p>下载完成后进行解压</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar -xzvf Python-3.7.1.tgz</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p>在 python3 进行编译安装时，需要用到其它的依赖包，要先进行安装</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> yum install -y ncurses-libs zlib-devel mysql-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi libffi-devel</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> Python-3.7.1</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./configure --prefix=/usr/<span class="built_in">local</span>/python3 <span class="comment"># 生成makefile  --prefix 设置安装路径</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make <span class="comment"># 编译</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make install <span class="comment"># 安装</span></span></span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="配置链接"><a href="#配置链接" class="headerlink" title="配置链接"></a>配置链接</h2><p>可以使用 <code>which python</code> 来查看原来python的位置</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">which</span> python</span></span><br><span class="line">/usr/bin/python</span><br></pre></td></tr></tbody></table></figure></div>
+<p><code>ls -l</code> 查看软链接设置</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">cmd</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight cmd"><table><tbody><tr><td class="code"><pre><span class="line">lrwxrwxrwx  <span class="number">1</span> root root           <span class="number">7</span> Nov <span class="number">15</span> <span class="number">00</span>:<span class="number">19</span> python -&gt; python2</span><br><span class="line">lrwxrwxrwx  <span class="number">1</span> root root           <span class="number">9</span> Nov <span class="number">15</span> <span class="number">00</span>:<span class="number">19</span> python2 -&gt; python2.<span class="number">7</span></span><br><span class="line">-rwxr-xr-x  <span class="number">1</span> root root        <span class="number">7216</span> Jul <span class="number">13</span> <span class="number">21</span>:<span class="number">07</span> python2.<span class="number">7</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>创建 python3 的软链接</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/python3/bin/python3 /usr/bin/python3</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>当前链接情况, <code>python</code> 和 <code>python2</code> 指向 python 2.7.5 ，<code>python3</code> 指向 python 3.7.1</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">cmd</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight cmd"><table><tbody><tr><td class="code"><pre><span class="line">lrwxrwxrwx  <span class="number">1</span> root root           <span class="number">7</span> Nov <span class="number">15</span> <span class="number">00</span>:<span class="number">19</span> python -&gt; python2</span><br><span class="line">lrwxrwxrwx  <span class="number">1</span> root root           <span class="number">9</span> Nov <span class="number">15</span> <span class="number">00</span>:<span class="number">19</span> python2 -&gt; python2.<span class="number">7</span></span><br><span class="line">-rwxr-xr-x  <span class="number">1</span> root root        <span class="number">7216</span> Jul <span class="number">13</span> <span class="number">21</span>:<span class="number">07</span> python2.<span class="number">7</span></span><br><span class="line">lrwxrwxrwx  <span class="number">1</span> root root          <span class="number">30</span> Dec <span class="number">13</span> <span class="number">01</span>:<span class="number">46</span> python3 -&gt; /usr/local/python3/bin/python3</span><br></pre></td></tr></tbody></table></figure></div>
+<h1 id="安装pip3"><a href="#安装pip3" class="headerlink" title="安装pip3"></a>安装pip3</h1><p>python3.7 已经附带了pip3 ，在 <code>/usr/local/python3/bin</code> 中可以看到 pip3</p>
+<h2 id="创建pip3软链接"><a href="#创建pip3软链接" class="headerlink" title="创建pip3软链接"></a>创建pip3软链接</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ln -s /usr/<span class="built_in">local</span>/python3/bin/pip3 /usr/bin/pip3</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>此时就可以正常使用 <code>python3</code> ，<code>pip3</code> 来使用 <code>python3.7.1</code> 了。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>CentOS</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C语言 auto</title>
+    <url>/2020/08/26/C%E8%AF%AD%E8%A8%80-auto/</url>
+    <content><![CDATA[<html><head></head><body><blockquote>
+<p>auto 被解释为一个自动存储变量的关键字，也就是申明一块临时的变量内存。</p>
+</blockquote>
+<p>auto 这个关键字可能平时不会用到，因为在C语言中变量定义的时候默认修饰符就是auto。</p>
+<p>auto关键字声明一个变量为自动变量，并且没有被声明为其它类型的变量都是自动变量。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">auto</span> <span class="keyword">int</span> b = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">auto</span> c ;</span><br><span class="line">    c = a + b;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<p>上面代码中的a和b都是自动变量，只是b省略了auto。同时还可以使用auto声明一个变量，如果不增加类型修饰符，则默认为int类型，即上面的变量c为int类型的值。</p>
+<h2 id="C-C"><a href="#C-C" class="headerlink" title="C/C++"></a>C/C++</h2><p>在C++中 auto是不一样的，在C++中auto关键字是类型说明符，通过变量的初始值或者表达式中参与运算的数据类型来推断变量的类型。由于编译器需要推断变量或表达式的类型，所以，在C++中auto定义的变量必须初始化。</p>
+</body></html>]]></content>
+      <categories>
+        <category>C</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Firefox Monitor</title>
+    <url>/2019/06/26/Firefox-Monitor/</url>
+    <content><![CDATA[<html><head></head><body><p><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190626225922.png" data-fancybox="group" data-caption="Firefox Monitor" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190626225922.png" alt="Firefox Monitor" title="Firefox Monitor"></a></p>
+<ul>
+<li><p>在Firefox Monitor中可以提供订阅邮件的信息泄露事件的提醒，添加电子邮件地址后，在发生密码外泄事件后，会发送泄露提醒。</p>
+</li>
+<li><p>可以在外泄事件中，查看最近的信息泄露事件</p>
+</li>
+</ul>
+</body></html>]]></content>
+      <categories>
+        <category>推荐</category>
+        <category>Firefox</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Fliqlo 翻页时钟屏保</title>
+    <url>/2019/07/20/Fliqlo-%E7%BF%BB%E9%A1%B5%E6%97%B6%E9%92%9F%E5%B1%8F%E4%BF%9D/</url>
+    <content><![CDATA[<html><head></head><body><p>官方网址：<a href="https://fliqlo.com/">https://fliqlo.com/</a> </p>
+<p><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202019-07-20%20165554.jpg" data-fancybox="group" data-caption="Fliqlo" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202019-07-20%20165554.jpg" alt="Fliqlo" title="Fliqlo"></a></p>
+</body></html>]]></content>
+      <categories>
+        <category>推荐</category>
+        <category>应用</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>HEXO</title>
+    <url>/2018/11/22/HEXO/</url>
+    <content><![CDATA[<html><head></head><body><ul>
+<li>hexo 中的 public 目录每次生成静态文件(hexo g)都会重新生成</li>
+<li>修改about页面信息需要在 soure-about-index.md 中修改</li>
+</ul>
+</body></html>]]></content>
+  </entry>
+  <entry>
+    <title>Hexo 构建静态页面文件时，index.html等文件中为空</title>
+    <url>/2020/03/04/Hexo-%E6%9E%84%E5%BB%BA%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E6%96%87%E4%BB%B6%E6%97%B6%EF%BC%8Cindex-html%E7%AD%89%E6%96%87%E4%BB%B6%E4%B8%AD%E4%B8%BA%E7%A9%BA/</url>
+    <content><![CDATA[<html><head></head><body><ol>
+<li><p>增加了Pages的自动化构建后，发现页面访问不了了，以为和上次一样是本地的CDN抽风导致无法访问的。后来F12看了一下页面内容只有一行，也以为是加载的问题。去代码仓库看才发现真的只有懒加载的一行js加载代码。</p>
+</li>
+<li><p>后来以为是Travis环境的问题，因为我在本地测试可以正常编译构建成功。</p>
+</li>
+<li><p>在网上看到可能是由于nodejs package依赖的问题，使用命令</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">npm ls --depth 0</span><br></pre></td></tr></tbody></table></figure></div>
+<p>并且让我真的找到了依赖不存在的问题，然而问题并没有这么简单 ￣へ￣, 安装了所有依赖项依旧有此问题.</p>
+</li>
+<li><p>在一个博客中看到他也出现了此问题,并且最终是由于thems为空导致的,我突然就想起来thems下面的Butterfly文件夹下的所有内容被Git识别成了一个大的文件,去远程仓库看果然是空的.</p>
+</li>
+<li><p>下面就是想办法让Git识别它, 后来发现主要原因就是Butterfly也是一个Git库, 当上层的Git认为它是一个仓库是就把他识别为了一整个文件.</p>
+<p>解决办法就是将Butterfly下的.git文件删除掉,然后Git重新添加整个文件夹.</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">git rm --cache themes/Butterfly</span><br><span class="line">git add themes/Butterfly</span><br></pre></td></tr></tbody></table></figure></div>
+<p>然后提交本次修改, 等待Travis自动构建部署完成后就能看到界面了.</p>
+</li>
+</ol>
+<p>注: 可能由于浏览器缓存导致你看到的还是之前的空白页,可以按F12,将Network-Disable cache选中,这样它就不会从本机读取缓存了.</p>
+</body></html>]]></content>
+      <categories>
+        <category>Git</category>
+        <category>Blog</category>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JDK8 环境下生成WebService Client的问题</title>
+    <url>/2020/02/10/JDK8-%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%94%9F%E6%88%90WebService-Client%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<html><head></head><body><p>在学习WebService的过程中，用JAVA实现了WebService。但是在使用IDEA生成WebService Client的时候出现了错误。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>JDK：openjdk version “1.8.0_41”</p>
+<p>IDEA：IntelliJ IDEA 2019.3.2 (Ultimate Edition)</p>
+<p>SYSTEM：Windows 10</p>
+<h2 id="错误信息"><a href="#错误信息" class="headerlink" title="错误信息"></a>错误信息</h2><blockquote>
+<p>java.lang.AssertionError: org.xml.sax.SAXParseException; systemId: jar:file:/path/to/glassfish/modules/jaxb-osgi.jar!/com/sun/tools/xjc/reader/xmlschema/bindinfo/binding.xsd; lineNumber: 52; columnNumber: 88; schema_reference: Failed to read schema document ‘<strong>xjc.xsd</strong>‘, because ‘file’ access is not allowed due to restriction set by the <strong>accessExternalSchema</strong> property.</p>
+</blockquote>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>​        错误信息中显示由于 accessExternalSchema 属性设置的限制而不允许 ‘file’ 访问，所以导致读取方案文档 ’xjc.xsd’ 失败。</p>
+<p>​        在搜索解决方法的过程中，发现 jaxb-xjc 在 JDK8 下存在此BUG.<a href="https://bugs.openjdk.java.net/browse/JDK-8020999?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel">xjc fails with permission exception in JDK 8 b98,b99 even if -disableXmlSecurity is set</a> 这是在 openjdk 的 JDK Bug System 提出的bug，并且显示官方已经修复此问题，但不知为何我新下载的Java版本还是有此问题。</p>
+<p>​        在XML解析器初始化之前，JDK会首先搜索系统的porperties配置文件寻找解析器的配置项，如果没有则会搜索<code>$JAVA_HOME/jre/lib</code> (Windows下为 <code>%JAVA_HOME%/jre/lib</code> ) 路径下的 <code>jaxp.properties</code> 文件，如果还没有就会在classpath上的 .jar 包中寻找，如果仍然没有则使用默认配置。</p>
+<p>​    对于此问题我们需要强行修改 accessExternalSchema 的属性设置，以下为问题的解决方案，在<code>$JAVA_HOME/jre/lib</code> (Windows下为 <code>%JAVA_HOME%/jre/lib</code> ) 路径下的<code>jaxp.properties</code>文件(不存在则新建)中新增一行：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">properties</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight properties"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">javax.xml.accessExternalSchema</span> = <span class="string">all</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>保存之后，重新去IDEA生成WebService Client即可成功。</p>
+<h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><h3 id="JAXB"><a href="#JAXB" class="headerlink" title="JAXB"></a>JAXB</h3><p>​        Java Architecture for XML Binding，简称JAXB，允许Java开发人员将Java类映射为XML表达方式。JAXB提供两种主要特性：将一个Java对象序列化为XML，以及方向操作，将XML解析成Java对象。</p>
+<h3 id="xjc"><a href="#xjc" class="headerlink" title="xjc"></a>xjc</h3><p>​        XML Java Complier，XML Java编译器，是JAXB的一部分，可以将XML模式或其它类型模式文件转换为Java类。其中JAXB的schemagen 工具与其作用相反，能够执行 xjc 的反向操作，通过一组标注的Java类创建一个XML模式。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Java</category>
+        <category>WebService</category>
+      </categories>
+      <tags>
+        <tag>JDK8</tag>
+        <tag>WebService</tag>
+        <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[LeetCode] single number</title>
+    <url>/2020/08/31/LeetCode-single-number/</url>
+    <content><![CDATA[<html><head></head><body><p><a href="https://leetcode-cn.com/problems/single-number/">Single Number</a></p>
+<p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<p><strong>说明</strong></p>
+<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
+<p><strong>示例 1:</strong></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">输入: [<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">输出: <span class="number">1</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p><strong>示例 2:</strong></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">输入: [<span class="number">4</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">输出: <span class="number">4</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p><strong>解题</strong></p>
+<ol>
+<li>由于每个相同的元素都会出现两次，又因为两个相同的元素的异或为0。 a^a = 0</li>
+<li>并且异或存在交换律，因此 a^b^a = b</li>
+<li>因此本题中直接将所有元素进行异或即可。</li>
+</ol>
+<p><strong>代码</strong></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="keyword">int</span>* nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">    {</span><br><span class="line">        res ^= nums[i];</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 整数反转</title>
+    <url>/2018/12/29/LeetCode-%E6%95%B4%E6%95%B0%E5%8F%8D%E8%BD%AC/</url>
+    <content><![CDATA[<html><head></head><body><p><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202018-12-29%20030945.jpg" data-fancybox="group" data-caption="题目" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202018-12-29%20030945.jpg" alt="题目" title="题目"></a></p>
+<blockquote>
+<p>我采用的策略</p>
+</blockquote>
+<ol>
+<li><p>去除最后面的0</p>
+<p> 不断进行 <code>x % 10 == 0</code> 判断，如果最后一位为0，则执行 <code>x //= 10</code> 。 使用 // 来执行除法，会将产生小数直接抛弃，只剩下整数。</p>
+</li>
+<li><p>判断正数还是负数</p>
+<p> 正数：直接将数字进行反转<br> 负数：将除负号外进行反转，返回时添加负号</p>
+</li>
+<li><p>数字反转</p>
+<p> 将数字转化为字符串，使用字符串倒序 <code>x[::-1]</code> 进行反转，反转完成后再转化为 int 类型。其中负数对应的字符串反转要避免符号位，即 <code>x[:0:-1]</code> 。</p>
+</li>
+<li><p>判断溢出</p>
+<p> 最后要判断反转的结果是否在范围内，不在就返回为 0 。 使用 2**31 来计算次方会比 pow() 计算更快。</p>
+</li>
+</ol>
+<p>TIME: 64ms</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverse</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type x: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="built_in">max</span> = <span class="number">2</span>**<span class="number">31</span>-<span class="number">1</span></span><br><span class="line">        <span class="built_in">min</span> = -<span class="number">2</span>**<span class="number">31</span></span><br><span class="line">        <span class="keyword">while</span> x &gt; <span class="number">10</span> <span class="keyword">and</span> x % <span class="number">10</span> == <span class="number">0</span>:</span><br><span class="line">            x //= <span class="number">10</span></span><br><span class="line">        <span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">            x = <span class="built_in">int</span>(<span class="built_in">str</span>(x)[::-<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span> <span class="keyword">if</span> x &gt; <span class="built_in">max</span> <span class="keyword">or</span> x &lt; <span class="built_in">min</span> <span class="keyword">else</span> x</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            x = -<span class="built_in">int</span>(<span class="built_in">str</span>(x)[:<span class="number">0</span>:-<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span> <span class="keyword">if</span> x &gt; <span class="built_in">max</span> <span class="keyword">or</span> x &lt; <span class="built_in">min</span> <span class="keyword">else</span> x</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode 有效的字母异位词 Valid Anagram</title>
+    <url>/2018/12/30/LeetCode-%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D-Valid-Anagram/</url>
+    <content><![CDATA[<html><head></head><body><p>Given two strings s and t , write a function to determine if t is an anagram of s.</p>
+<p><strong>Example 1:</strong> </p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">Input: s = "anagram", t = "nagaram"</span><br><span class="line">Output: true</span><br></pre></td></tr></tbody></table></figure></div>
+<p><strong>Example 2:</strong> </p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">Input: s = "rat", t = "car"</span><br><span class="line">Output: false</span><br></pre></td></tr></tbody></table></figure></div>
+<p><strong>Note:</strong></p>
+<p>You may assume the string contains only lowercase alphabets.</p>
+<p><strong>Follow up:</strong></p>
+<p>What if the inputs contain unicode characters? How would you adapt your solution to such case?</p>
+<p><strong>PYTHON3:</strong></p>
+<p>解法：先进行排序，然后判断字符串是否相同</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isAnagram</span>(<span class="params">self, s, t</span>):</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type t: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sorted</span>(s)==<span class="built_in">sorted</span>(t)</span><br></pre></td></tr></tbody></table></figure></div>
+</body></html>]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux Ubuntu开机显示LOGO后逐渐黑屏</title>
+    <url>/2019/08/16/Linux-Ubuntu%E5%BC%80%E6%9C%BA%E6%98%BE%E7%A4%BALOGO%E5%90%8E%E9%80%90%E6%B8%90%E9%BB%91%E5%B1%8F/</url>
+    <content><![CDATA[<html><head></head><body><p>之前在VMware中安装了Ubuntu用于开发，只分配了20G的空间，这两天一直提醒硬盘空间不足，未产生影响就没有扩充空间。</p>
+<p>今天虚拟机重启后突然无法进入图形界面，网上看了很多方法，我开始也以为是桌面环境被损坏，修改了很多配置仍未解决，最后才看到可能是磁盘不足无法加载的问题。</p>
+<ol>
+<li>无法进入图形界面时，可以使用CRTL+ALT+F2进入命令行模式。</li>
+<li>输入用户名和密码，登录系统</li>
+<li>查找无用的软件包或大文件进行删除，保证有剩余可用空间</li>
+</ol>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">find /var/ -<span class="built_in">type</span> f -size +100M  -print0 | xargs -0 ls -lh <span class="comment"># 查找大于100M的文件并进行排序</span></span><br><span class="line">或</span><br><span class="line">find . -<span class="built_in">type</span> f -size +50M <span class="comment"># 查找大于50M的文件</span></span><br></pre></td></tr></tbody></table></figure></div>
+<a id="more"></a>
+<p>我发现找到的很多是安装的无用软件，一下为删除方式。</p>
+<ol>
+<li>使用<code>dkpg -l | grep -i "文件名"</code> 查找对应的软件包</li>
+<li>软件删除 <code>apt remove 包名</code></li>
+</ol>
+<p>查看剩余的空间</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">df</span><br></pre></td></tr></tbody></table></figure></div>
+<p>有剩余空间后，重新启动即可。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Ubuntu</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux下安装Oracle客户端</title>
+    <url>/2019/08/12/Linux%E4%B8%8B%E5%AE%89%E8%A3%85Oracle%E5%AE%A2%E6%88%B7%E7%AB%AF/</url>
+    <content><![CDATA[<html><head></head><body><h3 id="下载RPM包"><a href="#下载RPM包" class="headerlink" title="下载RPM包"></a>下载RPM包</h3><p>RPM版本： 需要手动安装</p>
+<p>ZIP版本： 解压配置即可使用</p>
+<p>oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm # <strong>基础包</strong></p>
+<p>oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm # <strong>SQLplus</strong></p>
+<p>oracle-instantclient12.2-precomp-12.2.0.1.0-1.x86_64.rpm # <strong>预编译工具</strong></p>
+<a id="more"></a>
+<h3 id="安装Alien"><a href="#安装Alien" class="headerlink" title="安装Alien"></a>安装Alien</h3><p># 如果已安装可以跳过</p>
+<p>Ubuntu 默认包为deb格式，无法直接使用rpm安装RPM包，需要安装 <code>alien</code></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt instal alien</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt install libaio*</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="安装RPM包"><a href="#安装RPM包" class="headerlink" title="安装RPM包"></a>安装RPM包</h3><p>可以使用通配符进行安装</p>
+<p>默认安装位置为：/usr/lib/oracle/12.2/client64</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo alien -i oracle-*.rpm</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p><strong>BUG</strong>:在非root用户下，<code>/etc/profile</code>中的环境变量对当前用户不生效。</p>
+<p>建议两个文件下都添加.</p>
+<p><code>$HOME/.bashrc</code> 路径下为当前用户环境变量</p>
+<p><code>/etc/profile</code> 为全局环境变量，对所有用户生效</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo vi /etc/profile</span><br><span class="line">vi ~/.bashrc</span><br></pre></td></tr></tbody></table></figure></div>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line"># 添加环境变量</span><br><span class="line">export ORACLE_HOME=/usr/lib/oracle/12.2/client64  </span><br><span class="line">export ORACLE_BASE=/usr/lib/oracle/12.2</span><br><span class="line">export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH # 共享库</span><br><span class="line">export PATH=$ORACLE_HOME/bin:$PATH # 可执行文件路径</span><br><span class="line">export NLS_LANG="AMERICAN_AMERICA.AL32UTF8" # 语言及文件编码</span><br><span class="line">export NLS_DATE_FORMAT="YYYY-MM-DD HH24:MI:SS" # 时间格式</span><br><span class="line">export NLS_TIMESTAMP_FORMAT="YYYY-MM-DD HH24:MI:SS" # </span><br><span class="line">export TNS_ADMIN=$ORACLE_HOME/network/admin # 多个Oracle版本时指向TNS配置文件位置，仅有一个Oracle版本时可不加</span><br></pre></td></tr></tbody></table></figure></div>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line"># 添加环境变量 无注释版</span><br><span class="line">export ORACLE_HOME=/usr/lib/oracle/12.2/client64</span><br><span class="line">export ORACLE_BASE=/usr/lib/oracle/12.2</span><br><span class="line">export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH</span><br><span class="line">export PATH=$ORACLE_HOME/bin:$PATH</span><br><span class="line">export NLS_LANG="AMERICAN_AMERICA.AL32UTF8"</span><br><span class="line">export NLS_DATE_FORMAT="YYYY-MM-DD HH24:MI:SS"</span><br><span class="line">export NLS_TIMESTAMP_FORMAT="YYYY-MM-DD HH24:MI:SS"</span><br><span class="line">export TNS_ADMIN=$ORACLE_HOME/network/admin</span><br></pre></td></tr></tbody></table></figure></div>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line"># 使环境变量生效</span><br><span class="line">source /etc/profile</span><br><span class="line">. .bashrc</span><br><span class="line"></span><br><span class="line"># 查看环境变量</span><br><span class="line">echo $PATH </span><br><span class="line"></span><br><span class="line"># 如果含有Oracle/lib的路径却无法正常使用或未找到，重新启动即可生效</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="添加配置"><a href="#添加配置" class="headerlink" title="添加配置"></a>添加配置</h3><p>以下操作需要管理员权限</p>
+<ol>
+<li>在<code>$ORACLE_HOME</code>路径下创建<code>network/admin</code>目录<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">sudo mkdir -p /usr/lib/oracle/12.2/client64/network/admin</span><br></pre></td></tr></tbody></table></figure></div></li>
+<li>在<code>admin</code>目录下创建 <code>tnsnames.ora</code> 文件<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">cd /usr/lib/oracle/12.2/client64/network/admin</span><br><span class="line">touch tnsnames.ora</span><br></pre></td></tr></tbody></table></figure></div></li>
+<li>配置<code>tnsnames.ora</code></li>
+</ol>
+<p>结尾为查看虚拟机适配器IP地址方法</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">vim tnsnames.ora</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 添加以下内容</span><br><span class="line">ORCL =</span><br><span class="line">  (DESCRIPTION =</span><br><span class="line">    (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.137.1)(PORT = 1521))</span><br><span class="line">    (CONNECT_DATA =</span><br><span class="line">  &nbsp;   (SERVER = DEDICATED)</span><br><span class="line">      (SERVICE_NAME = orcl)</span><br><span class="line">    )</span><br><span class="line">  )</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="测试连接"><a href="#测试连接" class="headerlink" title="测试连接"></a>测试连接</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line"># 测试$ORACLE_HOME能否正常输出</span><br><span class="line">echo $ORACLE_HOME</span><br><span class="line"># 如果不能，执行以下命令或重新启动</span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 测试远程连接</span><br><span class="line">sqlplus /nolog</span><br><span class="line"></span><br><span class="line"># 如果能够正常登录，则已完成安装</span><br></pre></td></tr></tbody></table></figure></div>
+
+<h3 id="补充内容"><a href="#补充内容" class="headerlink" title="补充内容"></a>补充内容</h3><h4 id="查看windows下虚拟机网络适配机本机IP地址"><a href="#查看windows下虚拟机网络适配机本机IP地址" class="headerlink" title="查看windows下虚拟机网络适配机本机IP地址"></a>查看windows下虚拟机网络适配机本机IP地址</h4><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">cmd</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight cmd"><table><tbody><tr><td class="code"><pre><span class="line">&gt; <span class="built_in">ipconfig</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 找到下面的 VMware Network Adapter IPv4地址即为 <span class="number">192</span>.<span class="number">168</span>.<span class="number">137</span>.<span class="number">1</span></span><br><span class="line"># 默认适配器为VMnet8</span><br><span class="line">Ethernet adapter VMware Network Adapter VMnet8:</span><br><span class="line"></span><br><span class="line">   Connection-specific DNS Suffix  . :</span><br><span class="line">   Link-local IPv6 Address . . . . . : fe80::<span class="number">24</span>b2:a7bd:f00c:bd48%<span class="number">7</span></span><br><span class="line">   IPv4 Address. . . . . . . . . . . : <span class="number">192</span>.<span class="number">168</span>.<span class="number">137</span>.<span class="number">1</span></span><br><span class="line">   Subnet Mask . . . . . . . . . . . : <span class="number">255</span>.<span class="number">255</span>.<span class="number">255</span>.<span class="number">0</span></span><br><span class="line">   Default Gateway . . . . . . . . . :</span><br></pre></td></tr></tbody></table></figure></div>
+</body></html>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Oracle</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Nginx 403 error: directory index of [folder] is forbidden</title>
+    <url>/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/</url>
+    <content><![CDATA[<html><head></head><body><p>今天对服务器上的Nginx配置SSL证书的时候，写了一个很傻的错误，导致它出现 <code>Nginx 403 error: directory index of [folder] is forbidden</code>这个错误，在日志中显示一下内容：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">2020/12/19 01:50:55 [error] 30312#0: *1 directory index of "/web" is forbidden, client: xxx.xxx.xxx.xxx, server: imtzz.com, request: "GET / HTTP/1.1", host: "imtzz.com"</span><br></pre></td></tr></tbody></table></figure></div>
+<p>显示被拒绝，我们本来以为是文件夹权限的问题，发现修改为777后依旧由此错误，最后发现是nginx的conf文件中 index 后面的index.html （写成了 index.hmtl, 导致找不到主页才会访问被拒绝）写错了🙂 ，心态爆炸。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Https</tag>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title> Nginx server SSL configuration file reference</title>
+    <url>/2020/12/19/Nginx-server-SSL-configuration-file-reference/</url>
+    <content><![CDATA[<html><head></head><body><p>以下配置文件供参考，此配置在当前网站可用。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">server {</span><br><span class="line">  listen 80;</span><br><span class="line">  # 请求域名</span><br><span class="line">  server_name xxx.com;</span><br><span class="line">  # rewrite 用于将所有http请求自动转换为https</span><br><span class="line">  rewrite ^(.*)$ https://$host$1 permanent;</span><br><span class="line">  root /web;</span><br><span class="line">  location / {</span><br><span class="line">    root /web/public;</span><br><span class="line">    index index.html;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">server {</span><br><span class="line">  # Https默认请求端口</span><br><span class="line">  listen       443 ssl;</span><br><span class="line">  # 请求域名</span><br><span class="line">  server_name xxx.com;</span><br><span class="line"></span><br><span class="line">  location / {</span><br><span class="line">    # 项目根目录</span><br><span class="line">    root /web/public;</span><br><span class="line">    # 请求主页名 会与上面的路径拼接获取对应文件</span><br><span class="line">    index index.html;</span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">  # 证书pem与key文件的位置</span><br><span class="line">  ssl_certificate pem_path;</span><br><span class="line">  ssl_certificate_key key_path;</span><br><span class="line">  ssl_session_timeout 5m;</span><br><span class="line">  # 加密套件类型</span><br><span class="line">  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">  # TLS协议类型</span><br><span class="line">  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">  ssl_prefer_server_ciphers on;</span><br><span class="line"></span><br><span class="line">  error_page 404 /404.html;</span><br><span class="line">  location = /40x.html {</span><br><span class="line">    root /web/html;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  error_page 500 502 503 504 /50x.html;</span><br><span class="line">  location = /50x.html {</span><br><span class="line">    root /web/html;</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div>
+</body></html>]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+        <tag>HTTPS</tag>
+        <tag>SSL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nginx uWsgi 重新运行Django项目</title>
+    <url>/2019/02/20/Nginx-uWsgi-%E9%87%8D%E6%96%B0%E8%BF%90%E8%A1%8CDjango%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<html><head></head><body><h3 id="重新启动NGINX"><a href="#重新启动NGINX" class="headerlink" title="重新启动NGINX"></a>重新启动NGINX</h3><p>重新加载网站配置文件</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">sh</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="重新启动uWSGI"><a href="#重新启动uWSGI" class="headerlink" title="重新启动uWSGI"></a>重新启动uWSGI</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">sh</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef | grep uwsgi</span><br><span class="line"><span class="built_in">kill</span> -9 [pid]</span><br><span class="line">uwsgi --ini uwsgi.ini</span><br></pre></td></tr></tbody></table></figure></div>
+<p>我是直接杀死进程然后重新运行的，也可以将uWSGI运行的PID存入到文件中，然后通过<code>uwsgi --reload file.pid</code> 。</p>
+<p><a href="https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/Management.html">uWSGI Docs 管理uWSGI服务器</a></p>
+</body></html>]]></content>
+      <categories>
+        <category>Nginx</category>
+        <category>uWSGI</category>
+        <category>Django</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+        <tag>uWSGI</tag>
+        <tag>Django</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSH连接WSL</title>
+    <url>/2019/12/13/SSH%E8%BF%9E%E6%8E%A5WSL/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="重装-openssh-server"><a href="#重装-openssh-server" class="headerlink" title="重装 openssh-server"></a>重装 openssh-server</h2><p>😭 之前用自带的 ssh 进行连接，发现根本连接不上，所以干脆直接进行重装</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt-get remove openssh-server</span><br><span class="line">sudo apt-get install openssh-server</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="修改-sshd-config-配置文件"><a href="#修改-sshd-config-配置文件" class="headerlink" title="修改 sshd_config 配置文件"></a>修改 sshd_config 配置文件</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">sudo vi /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line">在文件中使用 /PasswordAuthentication</span><br><span class="line">将搜索到的这行取消注释 键盘输入i 进入insert模式，删除 # 即可</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="重启-ssh-服务"><a href="#重启-ssh-服务" class="headerlink" title="重启 ssh 服务"></a>重启 ssh 服务</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">sudo service ssh restart</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><p>ssh 工具中连接配置</p>
+<p>host: 127.0.0.1</p>
+<p>port: 22</p>
+<p>或者直接使用命令行</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ssh user@127.0.0.1</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="user为WSL中用户名，然后回车，如果第一次连接会有提示，输入yes，然后输入密码即可"><a href="#user为WSL中用户名，然后回车，如果第一次连接会有提示，输入yes，然后输入密码即可" class="headerlink" title="user为WSL中用户名，然后回车，如果第一次连接会有提示，输入yes，然后输入密码即可"></a>user为WSL中用户名，然后回车，如果第一次连接会有提示，输入yes，然后输入密码即可</h2></body></html>]]></content>
+      <categories>
+        <category>WSL</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>WSL</tag>
+        <tag>Windows</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>String to integer atoi</title>
+    <url>/2020/04/03/String-to-integer-atoi/</url>
+    <content><![CDATA[<html><head></head><body><p>C语言解法 100%/100%， 欢迎访问我的Github<a href="https://github.com/tzzs/LeetCode-CN">https://github.com/tzzs/LeetCode-CN</a> 。</p>
+<ol>
+<li>找到整数起始位置，即先去掉前面的空格，找到非空格有效字符，标志位置1，即整数计算开始</li>
+<li>开始进行数字的求和，从读取到的第一个数字开始求和，到下一位的时候即为之前的求和<em>10 加上 当前值（例如前面值为1，当前位为5，则目前和为1</em>10+5=15，下一位为3，则求和为15*10+3，153）</li>
+<li>在C语言中将字符转换为int可以直接通过ASCii码进行计算，字符0的ASCii码为48，一直到字符9的ASCii码为57，直接使用字符减去48即为字符对应的整数。</li>
+<li>最终在求和过程中需要判断是否超出最大值，当你计算完可能已经越界，所以需要先判断在进行计算，即进行一个你想计算：先减去当前值，再除以10，判断当前值是否大于计算结果，如果大于则越界。</li>
+<li>最终返回计算结果即可。<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">c</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">myAtoi</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>, sflag = <span class="number">0</span>, pos = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>;; i++)</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">char</span> s = str[i];</span><br><span class="line">        <span class="comment">// printf("[%c]", s);</span></span><br><span class="line">        <span class="comment">// 未到起始字符</span></span><br><span class="line">        <span class="keyword">if</span> (!sflag) {</span><br><span class="line">            <span class="keyword">if</span> (s == <span class="number">32</span>)</span><br><span class="line">            {</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (s == <span class="string">'+'</span>)</span><br><span class="line">            {</span><br><span class="line">                sflag = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (s == <span class="string">'-'</span>)</span><br><span class="line">            {</span><br><span class="line">                sflag = <span class="number">1</span>;</span><br><span class="line">                pos = <span class="number">-1</span>;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 计算当前字符值并加上res*10</span></span><br><span class="line">        <span class="keyword">if</span> (s &gt;= <span class="number">48</span> &amp;&amp; s &lt;= <span class="number">57</span>)</span><br><span class="line">        {</span><br><span class="line">            sflag = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (pos &lt; <span class="number">0</span>)</span><br><span class="line">            {</span><br><span class="line">                <span class="keyword">if</span> (res &gt;= (INT_MIN + (s - <span class="number">48</span>)) / <span class="number">10</span>)</span><br><span class="line">                {</span><br><span class="line">                    res = res * <span class="number">10</span> - (s - <span class="number">48</span>);</span><br><span class="line">                }</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                {</span><br><span class="line">                    <span class="keyword">return</span> INT_MIN;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            {</span><br><span class="line">                <span class="keyword">if</span> (res &lt;= (INT_MAX - (s - <span class="number">48</span>)) / <span class="number">10</span>)</span><br><span class="line">                {</span><br><span class="line">                    res = res * <span class="number">10</span> + (s - <span class="number">48</span>);</span><br><span class="line">                }</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                {</span><br><span class="line">                    <span class="keyword">return</span> INT_MAX;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        {</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure></div></li>
+</ol>
+</body></html>]]></content>
+      <categories>
+        <category>C</category>
+        <category>Algorithm</category>
+      </categories>
+      <tags>
+        <tag>LeetCode CN</tag>
+        <tag>Online Judge</tag>
+        <tag>C</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typero自动上传图片到Tencent COS</title>
+    <url>/2020/11/29/Typero%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%88%B0Tencent-Cos/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="Python实现上传脚本"><a href="#Python实现上传脚本" class="headerlink" title="Python实现上传脚本"></a>Python实现上传脚本</h2><ol>
+<li><p>我使用的是腾讯的COS所以直接去官网查找对应的SDK，我是参考以下接口写的，实现也比较简单。</p>
+<p><a href="https://cloud.tencent.com/document/product/436/35151#.E9.AB.98.E7.BA.A7.E6.8E.A5.E5.8F.A3.EF.BC.88.E6.8E.A8.E8.8D.90.EF.BC.89">Python SDK 高级接口</a></p>
+</li>
+<li><p>需要使脚本符合Typero的规范。</p>
+<blockquote>
+<p>You could config a custom command to upload images, using tools that is not listed in above options, or event write your own tools / scripts. Typora will append all images that needs to be uploaded after the custom command you filled.</p>
+<p>Then, Typora will fetch image urls from the last N lines of the standard output of your custom command. (N is the number of images to upload).</p>
+<p>For example, if you write a tool <code>upload-image.sh</code>, then you can input <code>[some path]/upload-image.sh</code> in the command filed. Typora will call <code>[some path]/upload-image.sh "image-path-1" "image-path-2"</code> to upload two images located in <code>image-path-1</code> and <code>image-path-2</code>. Then the command may return something like:</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">Upload Success:</span><br><span class="line">http://remote-image-1.png</span><br><span class="line">http://remote-image-2.png</span><br></pre></td></tr></tbody></table></figure></div>
+
+<p>Then Typora will get the two remote image url from the output, and replace the original local images used in the Markdown document.</p>
+<p>You could click the “Test Uploader” button to verify your custom commands.</p>
+</blockquote>
+<p>   上面内容是Typero的文档中描述的，意思就是需要调用上传命令的时候从命令行中获取图片地址，上传完成后返回对应的在线图片地址。</p>
+   <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">sys.argv</span><br></pre></td></tr></tbody></table></figure></div>
+<p>可以通过以上方法获取写入的命令行参数，第一位是py文件名，从第二个开始为传输参数。</p>
+</li>
+<li><p>综合以上内容, 以下就是脚本内容了。为了保护密钥的安装，使用了读取配置文件的方法实现密钥的写入。</p>
+<p><a href="https://github.com/tzzs/qcloud_cos/blob/master/upload_for_md.py">https://github.com/tzzs/qcloud_cos/blob/master/upload_for_md.py</a></p>
+</li>
+</ol>
+<h2 id="设置Typero"><a href="#设置Typero" class="headerlink" title="设置Typero"></a>设置Typero</h2><p>偏好设置 &gt; 图像 &gt; 上传服务设定 &gt; 上传服务:Custom Command &gt; 自定义命令输入以下命令</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">activate WEB &amp;&amp; python E:/upload_for_md.py</span><br></pre></td></tr></tbody></table></figure></div>
+<blockquote>
+<p>注：由于我的环境下存在多个python，所以先使用conda激活指定的python环境，然后进行脚本的调用。脚本需要写绝对路径</p>
+</blockquote>
+<p>其它配置只勾选了这个，其它为手动上传（默认），防止放错图片就直接上传了。</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 对本地位置的图片启用上述规则</li>
+</ul>
+</body></html>]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>Typora</tag>
+        <tag>对象存储</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu 设置消失</title>
+    <url>/2019/08/18/Ubuntu-%E8%AE%BE%E7%BD%AE%E6%B6%88%E5%A4%B1/</url>
+    <content><![CDATA[<html><head></head><body><p>在之前由于空间不足，无法加载桌面时，我删除了自带软件thunder bird,后来再次进入系统时，发现系统中心的设置消失了。</p>
+<p>可能是卸载软件时，同时将相关依赖删除了，导致设置丢失。</p>
+<p>以下为解决方法，重新进行桌面的安装</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">sudo apt-get install ubuntu-desktop</span><br></pre></td></tr></tbody></table></figure></div>
+<p>安装完成即可修复。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Ubuntu</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Warning: Accessing non-existent property &#39;lineno&#39; of module exports inside circular dependency</title>
+    <url>/2020/09/01/Warning-Accessing-non-existent-property-lineno-of-module-exports-inside-circular-dependency/</url>
+    <content><![CDATA[<html><head></head><body><p>这几天更新了Blog，但是持续没有将版本发布出去，本来以为是缓存的问题等几个小时就好了，但是今天仍然无法访问。</p>
+<p>我本地执行 <code>hexo server</code> 发现是能够正常访问的，这应该就是Travis的问题了。</p>
+<p>于是我就去GitHub仓库上看Index.html的内容，发现是空的，此时就能够断定是Hexo编译静态内容出错了，然后去看Travis的持续集成日志，发现了一下错误。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo clean</span></span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'lineno' of module exports inside circular dependency</span><br><span class="line">(Use `node --trace-warnings ...` to show where the warning was created)</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'column' of module exports inside circular dependency</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'filename' of module exports inside circular dependency</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'lineno' of module exports inside circular dependency</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'column' of module exports inside circular dependency</span><br><span class="line">(node:5773) Warning: Accessing non-existent property 'filename' of module exports inside circular dependency</span><br><span class="line">INFO  Deleted database.</span><br></pre></td></tr></tbody></table></figure></div>
+<p>经过查看GitHub上Hexo的issue得知是由于node.js的版本过高导致的，因此我把travis中node.js的版本由 stable 修改为 12 ，至此问题完美解决。</p>
+<p><strong>问题原因</strong></p>
+<p>此问题是由于在Node.js中使用了stylus，同样Hexo基于Node.js实现，因此在stylus中存在循环依赖的情况下hexo也会收到影响，导致命令执行失败。</p>
+<p>此问题已经在新版本中的stylus中修复，不知为何Node.js的Stable版本仍未更新。</p>
+<p><a href="https://github.com/stylus/stylus/pull/2538">stylus pull 代码修复链接</a></p>
+</body></html>]]></content>
+      <categories>
+        <category>Blog</category>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Node.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows 10 启动项注册表位置</title>
+    <url>/2019/12/13/Windows-10-%E5%90%AF%E5%8A%A8%E9%A1%B9%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BD%8D%E7%BD%AE/</url>
+    <content><![CDATA[<html><head></head><body><ol>
+<li>WIN + R 输入 regedit 打开注册表</li>
+<li>地址栏输入：<code>计算机\HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</code></li>
+</ol>
+</body></html>]]></content>
+      <categories>
+        <category>Windows</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>注册表</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows 10 自动创建direct热点,正常WiFi热点无法开启</title>
+    <url>/2019/01/05/Windows-10-%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BAdirect%E7%83%AD%E7%82%B9-%E6%AD%A3%E5%B8%B8WiFi%E7%83%AD%E7%82%B9%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF/</url>
+    <content><![CDATA[<html><head></head><body><p>今天使用电脑开启热点的时候，发现可以正常开启，但是手机搜索不到，只有一个Direct-[PC名] 的热点，并且无法连接，重新安装了网卡驱动也没有效果。</p>
+<p>Google了一下也没看到办法，后来才想到今天手机向电脑投影的时候，开启了<code>投影到此电脑</code><br><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202019-01-05%20041910.jpg" data-fancybox="group" data-caption="投影到此电脑" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E6%89%B9%E6%B3%A8%202019-01-05%20041910.jpg" alt="投影到此电脑" title="投影到此电脑"></a></p>
+<p>把这个关闭，那个创建的热点就会自动关闭。再去创建热点就正常了，所以这个投影到此电脑和启动热点不能同时使用一个网卡。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Windows</category>
+        <category>Windows10</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Windows 增加多个可用SSH公钥</title>
+    <url>/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/</url>
+    <content><![CDATA[<html><head></head><body><p>之前由于使用Github Pages作为博客地址导致国内访问速度过慢，增加了腾讯云CDN依旧有大量数据缓存失败，所以更换了国内Coding作为博客镜像（之前用过Gitee Pages，但是普通用户无法自定义域名），在Hexo增加Coding仓库配置时，无法识别新增的SSH公钥，显示 <code>Permission denied (publickey)</code>, 看了一下Coding的官方论坛，他们根本没有解决办法😂，以下为出现问题的过程以及找到的解决办法。</p>
+<h1 id="1-新增公钥"><a href="#1-新增公钥" class="headerlink" title="1. 新增公钥"></a>1. 新增公钥</h1><p>想要通过SSH访问Coding，需要先新增一个公钥，同时在Coding端增加公钥配置</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">ssh-agent -t rsa -C <span class="string">"your.email@example.com"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Creates a new ssh key, using the provided email as a label</span></span><br><span class="line"><span class="comment"># Generating public/private rsa key pair.</span></span><br><span class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/Users/you/.ssh/id_rsa): [Press enter]  // 推荐使用默认地址，如果以前的有用，就改为新的名字例如 id_ras_Coding_email@example.com 这个文件路径后面会用到</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):   //此处点击 Enter 键即可，也可以填写密码，填写密码后每次使用 SSH 方式推送代码时都会要求输入密码，由于这个 Key 也不是用于军事目的，所以也无需设置密码。</span><br></pre></td></tr></tbody></table></figure></div>
+<p>然后将生成的<code>.pub</code>公钥添加到Coding的公钥配置中，使用命令测试连接是否成功</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">ssh -T git@e.coding.net</span><br></pre></td></tr></tbody></table></figure></div>
+<p>输入 <code>yes</code> 允许新增host，如果显示已经通过则正常，但是我在验证过程中依旧显示</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">Permission denied (publickey)</span><br></pre></td></tr></tbody></table></figure></div>
+<h1 id="2-发现解决问题的方法"><a href="#2-发现解决问题的方法" class="headerlink" title="2. 发现解决问题的方法"></a>2. 发现解决问题的方法</h1><p>首先解释一下相关名词</p>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p>全称 Secure Shell ，一个允许两台电脑之间通过安全的连接进行数据交换的网络协议，通过加密博爱挣了数据库的保密性和完整性。SSH采用公钥加密技术来验证远程主机，以及允许远程主机验证用户。</p>
+<h2 id="ssh-keygen"><a href="#ssh-keygen" class="headerlink" title="ssh-keygen"></a>ssh-keygen</h2><p>用于为SSH生成、管理和转换认证密钥，支持RSA和DSA两种认证密钥，生成密钥就是使用的此命令。</p>
+<h2 id="ssh-agent"><a href="#ssh-agent" class="headerlink" title="ssh-agent"></a>ssh-agent</h2><p>一种用于保存公钥身份验证所使用的私钥的程序，如果私钥交给ssh-agent保管，其它程序需要验证身份的时候可以将验证申请交给ssh-agent来完成整个认证过程。</p>
+<hr>
+<p>同时ssh-agent也可能带来问题，在Windows下尝试使用SSH进行身份验证时就可能出现<code>Permission denied (publickey)</code> 的问题，<strong>主要可能的原因就是公钥未加载到ssh-agent中</strong>，<code>ssh-add -l</code>可以查看相应的ssh key是否被加载，这就到了下一个问题，ssh-add命令无法使用。</p>
+<h1 id="3-发现ssh-add无法使用"><a href="#3-发现ssh-add无法使用" class="headerlink" title="3. 发现ssh-add无法使用"></a>3. 发现ssh-add无法使用</h1><p>输入命令</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">sh</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight sh"><table><tbody><tr><td class="code"><pre><span class="line">ssh-add -l</span><br></pre></td></tr></tbody></table></figure></div>
+<p>就出现了 <code> Error connecting to agent: No such file or directory</code> 的问题。</p>
+<p>这是由于Windows下的服务<strong>OpenSSH Authentication Agent</strong> 未启动的原因，</p>
+<ol>
+<li>Windows下键入 WIN+R 输入 services.msc</li>
+<li>找到<strong>OpenSSH Authentication Agent</strong>服务，将启动类型修改为 <strong>自动</strong> ，同时启动此服务。</li>
+</ol>
+<p>此时 <code>ssh-add </code>命令就能够使用了。</p>
+<h1 id="4-将Coding的ssh-key添加到ssh-agent下"><a href="#4-将Coding的ssh-key添加到ssh-agent下" class="headerlink" title="4. 将Coding的ssh key添加到ssh-agent下"></a>4. 将Coding的ssh key添加到ssh-agent下</h1><p>使用以下命令添加ssh key到ssh-agent下</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">ssh-add /Users/you/.ssh/id_ras_Coding_email@example.com  <span class="comment"># 这就是上面生成ssh key时写的地址</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>此时再通过 <code>ssh-add -l</code> 查看ssh-agent中管理的ssh key就有了新增的key。</p>
+<h1 id="5-测试Coding"><a href="#5-测试Coding" class="headerlink" title="5. 测试Coding"></a>5. 测试Coding</h1><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">ssh -T git@e.coding.net</span><br></pre></td></tr></tbody></table></figure></div>
+<p>此时就能验证成功了</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">Warning: Permanently added <span class="string">'e.coding.net,(RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">Coding 提示: Hello Frank, You'</span>ve connected to Coding.net via SSH. This is a personal key.</span><br><span class="line">Frank，你好，你已经通过 SSH 协议认证 Coding.net 服务，这是一个个人公钥.</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+      <categories>
+        <category>Windows</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>SSH</tag>
+        <tag>Coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows10下无法更改新应用的保存位置</title>
+    <url>/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/</url>
+    <content><![CDATA[<html><head></head><body><p>​        前两天重新安装了Windows，今天正好想要从Windows Store里面安装软件，就想起来要修改一下软件安装位置（不然C盘占用的太多了）。但是发现无法修改，抛出错误代码0x80070002。</p>
+<p>​        试了几个方法都没有用，最终在神奇的知乎找到了解决办法。</p>
+<p>解决办法：</p>
+<p>​        删除想要移动的盘符内（我要修改到D盘，就是D盘内）的<code>WindowsApps</code>,  <code>WpSystem</code>,   <code>WUDownloadCache</code>,  <code>用户同名文件夹</code>，删除可能需要管理权限，WindowsApps如果无法删除的话，建议使用强力删除工具进行删除，然后再去设置里修改就完成了。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Windows</category>
+        <category>Windows10</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>Windows10</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows下迁移User下的用户目录到非系统盘</title>
+    <url>/2020/12/15/Windows%E4%B8%8B%E8%BF%81%E7%A7%BBUser%E4%B8%8B%E7%9A%84%E7%94%A8%E6%88%B7%E7%9B%AE%E5%BD%95%E5%88%B0%E9%9D%9E%E7%B3%BB%E7%BB%9F%E7%9B%98/</url>
+    <content><![CDATA[<html><head></head><body><ol>
+<li><p>先进入Windows的修复模式，进入修复模式的命令行功能。</p>
+<p>如果能够登录Windows, 按住Shift点击重启,则能够直接进入修复模式.</p>
+<p>如果无法进入Windows界面, (我的主板是ASUS, 目前没找到好的办法可以直接从BIOS进入), 可以在见到ASUS图标后, 按住关机键强制重启, 重复三次, 则可进入.</p>
+</li>
+<li><p>使用diskpart命令查看盘符（😭我的Windows里的盘符与diskpart的不一致,导致我重启了N多次）</p>
+<p>此时CMD一般显示的是X盘, 这是正常的不要惊慌.</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 进入diskpart工具</span></span><br><span class="line">diskpart</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看所有的硬盘</span></span><br><span class="line">list disk</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入系统盘所在的硬盘</span></span><br><span class="line">select disk 2 </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看当前硬盘的磁盘盘符 C: D:</span></span><br><span class="line">LIST VOLUME</span><br></pre></td></tr></tbody></table></figure></div></li>
+<li><p>根据查看的盘符编写命令</p>
+<p>想要将C:\Users\XXX 迁移到 D:\Users\XXX</p>
+<p>在diskpart中查看到的盘符分别为 G: 和 H: , 但是这里有个问题要注意, 等下G:\Users设置软链接的时候依旧要链到D:\Users , <strong>这点很重要(因为我重启了好几次)</strong>.</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> robocopy 文件复制   /E 复制子目录(包括空目录) /COPYALL 复制所有文件信息  /XJ 排除接合点(I don<span class="string">'t know what this is.) /XD排除某个文件</span></span></span><br><span class="line">robocopy "G:\Users" "D:\Users" /E /COPYALL /XJ /XD "G:\Users\Administrator"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果上一步复制失败,说有某个文件夹正在使用就可以使用/XD跳过对应的文件夹</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果仅迁移当前用户,则可以仅复制 G:\Users\userName 目录 到 D:\Users\userName</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除G:\Users目录, 应为删除后才能创建软连接</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rmdir 删除文件夹 /S 递归删除 /Q 安静模式,不会确认是否需要删除</span></span><br><span class="line">rmdir "C:\Users" /S /Q</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 上两步成功,就基本成功了</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> mklink 创建软链接 /J 链接类型为目录链接</span></span><br><span class="line">mklink "G:\Users" "D:\Users" /J</span><br></pre></td></tr></tbody></table></figure></div></li>
+<li><p>执行完成以上步骤后, 开机确认, 打开C:\Users 确认是否与 D:\Users 内容不同, 如果不相同可能就是mklink链接目录不对(即diskpart中的盘符与Windows开机后的盘符不一致, 按照第三步重新编写命令执行).</p>
+</li>
+</ol>
+</body></html>]]></content>
+      <categories>
+        <category>Windows</category>
+        <category>Windows10</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WordPress添加共享许可协议</title>
+    <url>/2019/01/16/Wordpress%E6%B7%BB%E5%8A%A0%E5%85%B1%E4%BA%AB%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<html><head></head><body><h1 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h1><p>在 <a href="https://creativecommons.org/choose/">共享协议选择</a> 页面选择你想要的共享协议，也可以根据他给出的选项，选择后他会推荐对应的共享协议。</p>
+<a id="more"></a>
+<p><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7B00F130EB-56E8-4DE3-A991-2CC66C7C5307%7D.png.jpg" data-fancybox="group" data-caption="许可协议要点" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7B00F130EB-56E8-4DE3-A991-2CC66C7C5307%7D.png.jpg" alt="许可协议要点" title="许可协议要点"></a></p>
+<h1 id="更多署名信息"><a href="#更多署名信息" class="headerlink" title="更多署名信息"></a>更多署名信息</h1><p>可以选择添加对应的个人网站信息，在下面会即时生成对应的 html 代码。<br><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7B30EF564D-F73B-4DB6-B06C-497ADDE65850%7D.png.jpg" data-fancybox="group" data-caption="更多署名信息" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7B30EF564D-F73B-4DB6-B06C-497ADDE65850%7D.png.jpg" alt="更多署名信息" title="更多署名信息"></a></p>
+<h1 id="添加到Wordpress"><a href="#添加到Wordpress" class="headerlink" title="添加到Wordpress"></a>添加到Wordpress</h1><p><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7BF2000411-72FA-454C-90EF-DF818F778429%7D.png.jpg" data-fancybox="group" data-caption="undefined" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7BF2000411-72FA-454C-90EF-DF818F778429%7D.png.jpg"></a></p>
+<p>复制下面的html代码</p>
+<p>登录到Wordpres后台管理页面，选择 <strong><code>外观-编辑-主题文件-主题页脚-footer.php</code></strong><br>在后一个标签<code>&lt;/p&gt;</code>之前添加复制的html代码，然后更新文件。<br>其它对齐或换行可以根据自己喜好单独调整。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">php</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight php"><table><tbody><tr><td class="code"><pre><span class="line">		&lt;br /&gt;</span><br><span class="line">		&lt;a rel=<span class="string">"license"</span> href=<span class="string">"http://creativecommons.org/licenses/by-sa/4.0/"</span>&gt;&lt;img alt=<span class="string">"知识共享许可协议"</span> style=<span class="string">"border-width:0"</span> src=<span class="string">"https://i.creativecommons.org/l/by-sa/4.0/80x15.png"</span> /&gt;&lt;/a&gt;&lt;br /&gt;本作品由&lt;span xmlns:cc=<span class="string">"http://creativecommons.org/ns#"</span> property=<span class="string">"cc:attributionName"</span>&gt;TZZ&lt;/span&gt;采用&lt;a rel=<span class="string">"license"</span> href=<span class="string">"http://creativecommons.org/licenses/by-sa/4.0/"</span>&gt;知识共享署名-相同方式共享 <span class="number">4.0</span> 国际许可协议&lt;/a&gt;进行许可。基于&lt;a xmlns:dct=<span class="string">"http://purl.org/dc/terms/"</span> href=<span class="string">"tzz6.xyz"</span> rel=<span class="string">"dct:source"</span>&gt;tzz6.xyz&lt;/a&gt;上的作品创作。</span><br><span class="line">    &lt;/p&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/footer&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="meta">&lt;?php</span> wp_footer(); <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></tbody></table></figure></div>
+<h1 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h1><p><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7B32C673DC-48E5-4E01-A5BF-58BF44F6FD52%7D.png.jpg" data-fancybox="group" data-caption="undefined" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7B32C673DC-48E5-4E01-A5BF-58BF44F6FD52%7D.png.jpg"></a><br>完成！</p>
+</body></html>]]></content>
+      <categories>
+        <category>Blog</category>
+        <category>WordPress</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>bing2 网站页面加载优化</title>
+    <url>/2019/03/24/bing2-%E7%BD%91%E7%AB%99%E9%A1%B5%E9%9D%A2%E5%8A%A0%E8%BD%BD%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<html><head></head><body><p>网站：<a href="http://bing.tzz6.xyz/">http://bing.tzz6.xyz</a></p>
+<p>编写的最初版本的页面加载速度过慢，而且要等待主页所有图片都加载完成才能进入网站主页，所以后续版本对页面的加载速度进行了优化。由于主页是使用瀑布流方式进行展示的，所以最先加入了懒加载的显示方式来保证缩短进入主页的加载时间。加入图片懒加载后，主页中放置的原图同样需要很长的请求下载时间，所以后来修改为了生成缩略图进行展示，然后主页启用腾讯CDN加速，加快图片加载速度。</p>
+<a id="more"></a>
+
+<h1 id="懒加载"><a href="#懒加载" class="headerlink" title="懒加载"></a>懒加载</h1><p>参考链接：<a href="https://cloud.tencent.com/developer/article/1139722">https://cloud.tencent.com/developer/article/1139722</a></p>
+<p>实现方式：首先将页面上的图片的 src 属性设为空字符串，而图片的真实路径则设置在data-original属性中，当页面滚动的时候需要去监听scroll事件，在scroll事件的回调中，判断我们的懒加载的图片是否进入可视区域,如果图片在可视区内将图片的 src 属性设置为data-original 的值，这样就可以实现延迟加载。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">html</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"lazyload"</span> <span class="attr">lazyload</span>=<span class="string">"true"</span> <span class="attr">data-original</span>=<span class="string">'imagePath'</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Javascript</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight js"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> viewHeight = <span class="built_in">document</span>.documentElement.clientHeight;<span class="comment">//可视区高度</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">lazyload</span>(<span class="params"></span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> eles = <span class="built_in">document</span>.querySelectorAll(<span class="string">'img[data-original][lazyload]'</span>)</span><br><span class="line">    <span class="built_in">Array</span>.prototype.forEach.call(eles, <span class="function"><span class="keyword">function</span> (<span class="params">item, index</span>) </span>{</span><br><span class="line">        <span class="keyword">var</span> rect;</span><br><span class="line">        <span class="keyword">if</span> (item.dataset.original === <span class="string">""</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        rect = item.getBoundingClientRect();<span class="comment">//获得页面中某个元素的左，上，右，下相较于浏览器视窗的位置</span></span><br><span class="line">        <span class="keyword">if</span> (rect.bottom &gt;= <span class="number">0</span> &amp;&amp; rect.top &lt; viewHeight) {</span><br><span class="line">            !<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{</span><br><span class="line">                <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</span><br><span class="line">                img.src = item.dataset.original;</span><br><span class="line">                img.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{</span><br><span class="line">                    item.src = img.src;</span><br><span class="line">                };</span><br><span class="line">                item.removeAttribute(<span class="string">"data-original"</span>);<span class="comment">//下次不再遍历</span></span><br><span class="line">                item.removeAttribute(<span class="string">"lazyload"</span>);</span><br><span class="line">            }()</span><br><span class="line">        }</span><br><span class="line">    })</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">lazyload();</span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">"scroll"</span>, lazyload)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<h1 id="生成缩略图"><a href="#生成缩略图" class="headerlink" title="生成缩略图"></a>生成缩略图</h1><p>使用python中的pillow库来生成对应的缩略图。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">img = Image.<span class="built_in">open</span>(file_path)</span><br><span class="line">w, h = img.size</span><br><span class="line">img.thumbnail(((<span class="built_in">int</span>)(w / <span class="number">4</span>), (<span class="built_in">int</span>)(h / <span class="number">4</span>)))</span><br><span class="line">img.save(file_path)</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<p>以下是<code>thumbnail()</code>函数实现方式:</p>
+<p>缩略图函数可以传入两个参数，第一个为生成的缩略图大小，但不能大于原图大小；第二个为缩略图生成的采样方式，提供四种方式：（此参数可不选，默认为 BICUBIC )</p>
+<p>​    NEAREST：最近滤波。从输入图像中选取最近的像素作为输出像素。它忽略了所有其他的像素。</p>
+<p>​    BILINEAR：双线性滤波。在输入图像的2x2矩阵上进行线性插值。注意：PIL的当前版本，做下采样时该滤波器使用了固定输入模板。</p>
+<p>​    BICUBIC：双立方滤波。在输入图像的4x4矩阵上进行立方插值。注意：PIL的当前版本，做下采样时该滤波器使用了固定输入模板。</p>
+<p>​    ANTIALIAS：平滑滤波。这是PIL 1.1.3版本中新的滤波器。对所有可以影响输出像素的输入像素进行高质量的重采样滤波，以计算输出像素值。在当前的PIL版本中，这个滤波器只用于改变尺寸和缩略图方法。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">thumbnail</span>(<span class="params">self, size, resample=BICUBIC</span>):</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Make this image into a thumbnail.  This method modifies the</span></span><br><span class="line"><span class="string">    image to contain a thumbnail version of itself, no larger than</span></span><br><span class="line"><span class="string">    the given size.  This method calculates an appropriate thumbnail</span></span><br><span class="line"><span class="string">    size to preserve the aspect of the image, calls the</span></span><br><span class="line"><span class="string">    :py:meth:`~PIL.Image.Image.draft` method to configure the file reader</span></span><br><span class="line"><span class="string">    (where applicable), and finally resizes the image.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Note that this function modifies the :py:class:`~PIL.Image.Image`</span></span><br><span class="line"><span class="string">    object in place.  If you need to use the full resolution image as well,</span></span><br><span class="line"><span class="string">    apply this method to a :py:meth:`~PIL.Image.Image.copy` of the original</span></span><br><span class="line"><span class="string">    image.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param size: Requested size.</span></span><br><span class="line"><span class="string">    :param resample: Optional resampling filter.  This can be one</span></span><br><span class="line"><span class="string">       of :py:attr:`PIL.Image.NEAREST`, :py:attr:`PIL.Image.BILINEAR`,</span></span><br><span class="line"><span class="string">       :py:attr:`PIL.Image.BICUBIC`, or :py:attr:`PIL.Image.LANCZOS`.</span></span><br><span class="line"><span class="string">       If omitted, it defaults to :py:attr:`PIL.Image.BICUBIC`.</span></span><br><span class="line"><span class="string">       (was :py:attr:`PIL.Image.NEAREST` prior to version 2.5.0)</span></span><br><span class="line"><span class="string">    :returns: None</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># preserve aspect ratio</span></span><br><span class="line">    x, y = self.size</span><br><span class="line">    <span class="keyword">if</span> x &gt; size[<span class="number">0</span>]:</span><br><span class="line">        y = <span class="built_in">int</span>(<span class="built_in">max</span>(y * size[<span class="number">0</span>] / x, <span class="number">1</span>))</span><br><span class="line">        x = <span class="built_in">int</span>(size[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">if</span> y &gt; size[<span class="number">1</span>]:</span><br><span class="line">        x = <span class="built_in">int</span>(<span class="built_in">max</span>(x * size[<span class="number">1</span>] / y, <span class="number">1</span>))</span><br><span class="line">        y = <span class="built_in">int</span>(size[<span class="number">1</span>])</span><br><span class="line">    size = x, y</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> size == self.size:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    self.draft(<span class="literal">None</span>, size)</span><br><span class="line"></span><br><span class="line">    im = self.resize(size, resample)</span><br><span class="line"></span><br><span class="line">    self.im = im.im</span><br><span class="line">    self.mode = im.mode</span><br><span class="line">    self._size = size</span><br><span class="line"></span><br><span class="line">    self.readonly = <span class="number">0</span></span><br><span class="line">    self.pyaccess = <span class="literal">None</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+
+<h1 id="CDN加速"><a href="#CDN加速" class="headerlink" title="CDN加速"></a>CDN加速</h1><p>项目中使用<a href="https://cloud.tencent.com/product/cdn">腾讯CDN</a>，为图片展示首页进行加速，目前首页加载速度本地测试 1.5s 以内。</p>
+</body></html>]]></content>
+      <categories>
+        <category>前端</category>
+        <category>bing2</category>
+      </categories>
+      <tags>
+        <tag>bing2</tag>
+        <tag>懒加载</tag>
+        <tag>CDN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>django models中设置字段允许为空</title>
+    <url>/2018/12/11/django-models%E4%B8%AD%E8%AE%BE%E7%BD%AE%E5%AD%97%E6%AE%B5%E5%85%81%E8%AE%B8%E4%B8%BA%E7%A9%BA/</url>
+    <content><![CDATA[<html><head></head><body><p>在Django-models中定义数据库字段时，其字段默认是不允许为空的，在直接向数据库中插入非全部字段时，会直接发生下面错误：</p>
+<p>_ sqlite3.IntegrityError: NOT NULL constraint failed: bing images.drk _</p>
+<p>即 sqlite3 完整性错误，其中NOT NULL 约束失败，默认字段不允许为空。</p>
+<p>可以通过在models的字段定义上设置 <code>null = True</code> 来解决</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">url = models.CharField(max_length=<span class="number">200</span>, null=<span class="literal">True</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+<p>Django中源代码如下：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">formfield</span>(<span class="params">self, **kwargs</span>):</span></span><br><span class="line">    <span class="comment"># Passing max_length to forms.CharField means that the value's length</span></span><br><span class="line">    <span class="comment"># will be validated twice. This is considered acceptable since we want</span></span><br><span class="line">    <span class="comment"># the value in the form field (to pass into widget for example).</span></span><br><span class="line">    defaults = {<span class="string">'max_length'</span>: self.max_length}</span><br><span class="line">    <span class="comment"># <span class="doctag">TODO:</span> Handle multiple backends with different feature flags.</span></span><br><span class="line">    <span class="keyword">if</span> self.null <span class="keyword">and</span> <span class="keyword">not</span> connection.features.interprets_empty_strings_as_nulls:</span><br><span class="line">        defaults[<span class="string">'empty_value'</span>] = <span class="literal">None</span></span><br><span class="line">    defaults.update(kwargs)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">super</span>().formfield(**defaults)</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+      <categories>
+        <category>Python</category>
+        <category>Django</category>
+      </categories>
+      <tags>
+        <tag>Django</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2018/11/16/hello-world/</url>
+    <content><![CDATA[<html><head></head><body><p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure></div>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure></div>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure></div>
+<p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
+</body></html>]]></content>
+  </entry>
+  <entry>
+    <title>Hexo bug</title>
+    <url>/2018/12/13/hexo-bug/</url>
+    <content><![CDATA[<html><head></head><body><h1 id="修改文章的大小写后，重新部署无效"><a href="#修改文章的大小写后，重新部署无效" class="headerlink" title="修改文章的大小写后，重新部署无效"></a>修改文章的大小写后，重新部署无效</h1><p>在初次提交文章后，你想要修改文章名字的大小写和分类时，部署后链接会修改，但是Github上的文章名并没有修改，所以打开链接会导致 404 错误。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>这是因为在Windos和MAC OSX 系统中 Git 会忽略对文件或目录大小写的更改，导致Github上文章名不会更新。</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>可以先将文件名添加字母或修改为其他名字，再次部署后再进行大小写的修改，进行重新部署。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Blog</category>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo 更换主题</title>
+    <url>/2018/11/16/hexo-%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98/</url>
+    <content><![CDATA[<html><head></head><body><h1 id="选择主题"><a href="#选择主题" class="headerlink" title="选择主题"></a>选择主题</h1><p>可以在 <a href="https://www.zhihu.com/question/24422335">有哪些好看的 Hexo 主题?</a> 找个自己喜欢的主题，我选择的是 <a href="https://github.com/theme-next/hexo-theme-next">hexo-theme-next</a> 主题</p>
+<h1 id="下载主题"><a href="#下载主题" class="headerlink" title="下载主题"></a>下载主题</h1><p>打开在 Hexo 根目录 打开 CMD</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mkdir theme/next</span><br><span class="line">git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></tbody></table></figure></div>
+<h1 id="安装主题"><a href="#安装主题" class="headerlink" title="安装主题"></a>安装主题</h1><p>打开 _config.yml 配置文件,<br><a href="a.jpg" data-fancybox="group" data-caption="[_config.yml]" class="fancybox"><img src="a.jpg" alt="[_config.yml]" title="[_config.yml]"></a><br>修改主题为 next</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo g # 重新生成静态文件</span><br><span class="line">$ hexo s # 本地预览效果</span><br><span class="line">$ hexo d # 部署到Github</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+      <categories>
+        <category>Blog</category>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python sqlite3 数据库操作的自动提交</title>
+    <url>/2018/12/11/python-sqlite3-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4/</url>
+    <content><![CDATA[<html><head></head><body><p>在一个爬虫中使用了Sqlite3数据库，在将内容写入数据库时，可以正常执行，并且使用同一个游标可以正常读出数据，但是数据库中并没有内容。</p>
+<p>在网上搜索时发现，是因为sqlite的事务控制导致，其中在执行数据库操作时，会有两种commit状态。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">智能commit状态:</span><br><span class="line">    生成方式: 在connect()中不传入 isolation_level, 此时isolation_level==''</span><br><span class="line">        在进行 执行Data Modification Language (DML) 操作(INSERT/UPDATE/DELETE/REPLACE)时, 会自动打开一个事务,</span><br><span class="line">        在执行 非DML, 非query (非 SELECT 和上面提到的)语句时, 会隐式执行commit</span><br><span class="line">        可以使用 connection.commit()方法来进行提交</span><br><span class="line">    注意:</span><br><span class="line">        不能和cur.execute("COMMIT")共用</span><br><span class="line">    </span><br><span class="line">自动commit状态:</span><br><span class="line">    生成方式: 在connect()中传入 isolation_level=None</span><br><span class="line">        这样,在任何DML操作时,都会自动提交</span><br><span class="line">    事务处理</span><br><span class="line">        connection.execute("BEGIN TRANSACTION")</span><br><span class="line">        connection.execute("COMMIT")</span><br><span class="line">    如果不使用事务, 批量添加数据非常缓慢</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="智能commit状态"><a href="#智能commit状态" class="headerlink" title="智能commit状态"></a>智能commit状态</h2><p>即在下面这种非数据修改操作时，会自动执行commit操作。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">result = c.execute(<span class="string">"select * from bing_images"</span>)</span><br></pre></td></tr></tbody></table></figure></div>
+<p>当进行数据库写入时，这种数据修改操作并不会自动提交,需要在执行完成后进行手动提交(需要connection.commit()进行提交)。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">python</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">c.execute(insert_sql)</span><br><span class="line">conn.commit() <span class="comment"># connection</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="自动commit状态"><a href="#自动commit状态" class="headerlink" title="自动commit状态"></a>自动commit状态</h2><p>在这种情况下，无论是数据修改操作还是非数据修改操作都会自动提交。</p>
+</body></html>]]></content>
+      <categories>
+        <category>数据库</category>
+        <category>sqlite3</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>springboot thymeleaf不渲染页面返回字符串</title>
+    <url>/2019/03/30/springboot-thymeleaf%E4%B8%8D%E6%B8%B2%E6%9F%93%E9%A1%B5%E9%9D%A2%E8%BF%94%E5%9B%9E%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    <content><![CDATA[<html><head></head><body><p>错误信息：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">This application has no explicit mapping for /error, so you are seeing this as a fallback.</span><br><span class="line"></span><br><span class="line">Sat Mar 30 01:59:07 CST 2019</span><br><span class="line"></span><br><span class="line">There was an unexpected error (type=Internal Server Error, status=500).</span><br><span class="line"></span><br><span class="line">Error resolving template [index], template might not exist or might not be accessible by any of the configured Template Resolvers</span><br><span class="line"></span><br><span class="line">org.thymeleaf.exceptions.TemplateInputException: Error resolving template [index], template might not exist or might not be accessible by any of the configured Template Resolvers</span><br></pre></td></tr></tbody></table></figure></div>
+
+
+
+
+<h1 id="RestController-与-Controller"><a href="#RestController-与-Controller" class="headerlink" title="@RestController 与 @Controller"></a>@RestController 与 @Controller</h1></body></html>]]></content>
+  </entry>
+  <entry>
+    <title>【派大星的独白】一个关于正常人的故事</title>
+    <url>/2019/08/17/%E3%80%90%E6%B4%BE%E5%A4%A7%E6%98%9F%E7%9A%84%E7%8B%AC%E7%99%BD%E3%80%91%E4%B8%80%E4%B8%AA%E5%85%B3%E4%BA%8E%E6%AD%A3%E5%B8%B8%E4%BA%BA%E7%9A%84%E6%95%85%E4%BA%8B/</url>
+    <content><![CDATA[<html><head></head><body><blockquote>
+<p>转载自 哔哩哔哩 <a href="https://space.bilibili.com/30222764">@洛温阿特金森</a></p>
+<p>视频地址：<a href="https://www.bilibili.com/video/av60731116/">https://www.bilibili.com/video/av60731116/</a></p>
+</blockquote>
+<iframe src="//player.bilibom/player.html?aili.cid=60731116&amp;cid=106015992&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</body></html>]]></content>
+      <categories>
+        <category>视频</category>
+        <category>bilibili</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>修改wordpress的翻译文件</title>
+    <url>/2018/11/20/%E4%BF%AE%E6%94%B9wordpress%E7%9A%84%E7%BF%BB%E8%AF%91%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<html><head></head><body><p>之前WordPress博客的首页部分内容翻译错误，就想手动修改一下。</p>
+<h1 id="使用-Xftp-登录服务器"><a href="#使用-Xftp-登录服务器" class="headerlink" title="使用 Xftp 登录服务器"></a>使用 Xftp 登录服务器</h1><p>1、找到wordpress的安装目录</p>
+<p>2、在 <em>/wordpress/wp-content/languages/themes</em> 目录下，找到你主题的对应翻译文件。</p>
+<p>每个主题都有两个 .mo .po 类型的文件</p>
+<p><a href="https://s1.ax1x.com/2018/11/20/F9Zas1.jpg" data-fancybox="group" data-caption="F9Zas1.jpg" class="fancybox"><img src="https://s1.ax1x.com/2018/11/20/F9Zas1.jpg" alt="F9Zas1.jpg" title="F9Zas1.jpg"></a></p>
+<p>其中po文件,即Portable Object(可移植对象) 是翻译人员进行编写的翻译文件</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">#: inc/main-funtions.php:469</span><br><span class="line">msgid "Github"</span><br><span class="line">msgstr "Github"</span><br><span class="line"></span><br><span class="line">#: inc/main-funtions.php:461</span><br><span class="line">msgid "LinkedIn"</span><br><span class="line">msgstr "领英"</span><br><span class="line"></span><br><span class="line">#: inc/main-funtions.php:449</span><br><span class="line">msgid "Facebook"</span><br><span class="line">msgstr "脸书"</span><br></pre></td></tr></tbody></table></figure></div>
+<p>mo 文件 Machine Object(机器对象) 是由 po 文件编译成的二进制文件,应用程序可以通过读取 .mo 文件进行对应语言的翻译显示。</p>
+<p>我们将要修改主题翻译的 .po 文件下载下来。</p>
+<h1 id="修改翻译"><a href="#修改翻译" class="headerlink" title="修改翻译"></a>修改翻译</h1><p>我们只能修改 .po 文件后再将其编译为 .mo 文件，其中编译软件可以使用 <a href="https://poedit.net/">Poedit</a> 。<br>使用 <a href="https://poedit.net/">Poedit</a> 打开下载的 .po 文件，<br><a href="https://s1.ax1x.com/2018/11/20/F9ubNV.jpg" data-fancybox="group" data-caption="F9ubNV.jpg" class="fancybox"><img src="https://s1.ax1x.com/2018/11/20/F9ubNV.jpg" alt="F9ubNV.jpg" title="F9ubNV.jpg"></a><br>修改想要修改的翻译内容，修改完成后点击左上角 文件 - 编译为mo - 保存文件。</p>
+<h1 id="上传覆盖"><a href="#上传覆盖" class="headerlink" title="上传覆盖"></a>上传覆盖</h1><p>编译完成后将编译完成的 .mo 文件上传到服务器，将原来的mo文件覆盖。<br>此时重新打开 wordpress 博客首页，翻译就已经生效了。</p>
+</body></html>]]></content>
+      <categories>
+        <category>Blog</category>
+        <category>WordPress</category>
+      </categories>
+      <tags>
+        <tag>WordPress</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>删除电脑文件夹中右键菜单-授予访问权限选项</title>
+    <url>/2019/12/13/%E5%88%A0%E9%99%A4%E7%94%B5%E8%84%91%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95-%E6%8E%88%E4%BA%88%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E9%80%89%E9%A1%B9/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="删除电脑文件夹中右键菜单-授予访问权限-选项"><a href="#删除电脑文件夹中右键菜单-授予访问权限-选项" class="headerlink" title="删除电脑文件夹中右键菜单-授予访问权限 选项"></a>删除电脑文件夹中右键菜单-授予访问权限 选项</h2><ol>
+<li>WIN+R 输入 regedit 打开注册表</li>
+<li>找到一下路径  <code>计算机\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions</code></li>
+<li>在左侧菜单栏点击Shell Extensions</li>
+<li>右键Shell Extensions - 新建 - 项 ，名称为 <code>Blocked</code> </li>
+<li>左侧菜单栏点击Blocked，在右侧空白地区 右键 - 新建 - 字符串值<ul>
+<li>数据名称为：<code>{F81E9010-6EA4-11CE-A7FF-00AA003CA9F6}</code></li>
+<li>数值数据空着即可</li>
+</ul>
+</li>
+<li>保存，在任务管理器中找到 Windows资源管理器，右键-重新启动。</li>
+</ol>
+</body></html>]]></content>
+      <categories>
+        <category>Windows</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>右键菜单</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>删除电脑文件夹中右键菜单-自定义文件夹选项</title>
+    <url>/2019/12/13/%E5%88%A0%E9%99%A4%E7%94%B5%E8%84%91%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%87%E4%BB%B6%E5%A4%B9%E9%80%89%E9%A1%B9/</url>
+    <content><![CDATA[<html><head></head><body><ol>
+<li>WIN+R 输入 regedit 打开注册表</li>
+<li>找到一下路径 <code>计算机\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer</code></li>
+<li>右键新建DWORD<ul>
+<li>数值名称：NoCustomizeWebView</li>
+<li>数值数据：1</li>
+<li>基数：十六进制</li>
+</ul>
+</li>
+<li>保存，在任务管理器中找到 Windows资源管理器，右键-重新启动。</li>
+</ol>
+</body></html>]]></content>
+      <categories>
+        <category>Windows</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>注册表</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在Docker Alpine中安装uwsgi</title>
+    <url>/2019/02/19/%E5%9C%A8Docker-Alpine%E4%B8%AD%E5%AE%89%E8%A3%85uwsgi/</url>
+    <content><![CDATA[<html><head></head><body><p>uWSGI是一个由unbit提供的Web应用服务器，实现了WSGI规范。</p>
+<p>在Docker中下载了一个 <code>python:3.6-alpine</code> 的镜像，相比其它版本，更加精简。但同时也缺少了很多必要的包，在镜像中直接安装<code>uwsgi</code>时会发生错误。</p>
+<p><code>pip install uwsgi</code> 可能会产生无法编译或找不到python包的头文件错误。</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">apk add --no-cache gcc make libc-dev linux-headers pcre-dev</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">dockerfile</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight dockerfile"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.6</span>-alpine</span><br><span class="line"><span class="keyword">MAINTAINER</span> tzz &lt;tzzchn@outlook.com&gt;</span><br><span class="line"><span class="keyword">ENV</span> TZ <span class="string">"Asia/Shanghai"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> . /webdata/bing2</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /webdata/bing2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">echo</span> https://mirrors.ustc.edu.cn/alpine/latest-stable/main &gt; /etc/apk/repositories; \</span></span><br><span class="line"><span class="bash">    <span class="built_in">echo</span> https://mirrors.ustc.edu.cn/alpine/latest-stable/community &gt;&gt; /etc/apk/repositories</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> \ </span></span><br><span class="line">apk update &amp;&amp; \</span><br><span class="line">apk <span class="keyword">add</span><span class="bash"> --no-cache gcc make libc-dev linux-headers &amp;&amp; \</span></span><br><span class="line"><span class="bash">pip install  -r /webdata/bing2/requirements.txt &amp;&amp; \ </span></span><br><span class="line">uwsgi --ini /webdata/bing2/uwsgi.ini</span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span> <span class="number">8000</span> <span class="number">8080</span> <span class="number">9090</span></span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Alpine</category>
+        <category>Docker</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>数据库 内连接 左外连接 右外连接 全外连接</title>
+    <url>/2019/03/23/%E6%95%B0%E6%8D%AE%E5%BA%93-%E5%86%85%E8%BF%9E%E6%8E%A5-%E5%B7%A6%E5%A4%96%E8%BF%9E%E6%8E%A5-%E5%8F%B3%E5%A4%96%E8%BF%9E%E6%8E%A5-%E5%85%A8%E5%A4%96%E8%BF%9E%E6%8E%A5/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h2><p>内连接中，只有满足连接条件的元组才能作为结果输出，即当任一个表中为null则不会输出。</p>
+<p>SQL 语句：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">sql</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight sql"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> FIRST.Cno,SECOND.Cpno</span><br><span class="line"><span class="keyword">FROM</span> Course <span class="keyword">FIRST</span>,Course <span class="keyword">SECOND</span></span><br><span class="line"><span class="keyword">WHERE</span> FIRST.Cpno<span class="operator">=</span>SECOND.Cno;</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="左外连接"><a href="#左外连接" class="headerlink" title="左外连接"></a>左外连接</h2><p>如果在查询时需要保留一个表中全部的元组，就需要使用外连接。</p>
+<p>SQL</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">sql</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight sql"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Student.Sno,Sname,Ssex,Sage,Sdept,Cno,Grade</span><br><span class="line"><span class="keyword">FROM</span> Student <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> SC <span class="keyword">ON</span> (Student.Sno<span class="operator">=</span>SC.Sno)</span><br></pre></td></tr></tbody></table></figure></div>
+<p><code>LEFT JOIN</code> 与 <code>LEFT OUTER JOIN</code> 相同</p>
+<p>使用左外连接会保存左边关系(表Student)中所有的元组以及右边关系(表SC)符合条件的元组。</p>
+<a id="more"></a>
+<h2 id="右外连接"><a href="#右外连接" class="headerlink" title="右外连接"></a>右外连接</h2><p>SQL</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">sql</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight sql"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> Student.Sno,Sname,Ssex,Sage,Sdept,Cno,Grade</span><br><span class="line"><span class="keyword">FROM</span> Student <span class="keyword">RIGHT</span> <span class="keyword">JOIN</span> SC <span class="keyword">ON</span> (Student.Sno<span class="operator">=</span>SC.Sno)</span><br></pre></td></tr></tbody></table></figure></div>
+<p><code>RIGHT JOIN</code> 与 <code>RIGHT OUTER JOIN</code> 相同</p>
+<p>使用右外连接会保存右边关系(SC)中所有的元组以及右边关系(Student)符合条件的元组。</p>
+<h2 id="全外连接"><a href="#全外连接" class="headerlink" title="全外连接"></a>全外连接</h2><p>SQL</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">sql</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight sql"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> A.<span class="operator">*</span>,B.<span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> A <span class="keyword">FULL</span> <span class="keyword">JOIN</span> B <span class="keyword">ON</span> A.id<span class="operator">=</span>B.id</span><br></pre></td></tr></tbody></table></figure></div>
+<p>完整外部连接返回左表和右表中的所有行，不管另外一边的表中是否存在与它们匹配的行。</p>
+</body></html>]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>网站开启CDN加速</title>
+    <url>/2019/01/16/%E7%BD%91%E7%AB%99%E5%BC%80%E5%90%AFCDN%E5%8A%A0%E9%80%9F/</url>
+    <content><![CDATA[<html><head></head><body><h1 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h1><p>腾讯云和七牛云CDN都有免费额度</p>
+<p><a href="https://portal.qiniu.com/financial/price?ref=developer.qiniu.com">七牛云CDN</a>每个月 CDN-HTTP 下载流量 1GB 免费（仅HTTP免费）。</p>
+<p><a href="https://cloud.tencent.com/document/product/228/562">腾讯云CDN</a>用户每月均可享受 10 GB 免费流量包，接入加速域名后于次月 1 号发放至您的账户。新开通 CDN 的用户还会在开通后的 6 个月内每月收到腾讯云赠送的 50 GB 流量包。</p>
+<p>我使用的是腾讯CDN，接下来就是按照腾讯云CDN配置方法。</p>
+<a id="more"></a>
+<h1 id="开通CDN"><a href="#开通CDN" class="headerlink" title="开通CDN"></a>开通CDN</h1><p><a href="https://console.cloud.tencent.com/cdn">腾讯CDN控制台</a>开通CDN，需要实名认证-补充服务信息-选择付费方式。付费方式可以选择按使用流量收费，就可以直接从赠送的6个月的流量包中扣除。</p>
+<h1 id="接入域名"><a href="#接入域名" class="headerlink" title="接入域名"></a>接入域名</h1><h2 id="需要"><a href="#需要" class="headerlink" title="需要"></a>需要</h2><ul>
+<li>域名已备案</li>
+</ul>
+<h2 id="接入域名-1"><a href="#接入域名-1" class="headerlink" title="接入域名"></a>接入域名</h2><p>在 <a href="https://console.cloud.tencent.com/cdn/access">域名管理</a> 页面，选择添加域名</p>
+<h3 id="域名配置"><a href="#域名配置" class="headerlink" title="域名配置"></a>域名配置</h3><p><a href="https://main.qcloudimg.com/raw/9eb6362d91925027758c55fff6f8b219.png" data-fancybox="group" data-caption="undefined" class="fancybox"><img src="https://main.qcloudimg.com/raw/9eb6362d91925027758c55fff6f8b219.png"></a></p>
+<p>域名中填写要加速的域名，例如 <a href="tzz6.xyz">tzz6.xyz</a>,同时后面<a href="#%E9%85%8D%E7%BD%AECNAME">添加CNAME</a>时可以直接按照这个域名来配置。</p>
+<p>源站设置中直接填写服务器IP即可，如果不是默认端口，后面添加端口即可，例如 <code>127.0.0.1:443</code></p>
+<h3 id="加速服务配置"><a href="#加速服务配置" class="headerlink" title="加速服务配置"></a>加速服务配置</h3><p><a href="https://main.qcloudimg.com/raw/5a1a60e71ac4bd92f333c42298fcab36.png" data-fancybox="group" data-caption="undefined" class="fancybox"><img src="https://main.qcloudimg.com/raw/5a1a60e71ac4bd92f333c42298fcab36.png"></a></p>
+<p>博客类网站选择静态加速<br><a href="tzz6.xyz">我的博客</a>网站由Wordpress驱动,加载速度慢主要是因为需要下载<code>.css  .js  .png</code> 类型文件，所以可以在缓存配置中添加</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>内容</th>
+<th>刷新时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件类型</td>
+<td><code>.css;.js;.png;.gif</code></td>
+<td>1天</td>
+</tr>
+</tbody></table>
+<p>你也可以通过浏览器开发者工具-Network查看加载速度慢的元素。<br>也可以添加全路径文件来缓存指定的文件，加快访问速度。<br>我的全部设置</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>内容</th>
+<th>刷新时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件类型</td>
+<td><code>.css;.js;.png;.gif</code></td>
+<td>1天</td>
+</tr>
+<tr>
+<td>全路径文件</td>
+<td><code>/wordpress/wp-content/themes/wordstar/assets/fonts/fontawesome-webfont.woff2</code></td>
+<td>1天</td>
+</tr>
+<tr>
+<td>全部</td>
+<td>all</td>
+<td>1天</td>
+</tr>
+</tbody></table>
+<h1 id="配置CNAME"><a href="#配置CNAME" class="headerlink" title="配置CNAME"></a>配置CNAME</h1><p>我的域名是在 阿里云 ，在域名解析页面中添加一条CNAME解析，如果你之前存在 <a href="###%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE">域名配置</a> 中填写的域名的对应解析，需要先删除再添加CNAME解析。</p>
+<p>主机记录根据对应的域名配置的前缀进行填写，如果直接为 <code>tzz6.xyz</code> 这种域名，则填写 <code>@</code> ，如果前缀为<code>www</code>，则填写<code>www</code>,其它类似。</p>
+<p>记录值填写 CDN 分配的域名，然后保存即可。<br><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7BD9EDBBE1-1519-40C1-B4D8-6558E3EB3CBF%7D.png.jpg" data-fancybox="group" data-caption="undefined" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7BD9EDBBE1-1519-40C1-B4D8-6558E3EB3CBF%7D.png.jpg"></a></p>
+<h1 id="CDN验证"><a href="#CDN验证" class="headerlink" title="CDN验证"></a>CDN验证</h1><p>CDN的生效需要一段时间，随后可以通过站长之家的工具测试是是否生效。</p>
+<p>**<a href="http://ping.chinaz.com/">Ping检测</a>**：地图下面会显示对应的CDN信息<br><a href="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7B91925569-DD19-4CE6-BB16-104C1D67CAD6%7D.png.jpg" data-fancybox="group" data-caption="undefined" class="fancybox"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%7B91925569-DD19-4CE6-BB16-104C1D67CAD6%7D.png.jpg"></a></p>
+<p><strong><a href="http://tool.chinaz.com/speedtest">国内测速</a></strong>:测试网站的打开速度</p>
+</body></html>]]></content>
+  </entry>
+  <entry>
+    <title>解决Linux下Oracle客户端无法连接Windows下Oracle Server端问题的方法</title>
+    <url>/2019/08/13/%E8%A7%A3%E5%86%B3Linux%E4%B8%8BOracle%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5Windows%E4%B8%8BOracle-Server%E7%AB%AF%E9%97%AE%E9%A2%98%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<html><head></head><body><h2 id="查看SERVICE-NAME"><a href="#查看SERVICE-NAME" class="headerlink" title="查看SERVICE_NAME"></a>查看SERVICE_NAME</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在windows Oracle服务端启动SQLPLUS</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 执行以下命令</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> select value from v<span class="variable">$parameter</span> <span class="built_in">where</span> name=<span class="string">'service_names'</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 以下为执行结果</span></span><br><span class="line">VALUE</span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line">orcl.microdone.cn</span><br></pre></td></tr></tbody></table></figure></div>
+<a id="more"></a>
+<h2 id="修改Linux下-tnsnames-ora"><a href="#修改Linux下-tnsnames-ora" class="headerlink" title="修改Linux下 tnsnames.ora"></a>修改Linux下 tnsnames.ora</h2><p># 将SERVICE_NAME 修改为上面查询的结果</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">sudo vim /usr/lib/oracle/12.2/client64/network/admin/tnsnames.ora</span><br><span class="line"></span><br><span class="line">ORCL =</span><br><span class="line">  (DESCRIPTION =</span><br><span class="line">    (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.137.1)(PORT = 1521))</span><br><span class="line">    (CONNECT_DATA =</span><br><span class="line">  &nbsp;   (SERVER = DEDICATED)</span><br><span class="line">      (SERVICE_NAME = orcl.microdone.cn)</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将SERVICE_NAME 修改为上面查询的结果</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="查看Oracle数据库实例名称"><a href="#查看Oracle数据库实例名称" class="headerlink" title="查看Oracle数据库实例名称"></a>查看Oracle数据库实例名称</h2><ol>
+<li>找到Windows下Oracle安装目录</li>
+</ol>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">E:\app\TZZ\virtual\product\12.2.0\dbhome_1\</span><br></pre></td></tr></tbody></table></figure></div>
+<ol start="2">
+<li><p>进入 <code>bin</code> 文件夹中</p>
+</li>
+<li><p>找到  <code>lsnrctl.exe</code> 可执行文件，<strong>右键使用管理员身份打开</strong></p>
+</li>
+<li><p>执行<code>status</code>命令</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">LSNRCTL&gt; status</span><br><span class="line">正在连接到 (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=windows10.microdone.cn)(PORT=1521)))</span><br><span class="line">LISTENER 的 STATUS</span><br><span class="line">------------------------</span><br><span class="line">别名                      LISTENER</span><br><span class="line">版本                      TNSLSNR for 64-bit Windows: Version 12.2.0.1.0 - Production</span><br><span class="line">启动日期                  13-8月 -2019 01:11:12</span><br><span class="line">正常运行时间              0 天 0 小时 19 分 35 秒</span><br><span class="line">跟踪级别                  off</span><br><span class="line">安全性                    ON: Local OS Authentication</span><br><span class="line">SNMP                      OFF</span><br><span class="line">监听程序参数文件          E:\app\TZZ\virtual\product\12.2.0\dbhome_1\network\admin\listener.ora</span><br><span class="line">监听程序日志文件          E:\app\TZZ\virtual\diag\tnslsnr\DESKTOP-8P2KP7P\listener\alert\log.xml</span><br><span class="line">监听端点概要...</span><br><span class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=DESKTOP-8P2KP7P)(PORT=1521)))</span><br><span class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(PIPENAME=\\.\pipe\EXTPROC1521ipc)))</span><br><span class="line">服务摘要..</span><br><span class="line">服务 "157cdf77ee1347ef9cb52c8ccc569098.microdone.cn" 包含 1 个实例。</span><br><span class="line">  实例 "orcl", 状态 READY, 包含此服务的 1 个处理程序...</span><br><span class="line">服务 "CLRExtProc" 包含 1 个实例。</span><br><span class="line">  实例 "CLRExtProc", 状态 UNKNOWN, 包含此服务的 1 个处理程序...</span><br><span class="line">服务 "ORCL" 包含 1 个实例。</span><br><span class="line">  实例 "ORCL", 状态 UNKNOWN, 包含此服务的 2 个处理程序...</span><br><span class="line">服务 "db.microdone.cn" 包含 1 个实例。</span><br><span class="line">  实例 "orcl", 状态 READY, 包含此服务的 1 个处理程序...</span><br><span class="line">服务 "orcl.microdone.cn" 包含 1 个实例。</span><br><span class="line">  实例 "orcl", 状态 READY, 包含此服务的 1 个处理程序...</span><br><span class="line">服务 "orclXDB.microdone.cn" 包含 1 个实例。</span><br><span class="line">  实例 "orcl", 状态 READY, 包含此服务的 1 个处理程序...</span><br><span class="line">命令执行成功</span><br></pre></td></tr></tbody></table></figure></div>
+<p>最后的服务摘要内，实例后面跟的即为实例名称，即 orcl 和 ORCL 。</p>
+</li>
+</ol>
+<h2 id="修改Windows下-Oracle-Server端监听配置文件"><a href="#修改Windows下-Oracle-Server端监听配置文件" class="headerlink" title="修改Windows下 Oracle Server端监听配置文件"></a>修改Windows下 Oracle Server端监听配置文件</h2><ol>
+<li>找到Windows下Oracle安装目录</li>
+</ol>
+<p><code>E:\app\TZZ\virtual\product\12.2.0\dbhome_1\</code></p>
+<ol start="2">
+<li>移动到 network/admin下</li>
+</ol>
+<p><code>E:\app\TZZ\virtual\product\12.2.0\dbhome_1\network\admin</code></p>
+<ol start="3">
+<li><p>编辑 <code>listener.ora</code>文件，此为服务端监听的配置文件</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line"># listener.ora Network Configuration File: E:\app\TZZ\virtual\product\12.2.0\dbhome_1\network\admin\listener.ora</span><br><span class="line"># Generated by Oracle configuration tools.</span><br><span class="line"></span><br><span class="line">SID_LIST_LISTENER =</span><br><span class="line">  (SID_LIST =</span><br><span class="line">    (SID_DESC =</span><br><span class="line">      (SID_NAME = CLRExtProc)</span><br><span class="line">      (ORACLE_HOME = E:\app\TZZ\virtual\product\12.2.0\dbhome_1)</span><br><span class="line">      (PROGRAM = extproc)</span><br><span class="line">      (ENVS = "EXTPROC_DLLS=ONLY:E:\app\TZZ\virtual\product\12.2.0\dbhome_1\bin\oraclr12.dll")</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">LISTENER =</span><br><span class="line">  (DESCRIPTION_LIST =</span><br><span class="line">    (DESCRIPTION =</span><br><span class="line">      (ADDRESS = (PROTOCOL = TCP)(HOST = windows10.microdone.cn)(PORT = 1521))</span><br><span class="line">      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure></div>
+<p>在文件中添加以下内容，其中可根据自己需要进行添加，将其添加<code>SID_LIST =</code>后面即可，每个<code>(SID_DESC = )</code> 都为一个单独的实例配置，Linux下想要连接哪个实例，就添加哪个即可。其中SID_NAME 与 GLOBAL_DBNAME 修改为连接的实例名称，添加到后面。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">(SID_DESC =</span><br><span class="line">     (SID_NAME = ORCL)</span><br><span class="line">     (ORACLE_HOME = E:\app\TZZ\virtual\product\12.2.0\dbhome_1)</span><br><span class="line">     (GLOBAL_DBNAME = ORCL)</span><br><span class="line">   )(SID_DESC =</span><br><span class="line">     (SID_NAME = orcl)</span><br><span class="line">     (ORACLE_HOME = E:\app\TZZ\virtual\product\12.2.0\dbhome_1)</span><br><span class="line">     (GLOBAL_DBNAME = orcl)</span><br><span class="line">   )</span><br></pre></td></tr></tbody></table></figure></div>
+<p>最终文件为</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line"># listener.ora Network Configuration File: E:\app\TZZ\virtual\product\12.2.0\dbhome_1\network\admin\listener.ora</span><br><span class="line"># Generated by Oracle configuration tools.</span><br><span class="line"></span><br><span class="line">SID_LIST_LISTENER =</span><br><span class="line">  (SID_LIST =</span><br><span class="line">    (SID_DESC =</span><br><span class="line">      (SID_NAME = CLRExtProc)</span><br><span class="line">      (ORACLE_HOME = E:\app\TZZ\virtual\product\12.2.0\dbhome_1)</span><br><span class="line">      (PROGRAM = extproc)</span><br><span class="line">      (ENVS = "EXTPROC_DLLS=ONLY:E:\app\TZZ\virtual\product\12.2.0\dbhome_1\bin\oraclr12.dll")</span><br><span class="line">    )(SID_DESC =</span><br><span class="line">      (SID_NAME = ORCL)</span><br><span class="line">      (ORACLE_HOME = E:\app\TZZ\virtual\product\12.2.0\dbhome_1)</span><br><span class="line">      (GLOBAL_DBNAME = ORCL)</span><br><span class="line">    )(SID_DESC =</span><br><span class="line">      (SID_NAME = orcl)</span><br><span class="line">      (ORACLE_HOME = E:\app\TZZ\virtual\product\12.2.0\dbhome_1)</span><br><span class="line">      (GLOBAL_DBNAME = orcl)</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">LISTENER =</span><br><span class="line">  (DESCRIPTION_LIST =</span><br><span class="line">    (DESCRIPTION =</span><br><span class="line">      (ADDRESS = (PROTOCOL = TCP)(HOST = windows10.microdone.cn)(PORT = 1521))</span><br><span class="line">      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))</span><br><span class="line">    )</span><br><span class="line">  )</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="重新启动监听服务"><a href="#重新启动监听服务" class="headerlink" title="重新启动监听服务"></a>重新启动监听服务</h2></li>
+<li><p>找到Windows下Oracle安装目录</p>
+</li>
+</ol>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">Code</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">E:\app\TZZ\virtual\product\12.2.0\dbhome_1\</span><br></pre></td></tr></tbody></table></figure></div>
+<ol start="2">
+<li><p>进入 <code>bin</code> 文件夹中</p>
+</li>
+<li><p>找到  <code>lsnrctl.exe</code> 可执行文件，<strong>右键使用管理员身份打开</strong></p>
+<p>执行以下命令</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">LSNRCTL&gt;</span><span class="bash"> stop</span></span><br><span class="line"><span class="meta">LSNRCTL&gt;</span><span class="bash"> start</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>等待命令执行完…</p>
+</li>
+<li><p>WIN+R  输入 <code>services.msc</code> 打开服务管理器</p>
+</li>
+<li><p>启动 Oracle 所有相关服务</p>
+</li>
+</ol>
+<h2 id="Linux下连接测试"><a href="#Linux下连接测试" class="headerlink" title="Linux下连接测试"></a>Linux下连接测试</h2><p>在Linux下执行以下命令</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">sqlplus c<span class="comment">##oracle/oracle@192.168.137.1:1521/orcl</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>将其中内容替换为自己的内容：</p>
+<ul>
+<li>c##oracle 用户名</li>
+<li>oracle 密码</li>
+<li>192.168.137.1:1521 Oracle服务端IP：Port</li>
+<li>orcl 实例名称</li>
+</ul>
+</body></html>]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Oracle</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>连接网络bat</title>
+    <url>/2018/12/15/%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9Cbat/</url>
+    <content><![CDATA[<html><head></head><body><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bat</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bat"><table><tbody><tr><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">title</span>=NetKeeper-WiFi</span><br><span class="line">::</span><br><span class="line">::设置参数</span><br><span class="line">::</span><br><span class="line"><span class="built_in">SET</span> netkeeper="D:\Program Files\NetKeeper\NetKeeper.exe"</span><br><span class="line"><span class="built_in">SET</span> nkTask="NK.exe"</span><br><span class="line"><span class="built_in">SET</span> wifi="D:\Program Files (x86)\kingsoft\kwifi\kwifi.exe"</span><br><span class="line"><span class="built_in">SET</span> wifiTask="kwifi.exe"</span><br><span class="line"></span><br><span class="line">:: 获取管理员身份</span><br><span class="line"><span class="built_in">echo</span> Obtaining administrator identity ...</span><br><span class="line"><span class="built_in">cd</span> /d %~dp0</span><br><span class="line">%<span class="number">1</span> <span class="built_in">start</span> "" mshta vbscript:createobject("shell.application").shellexecute("""%~<span class="number">0</span>""","::",,"runas",<span class="number">1</span>)(window.close)&amp;<span class="keyword">exit</span></span><br><span class="line"></span><br><span class="line">:: 判断网络是否连接</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">Start</span> network connection test ...</span><br><span class="line"><span class="built_in">echo</span>; &gt;&gt; <span class="built_in">ping</span>.log</span><br><span class="line"><span class="built_in">echo</span>; &gt;&gt; <span class="built_in">ping</span>.log</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> *********************<span class="variable">%date%</span> <span class="variable">%time%</span>********************* &gt;&gt; <span class="built_in">ping</span>.log</span><br><span class="line">::baidu DNS</span><br><span class="line"><span class="built_in">ping</span> /n <span class="number">2</span> <span class="number">180</span>.<span class="number">76</span>.<span class="number">76</span>.<span class="number">76</span>&gt;&gt;<span class="built_in">ping</span>.log</span><br><span class="line"><span class="built_in">ping</span> /n <span class="number">2</span> <span class="number">180</span>.<span class="number">76</span>.<span class="number">76</span>.<span class="number">76</span>&gt;tmp.log</span><br><span class="line"><span class="built_in">echo</span>; &gt;&gt; <span class="built_in">ping</span>.log</span><br><span class="line"><span class="keyword">for</span> /f <span class="variable">%%i</span> <span class="keyword">in</span> ('<span class="built_in">findstr</span> /n "超时" tmp.log') <span class="keyword">do</span> (<span class="built_in">set</span> r=<span class="variable">%%i</span>)</span><br><span class="line"><span class="built_in">del</span> tmp.log</span><br><span class="line"></span><br><span class="line">:: 判断是否连接网络</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">defined</span> r (</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">Start</span> the network connection ...</span><br><span class="line"></span><br><span class="line">::关闭wifi进程</span><br><span class="line"><span class="built_in">echo</span> close the wifi task ...</span><br><span class="line"><span class="built_in">taskkill</span> /f /t /im <span class="variable">%wifiTask%</span></span><br><span class="line"></span><br><span class="line">:: 启动netkeeper</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">start</span> NetKeeper ...</span><br><span class="line"><span class="built_in">start</span> "" <span class="variable">%netkeeper%</span></span><br><span class="line"></span><br><span class="line">:: 等待连接</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> Waiting <span class="keyword">for</span> the program to complete ...</span><br><span class="line"><span class="built_in">echo</span> please wait <span class="number">30</span> seconds ...</span><br><span class="line">timeout /t <span class="number">30</span></span><br><span class="line"></span><br><span class="line">:: 关闭NK进程</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> close the task ...</span><br><span class="line"><span class="built_in">taskkill</span> /f /t /im <span class="variable">%nkTask%</span></span><br><span class="line"></span><br><span class="line">:: 启动wifi</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">start</span> kwifi ...</span><br><span class="line"><span class="built_in">start</span> "" <span class="variable">%wifi%</span></span><br><span class="line"></span><br><span class="line">:: 执行完成 关闭窗口</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> execution completed ...</span><br><span class="line"><span class="built_in">echo</span> Off automatically after <span class="number">5</span> seconds ...</span><br><span class="line">timeout /t <span class="number">5</span></span><br><span class="line"></span><br><span class="line">) <span class="keyword">else</span> (</span><br><span class="line"></span><br><span class="line"><span class="built_in">taskkill</span> /f /t /im <span class="variable">%nkTask%</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> Network connected ...</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line"><span class="built_in">echo</span> Off automatically after <span class="number">5</span> seconds ...</span><br><span class="line"><span class="built_in">echo</span>;</span><br><span class="line">timeout /t <span class="number">10</span></span><br><span class="line"></span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure></div></body></html>]]></content>
+      <categories>
+        <category>bat</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>配置Github Actions过程中的一些问题</title>
+    <url>/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<html><head></head><body><ol>
+<li><p>在Actions中切换分支</p>
+ <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">yml</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">Codes</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">    <span class="string">git</span> <span class="string">clone</span> <span class="string">-b</span> <span class="string">hexo</span> <span class="string">https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding}</span> <span class="string">hexo</span></span><br><span class="line">    <span class="string">cd</span> <span class="string">master</span></span><br><span class="line">    <span class="string">ls</span></span><br><span class="line">  <span class="attr">env:</span></span><br><span class="line">    <span class="attr">Coding:</span> <span class="string">e.coding.net/imtzz/Pages.git</span></span><br></pre></td></tr></tbody></table></figure></div>
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>如何使用SSH登录远程服务器</p>
+<p>服务器：A</p>
+<p>Action 服务器：B</p>
+<ol>
+<li><p>首先需要获取服务器A的密钥，用于CI服务器B远程免密登录，并且对应的服务器A公钥要加在A的<code>~/.ssh/authorized_keys</code>中。</p>
+<pre><code><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></tbody></table></figure></div></code></pre>
+</li>
+<li><p>在Github Secrets中配置以下几项内容</p>
+<pre><code>SERVER_IP：服务器A的IP地址
+
+SERVER_USERNAME：要登陆到服务器A使用的用户名（要与密钥匹配）
+
+SERVER_PRIVATE_KEY：服务器A密钥（id_rsa），建议复制的时候直接在文件中CTRL+A，全选粘进去。**\*不要缺少BEGIN和END那两行以及最后的空行，全都要。\***</code></pre>
+</li>
+<li><p>StrictHostKeyChecking配置是关闭公钥检查，会自动接受新的公钥，防止需要输入yes时终端CI处理。</p>
+  <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">yml</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Configure</span> <span class="string">SSH</span> </span><br><span class="line">  <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">      <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">~/.ssh</span> </span><br><span class="line">      <span class="string">echo</span> <span class="string">"${KEY}"</span> <span class="string">&gt;</span> <span class="string">~/.ssh/deploy.key</span></span><br><span class="line">      <span class="string">chmod</span> <span class="number">600</span> <span class="string">~/.ssh/deploy.key</span></span><br><span class="line">      <span class="string">cat</span> <span class="string">&gt;&gt;</span> <span class="string">~/.ssh/config</span> <span class="string">&lt;&lt;END</span></span><br><span class="line">      <span class="string">Host</span> <span class="string">server</span></span><br><span class="line">        <span class="string">HostName</span> <span class="string">$IP</span></span><br><span class="line">        <span class="string">User</span> <span class="string">$USERNAME</span></span><br><span class="line">        <span class="string">IdentityFile</span> <span class="string">~/.ssh/deploy.key</span></span><br><span class="line">        <span class="string">StrictHostKeyChecking</span> <span class="literal">no</span></span><br><span class="line">      <span class="string">END</span></span><br><span class="line">  <span class="attr">env:</span></span><br><span class="line">      <span class="attr">IP:</span> <span class="string">${{secrets.SERVER_IP}}</span></span><br><span class="line">      <span class="attr">USERNAME:</span> <span class="string">${{secrets.SERVER_USERNAME}}</span></span><br><span class="line">      <span class="attr">KEY:</span> <span class="string">${{secrets.SERVER_PRIVATE_KEY}}</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure></div>
+
+
+</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li><p>解决SSH连接服务器执行命令不能自动终止</p>
+<pre><code>在最后执行服务器脚本的时候发现，虽然执行完了，但是无法自己断开连接，就需要对执行命令进行修改，最后如下。
+
+deploy.sh 需要执行的脚本，server是上面config文件中配置的名称，将所有输出导向 /dev/null，即可自动关闭。
+
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">shell</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ssh server &lt; deploy.sh &gt; /dev/null 2&gt;&amp;1</span><br></pre></td></tr></tbody></table></figure></div></code></pre>
+</li>
+</ol>
+<ol start="4">
+<li>其实中间碰到了不少问题，许多问题解决完就忘记了，以后想起来再写吧。</li>
+</ol>
+</body></html>]]></content>
+      <categories>
+        <category>CI/CD</category>
+      </categories>
+      <tags>
+        <tag>CI/CD</tag>
+        <tag>Github Actions</tag>
+      </tags>
+  </entry>
+</search>
