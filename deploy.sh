@@ -1,5 +1,16 @@
 path="/webdata/"
+log_path="/webdata/log/"
 log="/webdata/log/blog_page.log"
+
+if [ ! -d "$path" ]; then
+    mkdir $path
+fi
+
+if [ ! -d "$log_path" ]; then
+    mkdir $log_path
+fi
+
+touch $log
 
 exec 1>>$log
 exec 2>>$log
