@@ -3,7 +3,6 @@
 
 This is my personal blog, you can visit via imtzz.com .
 
-
 ## Auto Deploy
 
 For the relevant content of the automated depolyment, you can view the script at
