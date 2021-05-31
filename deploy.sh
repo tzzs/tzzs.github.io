@@ -8,4 +8,4 @@ date "+%Y-%m-%d %H:%M:%S"
 
 rm -rf $path"public"
 cd $path
-git clone https://e.coding.net/imtzz/Pages.git public
+git clone git@e.coding.net:imtzz/Pages.git public
