@@ -84,6 +84,5 @@ jobs:
         run: |
           echo "Deploy to Server"
           ls
-          ssh server < echo "123" > /webdata/log
-          ssh server < pwd
+          ssh server < "pwd"
           ssh server < deploy.sh > /dev/null 2>&1 
