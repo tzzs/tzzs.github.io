@@ -827,6 +827,10 @@ lazyload:
   placeholder:
   blur: false
 
+lodding_bg:
+  flink: /img/friend_404.gif #404后圖片
+  post_page: /img/404.jpg #404后圖片
+
 # PWA
 # See https://github.com/JLHwung/hexo-offline
 # ---------------
