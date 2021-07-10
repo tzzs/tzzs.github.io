@@ -129,7 +129,7 @@ feed:
 # hexo douban
 douban:
   user: 158444128
-  builtin: false
+  builtin: true
   # book:
   #   title: 'This is my book title'
   #   quote: 'This is my book quote'
