@@ -1,6 +1,6 @@
 ---
 title: {{ title }}
 date: {{ date }}
-type: 
-cover: 
+type:
+top_img:
 ---

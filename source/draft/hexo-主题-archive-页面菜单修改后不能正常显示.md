@@ -1,7 +1,6 @@
 ---
 title: 'hexo 主题 archive 页面菜单修改后不能正常显显示” '
 date: 2018-11-17 00:09:17
-visible: hide
 categories:
 - blog
 - hexo
