@@ -1,6 +1,6 @@
 path="/webdata/"
-log_path="/webdata/log/"
-log="/webdata/log/blog_page.log"
+log_path="/webdata/logs/blog"
+log="${log_path}/blog_page.log"
 
 echo "start deployment"
 
