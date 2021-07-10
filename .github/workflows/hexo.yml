@@ -44,7 +44,9 @@ jobs:
         run: |
           cd ./public
           ls -a
+          echo '-------------------'
           head -n 10 index.html
+          echo '-------------------'
           git init 
           git add .
           git config --global user.name "Github Action"

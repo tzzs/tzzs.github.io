@@ -2,6 +2,9 @@ path="/webdata/"
 log_path="/webdata/logs/blog"
 log="${log_path}/blog_page.log"
 
+exec 1>>$log
+exec 2>>$log
+
 echo "start deployment"
 
 if [ ! -d "$path" ]; then
@@ -15,8 +18,7 @@ fi
 echo "set log path"
 touch $log
 
-exec 1>>$log
-exec 2>>$log
+
 
 date "+%Y-%m-%d %H:%M:%S"
 
