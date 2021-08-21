@@ -50,9 +50,9 @@ copy:
 #   icon: link || the description
 social:
   fa fa-github: https://github.com/tzzs
-  fa fa-envelope: mailto:tzzchn@outlook.com
+  fa fa-envelope: mailto:tzzprc@outlook.com
   fa fa-rss: /atom.xml
-  fa fa-picture-o: http://bing.tzz6.xyz
+  fa fa-picture-o: http://bing2.imtzz.com
   # fab fa-github: https://github.com/xxxxx || Github
   # fas fa-envelope: mailto:xxxxxx@gmail.com || Email
 
@@ -91,7 +91,7 @@ katex:
 # --------------------------------------
 
 # Favicon（網站圖標）
-favicon: /img/avatar.png
+favicon: /img/imtzz64.ico
 
 # Avatar (頭像)
 avatar:
