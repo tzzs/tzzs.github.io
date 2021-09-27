@@ -86,7 +86,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          echo "Deploy to Server"
+          echo "Deploy to Server..."
           ls
           echo "[test pwd]"
           ssh server "pwd"
