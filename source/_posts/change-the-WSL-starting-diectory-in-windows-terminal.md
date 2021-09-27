@@ -14,7 +14,7 @@ cover:
 
 
 
-1. Open Settings, Profiles, Ubuntu-20.04(This is your WSL terminal in Windows Terminal), General in t. 
+1. Open Settings, Profiles, Ubuntu-20.04(This is your WSL terminal in Windows Terminal), General in turn. 
 
 2. Then you can see the setting of Starting directory， change the value to `\\wsl.localhost\Ubuntu-20.04\home\ubuntu`. 
 
