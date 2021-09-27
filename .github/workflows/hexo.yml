@@ -37,11 +37,13 @@ jobs:
 
       - name: Generate Files
         run: |
+          echo "generate files"
           hexo clean
           hexo generate
 
       - name: Git Repository Update
         run: |
+          echo "git repo update"
           cd ./public
           ls -a
           echo '-------------------'
@@ -86,5 +88,7 @@ jobs:
         run: |
           echo "Deploy to Server"
           ls
+          echo "[test pwd]"
           ssh server "pwd"
+          echo "[exec dpeloy.sh]"
           ssh server < deploy.sh > /dev/null 2>&1 
