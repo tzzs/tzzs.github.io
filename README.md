@@ -7,3 +7,7 @@ This is my personal blog, you can visit via [imtzz.com](https://imtzz.com).
 
 For the relevant content of the automated depolyment, you can view the script at
  the [hexo.yml](./.github/workflows/hexo.yml).
+
+## About blog
+
+> It is based on hexo.
