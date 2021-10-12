@@ -39,6 +39,7 @@ jobs:
         run: |
           echo "generate files"
           hexo clean
+          hexo douban
           hexo generate
 
       - name: Git Repository Update
