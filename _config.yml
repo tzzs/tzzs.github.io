@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: MR.TAN'S BLOG
+title: TAN'S BLOG
 # subtitle: 'KEEP GOING! ALWAYS!'
 description: ''
 keywords: imtzz,博客,博文,Java,C,Windows
@@ -129,7 +129,7 @@ feed:
 # hexo douban
 douban:
   user: 158444128
-  builtin: true
+  builtin: false
   # book:
   #   title: 'This is my book title'
   #   quote: 'This is my book quote'
