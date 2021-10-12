@@ -15,7 +15,7 @@ hexo.extend.filter.register('after_post_render', data => {
   $('figure.highlight').wrap('<div class="code-area-wrap"></div>')
   var $highlight_layout = $('<div class="highlight-tools"></div>')
 
-  $('figure').before($highlight_layout)
+  // $('figure').before($highlight_layout)
 
   if (theme.highlight_shrink == true) {
     var $code_expand = $('<i class="fa fa-angle-down code-expand code-closed" aria-hidden="true"></i>')
