@@ -6,7 +6,7 @@ top_img: /img/about.jpg
 ---
 
 <center><h1>HELLO WORLD!</h1></center>
-<center><h3>To be an interesting person!</h3></center>
+<center><h3>Be an interesting person!</h3></center>
 
 # 😀ABOUT ME
 
