@@ -2,6 +2,7 @@
 title: Smart Light Strip
 date: 2021-06-26 00:29:39
 update:
+cover: https://content.instructables.com/ORIG/FCL/V0OG/IVO7W206/FCLV0OGIVO7W206.jpg?auto=webp&frame=1&width=678&fit=bounds&md=14cee154242999ffcbd64652017d4a3a
 categories:
 - IOT
 tags:

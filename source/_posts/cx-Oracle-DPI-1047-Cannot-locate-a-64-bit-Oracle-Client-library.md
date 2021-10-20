@@ -8,7 +8,7 @@ categories:
 tags:
 - [Python]
 - [Oracle]
-cover:
+cover: https://www.fujitsu.com/emeia/imagesgig5/oracle-db580x224_tcm158-40873_tcm158-2750236-32.jpg
 ---
 
 # QUESTION

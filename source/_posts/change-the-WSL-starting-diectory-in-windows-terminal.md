@@ -8,7 +8,7 @@ tags:
 - [Windows]
 - [WSL]
 - [WindowsTerminal]
-cover:
+cover: https://voonze.com/wp-content/uploads/2021/08/wsl-1.jpg
 
 ---
 

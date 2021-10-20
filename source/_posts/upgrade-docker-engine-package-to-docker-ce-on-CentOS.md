@@ -8,7 +8,7 @@ tags:
 - [kubectl]
 - [kubernetes]
 - [Linux]
-cover:
+cover: https://www.docker.com/sites/default/files/d8/styles/large/public/2021-08/Moby-run.png?itok=oGhAc1XC
 ---
 
 > Older version of Docker were called `docker` or `docker-engine`. The Docker Engine package is now called `docker-ce` .

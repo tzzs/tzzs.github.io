@@ -1,5 +1,5 @@
 ---
-title: installing and setting up kubectl on Linux
+title: Installing and setting up kubectl on Linux
 date: 2021-10-17 20:43:44
 update:
 categories:
@@ -8,10 +8,8 @@ tags:
 - [kubectl]
 - [kubernetes]
 - [Linux]
-cover:
+cover: https://pic2.zhimg.com/v2-6e8551679401587b165b37c62fbd1f13_720w.jpg?source=172ae18b
 ---
-
-
 
 ##  安装kubectl
 

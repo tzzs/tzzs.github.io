@@ -151,7 +151,7 @@ error_img:
 # A simple 404 page
 error_404:
   enable: false
-  subtitle: 'Page Not Found'
+  subtitle: "Page Not Found"
   background: https://i.loli.net/2020/05/19/aKOcLiyPl2JQdFD.png
 
 post_meta:
@@ -425,7 +425,7 @@ footer:
   owner:
     enable: true
     since: 2018
-  custom_text: 
+  custom_text:
     - <a href="http://beian.miit.gov.cn/"><img class="icp-icon" src="/img/icp.png"><span>鲁ICP备17030961号-4</span></a>
     - <div id="cc-myssl-id"><a href="https://myssl.com/imtzz.com?from=mysslid"><img src="https://static.myssl.com/res/images/myssl-id3.png" alt="" style="max-height:50px;display:block;margin:0 auto"></a></div>
   copyright: true # Copyright of theme and framework
@@ -553,7 +553,7 @@ canvas_fluttering_ribbon:
 # https://github.com/hustcc/canvas-nest.js
 canvas_nest:
   enable: false
-  color: '0,0,255' #color of lines, default: '0,0,0'; RGB values: (R,G,B).(note: use ',' to separate.)
+  color: "0,0,255" #color of lines, default: '0,0,0'; RGB values: (R,G,B).(note: use ',' to separate.)
   opacity: 0.7 # the opacity of line (0~1), default: 0.5.
   zIndex: -1 # z-index property of the background, default: -1.
   count: 99 # the number of lines, default: 99.
@@ -598,7 +598,7 @@ beautify:
   enable: true
   field: post # site/post
   title-prefix-icon: '\f0c1'
-  title-prefix-icon-color: '#F47466'
+  title-prefix-icon-color: "#F47466"
 
 # Global font settings
 # Don't modify the following settings unless you know how they work (非必要不要修改)
@@ -663,7 +663,7 @@ aside:
       link: https://github.com/tzzs
   card_announcement:
     enable: true
-    content: 感谢访问本站， 若喜欢请收藏 ^_^    如果有任何问题可以邮件我，我会尽可能第一时间回复。
+    content: 感谢访问本站， 若喜欢请收藏 ^_^   <br/>如果有任何问题可以邮件我，我会尽可能第一时间回复。<br/> Thank you for visiting this site, if you like it, please bookmark ^_^<br/>If you have any questions, you can email me and I will reply as soon as possible.
   card_recent_post:
     enable: true
     limit: 5 # if set 0 will show all
@@ -729,9 +729,9 @@ translate:
   # Time delay
   translateDelay: 0
   # The text of the button when the language is Simplified Chinese
-  msgToTraditionalChinese: '繁'
+  msgToTraditionalChinese: "繁"
   # The text of the button when the language is Traditional Chinese
-  msgToSimplifiedChinese: '簡'
+  msgToSimplifiedChinese: "簡"
 
 # Read Mode (閲讀模式)
 readmode: true
@@ -808,8 +808,8 @@ aplayerInject:
 snackbar:
   enable: true
   position: top-center
-  bg_light: '#49b1f5' # The background color of Toast Notification in light mode
-  bg_dark: '#121212' # The background color of Toast Notification in dark mode
+  bg_light: "#49b1f5" # The background color of Toast Notification in light mode
+  bg_dark: "#121212" # The background color of Toast Notification in dark mode
 
 # https://instant.page/
 # prefetch (預加載)
@@ -856,7 +856,8 @@ css_prefix: true
 # 插入代码到头部 </head> 之前 和 底部 </body> 之前
 inject:
   head:
-    # - <link rel="stylesheet" href="/xxx.css">
+    - <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tzzs/hexo-butterfly@main/index.css">
+  # - <link rel="stylesheet" href="/xxx.css">
   bottom:
     # - <script src="xxxx"></script>
 

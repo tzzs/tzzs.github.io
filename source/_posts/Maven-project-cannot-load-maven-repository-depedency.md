@@ -6,6 +6,7 @@ categories:
 - [Java, Maven]
 tags:
 - [Maven]
+cover: https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Apache_Maven_logo.svg/2560px-Apache_Maven_logo.svg.png
 ---
 
 涉及的错误信息：
