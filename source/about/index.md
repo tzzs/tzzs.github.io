@@ -11,9 +11,10 @@ top_img: /img/about.jpg
 # 😀ABOUT ME
 
 您如果有任何问题，请邮件联系我。
-MAIL: [tzzprc@outlook.com](mailto:tzzprc@outlook.com)
 
-GITHUB: [https://github.com/tzzs](https://github.com/tzzs)
+## [📧Mail](mailto:tzzprc@outlook.com)
+
+## [💻Github](https://github.com/tzzs)
 
 ---
 
