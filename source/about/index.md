@@ -21,7 +21,7 @@ top_img: /img/about.jpg
 # 🌌ABOUT SITE
 
 - [x] 全站 HTTPS
-- [x] 博客基于 [Hexo](https://hexo.io/zh-cn/) && [Butterfly (theme)](https://butterfly.js.org/)
+- [x] 博客由 [Hexo](https://hexo.io/zh-cn/) ◾ [Butterfly-theme](https://butterfly.js.org/) 强力驱动
 - [x] 本站部分图片来自网络, 侵删
 - [x] 除特别声明外, 所有文章均采用 [CC BY-NC-SA 4.0 许可协议](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
