@@ -2,7 +2,7 @@
 title: ABOUT
 date: 2018-11-22 02:41:05
 type: "about"
-top_img: /img/about.jpg
+top_img: /img/cafe.jpg
 ---
 
 <center><h1>HELLO WORLD!</h1></center>
