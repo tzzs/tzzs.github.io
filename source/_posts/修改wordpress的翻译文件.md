@@ -7,6 +7,7 @@ categories:
 - WordPress
 tags:
 - WordPress
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-wordpress.gif
 ---
 
 之前WordPress博客的首页部分内容翻译错误，就想手动修改一下。

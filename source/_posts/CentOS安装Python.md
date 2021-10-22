@@ -6,6 +6,7 @@ categories:
 - [Linux]
 - [CentOS]
 tags:
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-python.png
 ---
 
 需要运行基于 Python3 的 Django 项目，服务器默认安装的为 python2 ,需要安装Python3

@@ -6,6 +6,7 @@ categories:
 - [CDN]
 - [HTTPS]
 tags:
+cover: https://img.alicdn.com/tfs/TB1jxiiG49YBuNjy0FfXXXIsVXa-1530-1140.png
 ---
 
 在 [CDN-高级工具-证书管理界面](https://console.cloud.tencent.com/cdn/tools/certificate/deploy) 进行配置证书。

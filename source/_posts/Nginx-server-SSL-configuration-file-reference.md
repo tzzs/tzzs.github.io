@@ -8,6 +8,7 @@ tags:
 - [Nginx]
 - [HTTPS]
 - [SSL]
+cover: https://www.nginx.com/wp-content/uploads/2018/08/NGINX-logo-rgb-large.png
 ---
 
 

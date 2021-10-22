@@ -5,6 +5,7 @@ update:
 categories:
 - [Blog,WordPress]
 tags:
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-wordpress.gif
 ---
 
 # 选择

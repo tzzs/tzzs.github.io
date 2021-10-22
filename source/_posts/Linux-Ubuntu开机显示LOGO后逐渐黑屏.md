@@ -7,7 +7,10 @@ categories:
 tags:
 - [Linux]
 - [Ubuntu]
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/ubuntu20211023.png
 ---
+
+
 
 之前在VMware中安装了Ubuntu用于开发，只分配了20G的空间，这两天一直提醒硬盘空间不足，未产生影响就没有扩充空间。
 

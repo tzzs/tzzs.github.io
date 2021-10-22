@@ -7,9 +7,8 @@ categories:
 tags:
 - [CI/CD]
 - [Github Actions]
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-githubaction.png
 ---
-
-
 
 1. 在Actions中切换分支
 
@@ -40,9 +39,9 @@ tags:
    2. 在Github Secrets中配置以下几项内容
 
           SERVER_IP：服务器A的IP地址
-    
+        
           SERVER_USERNAME：要登陆到服务器A使用的用户名（要与密钥匹配）
-    
+        
           SERVER_PRIVATE_KEY：服务器A密钥（id_rsa），建议复制的时候直接在文件中CTRL+A，全选粘进去。**\*不要缺少BEGIN和END那两行以及最后的空行，全都要。\***
 
    3. StrictHostKeyChecking配置是关闭公钥检查，会自动接受新的公钥，防止需要输入yes时终端CI处理。
@@ -72,9 +71,9 @@ tags:
 3. 解决SSH连接服务器执行命令不能自动终止
 
        在最后执行服务器脚本的时候发现，虽然执行完了，但是无法自己断开连接，就需要对执行命令进行修改，最后如下。
-    
+        
        deploy.sh 需要执行的脚本，server是上面config文件中配置的名称，将所有输出导向 /dev/null，即可自动关闭。
-    
+        
        ```shell
        ssh server < deploy.sh > /dev/null 2>&1
        ```

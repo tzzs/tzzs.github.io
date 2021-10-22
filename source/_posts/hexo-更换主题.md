@@ -7,6 +7,7 @@ categories:
 - [Blog,Hexo]
 tags:
 - [Hexo]
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-hexo.png
 ---
 
 # 选择主题

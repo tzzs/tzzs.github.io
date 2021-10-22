@@ -7,6 +7,7 @@ categories:
 tags:
 - [Https]
 - [Nginx]
+cover: https://www.nginx.com/wp-content/uploads/2018/08/NGINX-logo-rgb-large.png
 ---
 
 

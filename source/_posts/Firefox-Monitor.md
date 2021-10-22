@@ -6,6 +6,7 @@ categories:
 - [推荐]
 - [Firefox]
 tags:
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-firefox-monitor.png
 ---
 
 ![Firefox Monitor](https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190626225922.png)

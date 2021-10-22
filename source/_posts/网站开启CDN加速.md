@@ -4,9 +4,11 @@ date: 2019-01-16 05:34:54
 update:
 categories:
 tags:
+cover: https://img.alicdn.com/tfs/TB1jxiiG49YBuNjy0FfXXXIsVXa-1530-1140.png
 ---
 
 # CDN
+
 腾讯云和七牛云CDN都有免费额度
 
 [七牛云CDN](https://portal.qiniu.com/financial/price?ref=developer.qiniu.com)每个月 CDN-HTTP 下载流量 1GB 免费（仅HTTP免费）。
@@ -15,6 +17,7 @@ tags:
 
 我使用的是腾讯CDN，接下来就是按照腾讯云CDN配置方法。
 <!-- more -->
+
 # 开通CDN
 [腾讯CDN控制台](https://console.cloud.tencent.com/cdn)开通CDN，需要实名认证-补充服务信息-选择付费方式。付费方式可以选择按使用流量收费，就可以直接从赠送的6个月的流量包中扣除。
 

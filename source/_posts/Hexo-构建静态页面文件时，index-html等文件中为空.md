@@ -8,6 +8,7 @@ categories:
 tags:
 - [Git]
 - [Hexo]
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-hexo.png
 ---
 1. 增加了Pages的自动化构建后，发现页面访问不了了，以为和上次一样是本地的CDN抽风导致无法访问的。后来F12看了一下页面内容只有一行，也以为是加载的问题。去代码仓库看才发现真的只有懒加载的一行js加载代码。
 

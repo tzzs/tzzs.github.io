@@ -6,6 +6,7 @@ categories:
 - [Linux,Alpine]
 - [Docker]
 tags:
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-uwsgi.png
 ---
 uWSGI是一个由unbit提供的Web应用服务器，实现了WSGI规范。
 

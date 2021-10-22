@@ -6,9 +6,11 @@ categories:
 - [Linux, CentOS]
 - [PHP]
 tags:
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-php.svg
 ---
 
 # 服务器信息
+
 CentOS 7.5
 
 Apache 2.4

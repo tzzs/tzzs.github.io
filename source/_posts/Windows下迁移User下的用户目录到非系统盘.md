@@ -6,6 +6,7 @@ categories:
 - [Windows, Windows10]
 tags:
 - [Windows]
+cover: https://www.google.com/url?sa=i&url=https%3A%2F%2Fblogs.windows.com%2F&psig=AOvVaw0GDMbFIZeKxSgUfYurZPBr&ust=1635011437415000&source=images&cd=vfe&ved=2ahUKEwjn1duwyt7zAhWW4mEKHR6pBc8QjRx6BAgAEAk
 ---
 
 

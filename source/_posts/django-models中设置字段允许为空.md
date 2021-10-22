@@ -7,6 +7,7 @@ categories:
 tags:
 - Python
 - Django
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-django.jpg
 ---
 
 在Django-models中定义数据库字段时，其字段默认是不允许为空的，在直接向数据库中插入非全部字段时，会直接发生下面错误：
