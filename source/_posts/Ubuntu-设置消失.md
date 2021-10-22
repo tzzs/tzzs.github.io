@@ -5,6 +5,7 @@ update:
 categories:
 - [Linux,Ubuntu]
 tags:
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/ubuntu20211023.png
 ---
 
 

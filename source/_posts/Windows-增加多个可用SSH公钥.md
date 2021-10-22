@@ -8,6 +8,7 @@ tags:
 - [SSH]
 - [Coding]
 - [Windows]
+cover: https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/2020/08/windows-logo-social.png
 ---
 
 之前由于使用Github Pages作为博客地址导致国内访问速度过慢，增加了腾讯云CDN依旧有大量数据缓存失败，所以更换了国内Coding作为博客镜像（之前用过Gitee Pages，但是普通用户无法自定义域名），在Hexo增加Coding仓库配置时，无法识别新增的SSH公钥，显示 `Permission denied (publickey)`, 看了一下Coding的官方论坛，他们根本没有解决办法😂，以下为出现问题的过程以及找到的解决办法。

@@ -8,6 +8,7 @@ tags:
 - [WSL]
 - [Linux]
 - [Windows]
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-wsl-1.jpg
 ---
 
 ##  重装 openssh-server

@@ -5,6 +5,7 @@ update:
 categories:
 - [Windows, Windows10]
 tags:
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-windows.png
 ---
 
 今天使用电脑开启热点的时候，发现可以正常开启，但是手机搜索不到，只有一个Direct-[PC名] 的热点，并且无法连接，重新安装了网卡驱动也没有效果。

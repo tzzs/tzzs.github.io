@@ -8,11 +8,8 @@ tags:
 - [Windows]
 - [WSL]
 - [WindowsTerminal]
-cover: https://voonze.com/wp-content/uploads/2021/08/wsl-1.jpg
-
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-wsl-1.jpg
 ---
-
-
 
 1. Open Settings, Profiles, Ubuntu-20.04(This is your WSL terminal in Windows Terminal), General in turn. 
 

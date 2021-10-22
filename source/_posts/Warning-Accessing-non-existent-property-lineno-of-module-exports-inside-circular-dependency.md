@@ -9,6 +9,7 @@ categories:
 tags:
 - Hexo
 - Node.js
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-hexo.png
 ---
 
 这几天更新了Blog，但是持续没有将版本发布出去，本来以为是缓存的问题等几个小时就好了，但是今天仍然无法访问。
