@@ -857,7 +857,8 @@ css_prefix: true
 inject:
   head:
     - <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tzzs/hexo-butterfly@main/index.css">
-  # - <link rel="stylesheet" href="/xxx.css">
+    # - <link rel="stylesheet" href="https://github.com/tzzs/hexo-butterfly/blob/main/index.css">
+    - <link rel="stylesheet" href="/data/butterfly.index.css">
   bottom:
     # - <script src="xxxx"></script>
 
