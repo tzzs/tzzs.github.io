@@ -10,7 +10,13 @@ top_img: /img/cafe.jpg
 
 # 😀ABOUT ME
 
-您如果有任何问题，请邮件联系我。
+中文名保密 😀, 英文名叫 **Frank** (小学三年级起的一直沿用至今)
+
+来自**山东**, 毕业于**重庆**, 目前在**成都**工作。
+
+## ☎️CONTACT ME
+
+您如果有任何问题，可以邮件联系我。
 
 ## [📧Mail](mailto:tzzprc@outlook.com)
 
@@ -23,7 +29,16 @@ top_img: /img/cafe.jpg
 - [x] 全站 HTTPS
 - [x] 博客由 [Hexo](https://hexo.io/zh-cn/) ◾ [Butterfly-theme](https://butterfly.js.org/) 强力驱动
 - [x] 本站部分图片来自网络, 侵删
-- [x] 除特别声明外, 所有文章均采用 [CC BY-NC-SA 4.0 许可协议](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+## ⚖️ 版权声明
+
+![copyright](https://i.creativecommons.org/l/by/4.0/88x31.png)
+
+**除特别声明外, 所有文章均采用 [CC BY 4.0 许可协议](https://creativecommons.org/licenses/by/4.0/)**
+
+## 🖥️ 网站部署
+
+本站采取静态部署在 **阿里云** , 使用 **Nginx** 进行反向代理, 采用 **腾讯云 CDN** 进行国内 CDN 加速, 网站图片使用 **腾讯云 COS** 进行文件存储.
 
 ## 📅 部分更新记录
 
