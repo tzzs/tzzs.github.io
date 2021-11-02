@@ -427,8 +427,8 @@ footer:
     enable: true
     since: 2018
   custom_text:
-    - <a href="http://beian.miit.gov.cn/"><img class="icp-icon" src="/img/icp.png"><span>鲁ICP备17030961号-4</span></a>
-    - <div id="cc-myssl-id"><a href="https://myssl.com/imtzz.com?from=mysslid"><img src="https://static.myssl.com/res/images/myssl-id3.png" alt="" style="max-height:50px;display:block;margin:0 auto"></a></div>
+    - <a href="http://beian.miit.gov.cn/"><img class="icp-icon" src="/img/icp.png" alt="icp icon"><span>鲁ICP备17030961号-4</span></a>
+    - <div id="cc-myssl-id"><a href="https://myssl.com/imtzz.com?from=mysslid"><img src="https://static.myssl.com/res/images/myssl-id3.png" alt="myssl" style="max-height:50px;display:block;margin:0 auto"></a></div>
   copyright: true # Copyright of theme and framework
 
 # Analysis
