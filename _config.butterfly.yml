@@ -436,11 +436,11 @@ footer:
 
 # Baidu Analytics
 # https://tongji.baidu.com/web/welcome/login
-baidu_analytics:
+baidu_analytics: 828512642a85c276ab188101baac616e
 
 # Google Analytics
 # https://analytics.google.com/analytics/web/
-google_analytics:
+google_analytics: UA-132580685-2
 
 # Tencent Analytics ID
 # https://mta.qq.com
