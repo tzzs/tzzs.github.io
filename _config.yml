@@ -5,7 +5,7 @@
 # Site
 title: TAN'S BLOG
 # subtitle: 'KEEP GOING! ALWAYS!'
-description: ''
+description: "Hi, I'm TAN. Thank you for visiting this site, if you like it, please bookmark. If you have any questions, you can email me and I will reply as soon as possible."
 keywords: tzz,java,c,linux,blog,code
 author: TZZ
 language: zh-CN
@@ -100,7 +100,7 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 # theme: landscape
-theme: butterfly
+theme: cactus
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment

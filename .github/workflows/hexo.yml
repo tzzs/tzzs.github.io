@@ -38,8 +38,8 @@ jobs:
       - name: Generate Files
         run: |
           echo "generate files"
-          hexo clean
-          hexo douban
+          hexo clean && hexo douban && hexo generate
+          hexo config theme cactus && hexo config url https://imtzz.com/cactus && hexo config public_dir public/cactus && hexo config language en
           hexo generate
 
       - name: Git Repository Update
