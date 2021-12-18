@@ -27,7 +27,7 @@ top_img: /img/cafe.jpg
 # ABOUT SITE
 
 - 全站 HTTPS
-- 博客由 [Hexo](https://hexo.io/zh-cn/) ◾ [Butterfly-theme](https://butterfly.js.org/) 强力驱动
+- 博客由 [Hexo](https://hexo.io/zh-cn/) ◾ [Butterfly-theme](https://butterfly.js.org/) ◾ [🌵Cactus-theme](https://github.com/probberechts/hexo-theme-cactus) 强力驱动
 - 本站部分图片来自网络, 侵删
 
 ## 版权声明
@@ -57,7 +57,7 @@ top_img: /img/cafe.jpg
 ### 2020/1/4
 
 - 停用原有域名 ~~tzzt.me~~
-- 启用域名~~[https://tzzt.tech](https://b.imtzz.com)~~ 启用 CloudFlare CDN 加速
+- 启用域名 ~~[https://tzzt.tech](https://b.imtzz.com)~~ 启用 CloudFlare CDN 加速
 - 增加 Valine 无后端评论系统
 
 <!-- ### 2019/3/22
