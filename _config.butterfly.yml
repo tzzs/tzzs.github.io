@@ -13,6 +13,8 @@ menu:
   分类: /categories/ || fa fa-folder-open
   链接: /link/ || fa fa-link
   电影: /movies || fa fa-film
+  主题: 
+    cactus: /cactus || fa fa-window-restore
   关于: /about/ || fa fa-heart
   # Home: / || fas fa-home
   # Archives: /archives/ || fas fa-archive
