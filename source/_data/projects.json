@@ -1,12 +1,22 @@
 [
-    {
-       "name":"Hexo",
-       "url":"https://hexo.io/",
-       "desc":"A fast, simple & powerful blog framework"
-    },
-    {
-       "name":"Font Awesome",
-       "url":"http://fontawesome.io/",
-       "desc":"The iconic font and CSS toolkit"
-    }
+   {
+      "name": "github",
+      "url": "https://github.com/tzzs",
+      "desc": "The Github Link."
+   },
+   {
+      "name": "server-shell",
+      "url": "https://github.com/tzzs/server-shell",
+      "desc": "A action could connect your self-server and execute commands on it via SSH."
+   },
+   {
+      "name": "qcloud_cos",
+      "url": "https://github.com/tzzs/qcloud_cos",
+      "desc": "A python script for upload image to Tencent COS in Typora."
+   },
+   {
+      "name": "SmartLightTrip",
+      "url": "https://github.com/tzzs/SmartLightStrip",
+      "desc": "Smart light strip based on Blinker."
+   }
 ]
