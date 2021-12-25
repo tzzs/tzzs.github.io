@@ -1,21 +1,21 @@
 [
    {
-      "name": "github",
+      "name": "GitHub",
       "url": "https://github.com/tzzs",
       "desc": "The Github Link."
    },
    {
-      "name": "server-shell",
+      "name": "Server Shell",
       "url": "https://github.com/tzzs/server-shell",
       "desc": "A action could connect your self-server and execute commands on it via SSH."
    },
    {
-      "name": "qcloud_cos",
+      "name": "QCloud COS",
       "url": "https://github.com/tzzs/qcloud_cos",
       "desc": "A python script for upload image to Tencent COS in Typora."
    },
    {
-      "name": "SmartLightTrip",
+      "name": "Smart Light Trip",
       "url": "https://github.com/tzzs/SmartLightStrip",
       "desc": "Smart light strip based on Blinker."
    }
