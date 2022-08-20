@@ -89,7 +89,7 @@ avatar:
 disable_top_img: false
 
 # The banner image of home page
-index_img: /img/vector_landscape_1.jpg
+index_img: false
 
 # If the banner of page not setting, it will show the top_img
 default_top_img: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/MOVIES.png
