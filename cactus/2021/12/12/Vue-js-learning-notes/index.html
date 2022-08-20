@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Vue.js   目录  目录 命令式渲染 声明式渲染 MVVM  Vue.js 核心功能 安装&#x2F;使用  NPM Script @vue&#x2F;cli vue-cli   基础功能  指令 参数  v-bind v-on 省略写法   属性 方法 watch computed methods mounted 实例生命周期钩子   组件 components 路由 router  安装 install">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue.js learning notes">
+<meta property="og:url" content="https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/index.html">
+<meta property="og:site_name" content="TAN&#39;S BLOG">
+<meta property="og:description" content="Vue.js   目录  目录 命令式渲染 声明式渲染 MVVM  Vue.js 核心功能 安装&#x2F;使用  NPM Script @vue&#x2F;cli vue-cli   基础功能  指令 参数  v-bind v-on 省略写法   属性 方法 watch computed methods mounted 实例生命周期钩子   组件 components 路由 router  安装 install">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/logo.svg">
+<meta property="og:image" content="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/logo.svg">
+<meta property="og:image" content="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/mvvm.png">
+<meta property="og:image" content="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/logo.svg">
+<meta property="og:image" content="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/lifecycle.png">
+<meta property="og:image" content="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/components.png">
+<meta property="article:published_time" content="2021-12-12T12:29:44.000Z">
+<meta property="article:modified_time" content="2022-08-20T12:49:58.659Z">
+<meta property="article:author" content="TZZ">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="vue.js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/logo.svg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Vue.js learning notes</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/cactus/atom.xml" title="TAN&#39;S BLOG" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">Home</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/cactus/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">Projects</a></li><!--
+     --><!--
+       --><li><a href="https://imtzz.com/">Theme</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/cactus/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/cactus/2021/12/18/SM4-%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/cactus/2021/10/17/Approach-to-start-minikube-on-a-single-core-server/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&text=Vue.js learning notes"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&is_video=false&description=Vue.js learning notes"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Vue.js learning notes&body=Check out this article: https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&name=Vue.js learning notes&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&t=Vue.js learning notes"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text"> 目录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%BC%8F%E6%B8%B2%E6%9F%93"><span class="toc-number">2.</span> <span class="toc-text"> 命令式渲染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E6%B8%B2%E6%9F%93"><span class="toc-number">3.</span> <span class="toc-text"> 声明式渲染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mvvm"><span class="toc-number">4.</span> <span class="toc-text"> MVVM</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#img-srchttpscos5-1255991898cosap-chongqingmyqcloudcomtklogosvg-stylewidth28px-vuejs"><span class="toc-number">5.</span> <span class="toc-text">  Vue.js</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="toc-number">6.</span> <span class="toc-text"> 核心功能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-number">7.</span> <span class="toc-text"> 安装&#x2F;使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#npm"><span class="toc-number">7.1.</span> <span class="toc-text"> NPM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#script"><span class="toc-number">7.2.</span> <span class="toc-text"> Script</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vuecli-vue-cli"><span class="toc-number">7.3.</span> <span class="toc-text"> @vue&#x2F;cli vue-cli</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD"><span class="toc-number">8.</span> <span class="toc-text"> 基础功能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4"><span class="toc-number">8.1.</span> <span class="toc-text"> 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-number">8.2.</span> <span class="toc-text"> 参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#v-bind"><span class="toc-number">8.2.1.</span> <span class="toc-text"> v-bind</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#v-on"><span class="toc-number">8.2.2.</span> <span class="toc-text"> v-on</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9C%81%E7%95%A5%E5%86%99%E6%B3%95"><span class="toc-number">8.2.3.</span> <span class="toc-text"> 省略写法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7-%E6%96%B9%E6%B3%95"><span class="toc-number">8.3.</span> <span class="toc-text"> 属性 方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#watch"><span class="toc-number">8.4.</span> <span class="toc-text"> watch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#computed"><span class="toc-number">8.5.</span> <span class="toc-text"> computed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#methods"><span class="toc-number">8.6.</span> <span class="toc-text"> methods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mounted"><span class="toc-number">8.7.</span> <span class="toc-text"> mounted</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90"><span class="toc-number">8.8.</span> <span class="toc-text"> 实例生命周期钩子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6-components"><span class="toc-number">9.</span> <span class="toc-text"> 组件 components</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1-router"><span class="toc-number">10.</span> <span class="toc-text"> 路由 router</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-install"><span class="toc-number">10.1.</span> <span class="toc-text"> 安装 install</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-2"><span class="toc-number">10.1.1.</span> <span class="toc-text"> npm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vuecli"><span class="toc-number">10.1.2.</span> <span class="toc-text"> @vue&#x2F;cli</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">10.2.</span> <span class="toc-text"> 使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#router-view"><span class="toc-number">10.2.1.</span> <span class="toc-text"> router-view</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#router-link"><span class="toc-number">10.2.2.</span> <span class="toc-text"> router-link</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">11.</span> <span class="toc-text"> 参考</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Vue.js learning notes
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TZZ</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-12-12T12:29:44.000Z" itemprop="datePublished">2021-12-12</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/cactus/tags/vue/" rel="tag">vue</a>, <a class="tag-link-link" href="/cactus/tags/vue-js/" rel="tag">vue.js</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <html><head></head><body><div><img src="logo.svg" style="height:70px;"></div>
+<div style="text-align:center;font-size:200px">Vue.js</div>
+<div style="page-break-after: always;"></div>
+<h1 id="目录"><a class="markdownIt-Anchor" href="#目录"></a> 目录</h1>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#%E5%91%BD%E4%BB%A4%E5%BC%8F%E6%B8%B2%E6%9F%93">命令式渲染</a></li>
+<li><a href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E6%B8%B2%E6%9F%93">声明式渲染</a></li>
+<li><a href="#mvvm">MVVM</a></li>
+<li><a href="#-vuejs"><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/logo.svg" style="width:28px;"> Vue.js</a></li>
+<li><a href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD">核心功能</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8">安装/使用</a>
+<ul>
+<li><a href="#npm">NPM</a></li>
+<li><a href="#script">Script</a></li>
+<li><a href="#vuecli-vue-cli">@vue/cli <s>vue-cli</s></a></li>
+</ul>
+</li>
+<li><a href="#%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD">基础功能</a>
+<ul>
+<li><a href="#%E6%8C%87%E4%BB%A4">指令</a></li>
+<li><a href="#%E5%8F%82%E6%95%B0">参数</a>
+<ul>
+<li><a href="#v-bind">v-bind</a></li>
+<li><a href="#v-on">v-on</a></li>
+<li><a href="#%E7%9C%81%E7%95%A5%E5%86%99%E6%B3%95">省略写法</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B1%9E%E6%80%A7-%E6%96%B9%E6%B3%95">属性 方法</a></li>
+<li><a href="#watch">watch</a></li>
+<li><a href="#computed">computed</a></li>
+<li><a href="#methods">methods</a></li>
+<li><a href="#mounted">mounted</a></li>
+<li><a href="#%E5%AE%9E%E4%BE%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90">实例生命周期钩子</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%84%E4%BB%B6-components">组件 components</a></li>
+<li><a href="#%E8%B7%AF%E7%94%B1-router">路由 router</a>
+<ul>
+<li><a href="#%E5%AE%89%E8%A3%85-install">安装 install</a>
+<ul>
+<li><a href="#npm-1">npm</a></li>
+<li><a href="#vuecli">@vue/cli</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BD%BF%E7%94%A8">使用</a>
+<ul>
+<li><a href="#router-view">router-view</a></li>
+<li><a href="#router-link">router-link</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+<div style="page-break-after: always;"></div>
+<h1 id="命令式渲染"><a class="markdownIt-Anchor" href="#命令式渲染"></a> 命令式渲染</h1>
+<blockquote>
+<p>命令式：一步一步告诉程序如何去做，能否达成结果取决于开发者的设计。<br>
+命令式渲染通常意味着手动操作 DOM</p>
+</blockquote>
+<h1 id="声明式渲染"><a class="markdownIt-Anchor" href="#声明式渲染"></a> 声明式渲染</h1>
+<blockquote>
+<p>声明式：只告诉程序想要什么结果，如何达成由程序保证，开发者不用关心。<br>
+命令式渲染通常意味着手动操作 DOM</p>
+</blockquote>
+<h1 id="mvvm"><a class="markdownIt-Anchor" href="#mvvm"></a> MVVM</h1>
+<p><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/mvvm.png" alt=""></p>
+<p>MVVM：页面输入改变数据，数据改变影响页面数据展示与渲染</p>
+<p>M（Model）：普通的 javascript 数据对象</p>
+<p>V（View）：前端展示页面</p>
+<p>VM（ViewModel）：用于双向绑定数据与页面，就是 vue 的实例</p>
+<div style="page-break-after: always;"></div>
+<h1 id="img-srchttpscos5-1255991898cosap-chongqingmyqcloudcomtklogosvg-stylewidth28px-vuejs"><a class="markdownIt-Anchor" href="#img-srchttpscos5-1255991898cosap-chongqingmyqcloudcomtklogosvg-stylewidth28px-vuejs"></a> <img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/logo.svg" style="width:28px;"> Vue.js</h1>
+<p><a target="_blank" rel="noopener" href="https://vuejs.org/v2/guide/">https://vuejs.org/v2/guide/</a></p>
+<blockquote>
+<p>Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。</p>
+</blockquote>
+<h1 id="核心功能"><a class="markdownIt-Anchor" href="#核心功能"></a> 核心功能</h1>
+<ul>
+<li>
+<p>基础功能：页面渲染、表单处理提交、帮我们管理 DOM(虚拟 DOM)节点</p>
+</li>
+<li>
+<p>组件化开发：增强代码的复用能力，复杂系统代码维护更简单</p>
+</li>
+<li>
+<p>前端路由：更流畅的的用户体验、灵活的在页面切换已渲染组件的显示，不需与后端做多余的交互</p>
+</li>
+<li>
+<p>状态集中管理：MVVM 响应式模型基础上实现多组件之间的状态数据同步与管理</p>
+</li>
+<li>
+<p>前端工程化：结合 webpack 等前端打包工具，管理多种静态资源，代码，测试，发布等，整合前端大型项目。</p>
+</li>
+</ul>
+<h1 id="安装使用"><a class="markdownIt-Anchor" href="#安装使用"></a> 安装/使用</h1>
+<h2 id="npm"><a class="markdownIt-Anchor" href="#npm"></a> NPM</h2>
+<div class="code-area-wrap"><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="script"><a class="markdownIt-Anchor" href="#script"></a> Script</h2>
+<div class="code-area-wrap"><figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="vuecli-vue-cli"><a class="markdownIt-Anchor" href="#vuecli-vue-cli"></a> @vue/cli <s>vue-cli</s></h2>
+<p><a target="_blank" rel="noopener" href="https://cli.vuejs.org/guide/">https://cli.vuejs.org/guide/</a></p>
+<div class="code-area-wrap"><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install @vue/cli</span><br><span class="line"></span><br><span class="line">vue create app</span><br></pre></td></tr></tbody></table></figure></div>
+<h1 id="基础功能"><a class="markdownIt-Anchor" href="#基础功能"></a> 基础功能</h1>
+<div class="code-area-wrap"><figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span>{{ value }}<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+<div class="code-area-wrap"><figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">let</span> app = <span class="keyword">new</span> <span class="title class_">Vue</span>({</span><br><span class="line">  <span class="attr">el</span>: <span class="string">"#app"</span>,</span><br><span class="line">  <span class="attr">data</span>: {</span><br><span class="line">    <span class="attr">message</span>: <span class="string">"Hello"</span>,</span><br><span class="line">  },</span><br><span class="line">});</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="指令"><a class="markdownIt-Anchor" href="#指令"></a> 指令</h2>
+<blockquote>
+<p>除 v-for 外，所有指令 attribute 的预期值都是单个 js 表达式</p>
+</blockquote>
+<h2 id="参数"><a class="markdownIt-Anchor" href="#参数"></a> 参数</h2>
+<h3 id="v-bind"><a class="markdownIt-Anchor" href="#v-bind"></a> v-bind</h3>
+<div class="code-area-wrap"><figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">v-bind:title</span>=<span class="string">"message"</span>&gt;</span>I'm a span.<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+<blockquote>
+<p>将这个元素节点的 <code>title</code> attribute 和 Vue 实例的 <code>message</code> property 保持一致</p>
+</blockquote>
+<h3 id="v-on"><a class="markdownIt-Anchor" href="#v-on"></a> v-on</h3>
+<div class="code-area-wrap"><figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">v-on:click</span>=<span class="string">"click_method"</span>&gt;</span>Click<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="省略写法"><a class="markdownIt-Anchor" href="#省略写法"></a> 省略写法</h3>
+<div class="code-area-wrap"><figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">:title</span>=<span class="string">"111"</span>&gt;</span>I'm a span.<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">"click_method"</span>&gt;</span>Click<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="属性-方法"><a class="markdownIt-Anchor" href="#属性-方法"></a> 属性 方法</h2>
+<h2 id="watch"><a class="markdownIt-Anchor" href="#watch"></a> watch</h2>
+<div class="code-area-wrap"><figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">watch</span>: {</span><br><span class="line">    <span class="attr">test</span>: <span class="keyword">function</span> (<span class="params"></span>) {</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">w_data</span> = <span class="variable language_">this</span>.<span class="property">test</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="computed"><a class="markdownIt-Anchor" href="#computed"></a> computed</h2>
+<div class="code-area-wrap"><figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">computed</span>: {</span><br><span class="line">    <span class="attr">c_data</span>: <span class="keyword">function</span> (<span class="params"></span>) {</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">test</span>.<span class="title function_">split</span>(<span class="string">''</span>).<span class="title function_">reverse</span>().<span class="title function_">join</span>(<span class="string">''</span>)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">},</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="methods"><a class="markdownIt-Anchor" href="#methods"></a> methods</h2>
+<div class="code-area-wrap"><figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">methods</span>: {</span><br><span class="line">    <span class="attr">reverse</span>: <span class="keyword">function</span> (<span class="params"></span>) {</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">test</span> = <span class="variable language_">this</span>.<span class="property">test</span>.<span class="title function_">split</span>(<span class="string">''</span>).<span class="title function_">reverse</span>().<span class="title function_">join</span>(<span class="string">''</span>)</span><br><span class="line">    }</span><br><span class="line">},</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="mounted"><a class="markdownIt-Anchor" href="#mounted"></a> mounted</h2>
+<div class="code-area-wrap"><figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mounted</span>: {<span class="keyword">function</span> (<span class="params"></span>) {</span><br><span class="line">  <span class="comment">// get list</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="实例生命周期钩子"><a class="markdownIt-Anchor" href="#实例生命周期钩子"></a> 实例生命周期钩子</h2>
+<p>参考<a href="#refer-anchor-1"><sup>1</sup></a> <a href="#refer-anchor-2"><sup>2</sup></a></p>
+<p><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/lifecycle.png" alt="Vue 实例生命周期"></p>
+<ul>
+<li>计算属性 computed 以及对应的声明周期</li>
+</ul>
+<blockquote>
+<p>执行顺序实在 beforeMount 与 mounted 之间</p>
+</blockquote>
+<h1 id="组件-components"><a class="markdownIt-Anchor" href="#组件-components"></a> 组件 components</h1>
+<p><img src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/components.png" alt=""></p>
+<h1 id="路由-router"><a class="markdownIt-Anchor" href="#路由-router"></a> 路由 router</h1>
+<p><a target="_blank" rel="noopener" href="https://router.vuejs.org/">https://router.vuejs.org/</a></p>
+<h2 id="安装-install"><a class="markdownIt-Anchor" href="#安装-install"></a> 安装 install</h2>
+<h3 id="npm-2"><a class="markdownIt-Anchor" href="#npm-2"></a> npm</h3>
+<div class="code-area-wrap"><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-router</span><br></pre></td></tr></tbody></table></figure></div>
+<div class="code-area-wrap"><figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">"vue"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">VueRouter</span> <span class="keyword">from</span> <span class="string">"vue-router"</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">VueRouter</span>);</span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="vuecli"><a class="markdownIt-Anchor" href="#vuecli"></a> @vue/cli</h3>
+<div class="code-area-wrap"><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue add router</span><br></pre></td></tr></tbody></table></figure></div>
+<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
+<p>详见 Demo</p>
+<h3 id="router-view"><a class="markdownIt-Anchor" href="#router-view"></a> router-view</h3>
+<div class="code-area-wrap"><figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">router-view</span>&gt;</span><span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h3 id="router-link"><a class="markdownIt-Anchor" href="#router-link"></a> router-link</h3>
+<div class="code-area-wrap"><figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">router-link</span> <span class="attr">to</span>=<span class="string">"/about"</span>&gt;</span>Go to about<span class="tag">&lt;/<span class="name">router-link</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure></div>
+<h1 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h1>
+<div id="refer-anchor-1"></div>
+<ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000011381906">https://segmentfault.com/a/1190000011381906</a></li>
+</ul>
+<div id="refer-anchor-2"></div>
+<ul>
+<li>[2] <a target="_blank" rel="noopener" href="https://juejin.cn/post/6942030120383168542">vue 中 computed、watch、methods 与生命周期的执行顺序</a></li>
+</ul>
+</body></html>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/cactus/">Home</a></li>
+         
+          <li><a href="/cactus/archives/">Writing</a></li>
+         
+          <li><a href="/cactus/tags/">Tag</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/tzzs">Projects</a></li>
+         
+          <li><a href="https://imtzz.com/">Theme</a></li>
+         
+          <li><a href="/cactus/about/">About</a></li>
+         
+          <li><a href="/cactus/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text"> 目录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%BC%8F%E6%B8%B2%E6%9F%93"><span class="toc-number">2.</span> <span class="toc-text"> 命令式渲染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%BC%8F%E6%B8%B2%E6%9F%93"><span class="toc-number">3.</span> <span class="toc-text"> 声明式渲染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mvvm"><span class="toc-number">4.</span> <span class="toc-text"> MVVM</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#img-srchttpscos5-1255991898cosap-chongqingmyqcloudcomtklogosvg-stylewidth28px-vuejs"><span class="toc-number">5.</span> <span class="toc-text">  Vue.js</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="toc-number">6.</span> <span class="toc-text"> 核心功能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-number">7.</span> <span class="toc-text"> 安装&#x2F;使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#npm"><span class="toc-number">7.1.</span> <span class="toc-text"> NPM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#script"><span class="toc-number">7.2.</span> <span class="toc-text"> Script</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vuecli-vue-cli"><span class="toc-number">7.3.</span> <span class="toc-text"> @vue&#x2F;cli vue-cli</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%8A%9F%E8%83%BD"><span class="toc-number">8.</span> <span class="toc-text"> 基础功能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4"><span class="toc-number">8.1.</span> <span class="toc-text"> 指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0"><span class="toc-number">8.2.</span> <span class="toc-text"> 参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#v-bind"><span class="toc-number">8.2.1.</span> <span class="toc-text"> v-bind</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#v-on"><span class="toc-number">8.2.2.</span> <span class="toc-text"> v-on</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9C%81%E7%95%A5%E5%86%99%E6%B3%95"><span class="toc-number">8.2.3.</span> <span class="toc-text"> 省略写法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7-%E6%96%B9%E6%B3%95"><span class="toc-number">8.3.</span> <span class="toc-text"> 属性 方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#watch"><span class="toc-number">8.4.</span> <span class="toc-text"> watch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#computed"><span class="toc-number">8.5.</span> <span class="toc-text"> computed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#methods"><span class="toc-number">8.6.</span> <span class="toc-text"> methods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mounted"><span class="toc-number">8.7.</span> <span class="toc-text"> mounted</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90"><span class="toc-number">8.8.</span> <span class="toc-text"> 实例生命周期钩子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6-components"><span class="toc-number">9.</span> <span class="toc-text"> 组件 components</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1-router"><span class="toc-number">10.</span> <span class="toc-text"> 路由 router</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-install"><span class="toc-number">10.1.</span> <span class="toc-text"> 安装 install</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-2"><span class="toc-number">10.1.1.</span> <span class="toc-text"> npm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vuecli"><span class="toc-number">10.1.2.</span> <span class="toc-text"> @vue&#x2F;cli</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">10.2.</span> <span class="toc-text"> 使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#router-view"><span class="toc-number">10.2.1.</span> <span class="toc-text"> router-view</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#router-link"><span class="toc-number">10.2.2.</span> <span class="toc-text"> router-link</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">11.</span> <span class="toc-text"> 参考</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&text=Vue.js learning notes"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&is_video=false&description=Vue.js learning notes"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Vue.js learning notes&body=Check out this article: https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&title=Vue.js learning notes"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&name=Vue.js learning notes&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://imtzz.com/cactus/2021/12/12/Vue-js-learning-notes/&t=Vue.js learning notes"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    TZZ
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">Home</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/cactus/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">Projects</a></li><!--
+     --><!--
+       --><li><a href="https://imtzz.com/">Theme</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/cactus/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

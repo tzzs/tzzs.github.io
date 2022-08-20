@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="之前由于使用Github Pages作为博客地址导致国内访问速度过慢，增加了腾讯云CDN依旧有大量数据缓存失败，所以更换了国内Coding作为博客镜像（之前用过Gitee Pages，但是普通用户无法自定义域名），在Hexo增加Coding仓库配置时，无法识别新增的SSH公钥，显示 Permission denied (publickey), 看了一下Coding的官方论坛，他们根本没有解决办法�">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 增加多个可用SSH公钥">
+<meta property="og:url" content="https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/index.html">
+<meta property="og:site_name" content="TAN&#39;S BLOG">
+<meta property="og:description" content="之前由于使用Github Pages作为博客地址导致国内访问速度过慢，增加了腾讯云CDN依旧有大量数据缓存失败，所以更换了国内Coding作为博客镜像（之前用过Gitee Pages，但是普通用户无法自定义域名），在Hexo增加Coding仓库配置时，无法识别新增的SSH公钥，显示 Permission denied (publickey), 看了一下Coding的官方论坛，他们根本没有解决办法�">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-23T15:40:46.000Z">
+<meta property="article:modified_time" content="2022-08-20T12:49:58.659Z">
+<meta property="article:author" content="TZZ">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="SSH">
+<meta property="article:tag" content="Coding">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/cactus/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/cactus/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/cactus/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Windows 增加多个可用SSH公钥</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/cactus/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/cactus/atom.xml" title="TAN&#39;S BLOG" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/cactus/">Home</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/cactus/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">Projects</a></li><!--
+     --><!--
+       --><li><a href="https://imtzz.com/">Theme</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/cactus/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/cactus/2020/03/04/Hexo-%E6%9E%84%E5%BB%BA%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%E6%96%87%E4%BB%B6%E6%97%B6%EF%BC%8Cindex-html%E7%AD%89%E6%96%87%E4%BB%B6%E4%B8%AD%E4%B8%BA%E7%A9%BA/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/cactus/2020/02/10/JDK8-%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%94%9F%E6%88%90WebService-Client%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&text=Windows 增加多个可用SSH公钥"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&is_video=false&description=Windows 增加多个可用SSH公钥"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Windows 增加多个可用SSH公钥&body=Check out this article: https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&name=Windows 增加多个可用SSH公钥&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&t=Windows 增加多个可用SSH公钥"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%96%B0%E5%A2%9E%E5%85%AC%E9%92%A5"><span class="toc-number">1.</span> <span class="toc-text"> 1. 新增公钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%8F%91%E7%8E%B0%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text"> 2. 发现解决问题的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh"><span class="toc-number">2.1.</span> <span class="toc-text"> SSH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh-keygen"><span class="toc-number">2.2.</span> <span class="toc-text"> ssh-keygen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh-agent"><span class="toc-number">2.3.</span> <span class="toc-text"> ssh-agent</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%91%E7%8E%B0ssh-add%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text"> 3. 发现ssh-add无法使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%B0%86coding%E7%9A%84ssh-key%E6%B7%BB%E5%8A%A0%E5%88%B0ssh-agent%E4%B8%8B"><span class="toc-number">4.</span> <span class="toc-text"> 4. 将Coding的ssh key添加到ssh-agent下</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%B5%8B%E8%AF%95coding"><span class="toc-number">5.</span> <span class="toc-text"> 5. 测试Coding</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Windows 增加多个可用SSH公钥
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TZZ</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-02-23T15:40:46.000Z" itemprop="datePublished">2020-02-23</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/cactus/categories/Windows/">Windows</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/cactus/tags/Coding/" rel="tag">Coding</a>, <a class="tag-link-link" href="/cactus/tags/SSH/" rel="tag">SSH</a>, <a class="tag-link-link" href="/cactus/tags/Windows/" rel="tag">Windows</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <html><head></head><body><p>之前由于使用Github Pages作为博客地址导致国内访问速度过慢，增加了腾讯云CDN依旧有大量数据缓存失败，所以更换了国内Coding作为博客镜像（之前用过Gitee Pages，但是普通用户无法自定义域名），在Hexo增加Coding仓库配置时，无法识别新增的SSH公钥，显示 <code>Permission denied (publickey)</code>, 看了一下Coding的官方论坛，他们根本没有解决办法😂，以下为出现问题的过程以及找到的解决办法。</p>
+<h1 id="1-新增公钥"><a class="markdownIt-Anchor" href="#1-新增公钥"></a> 1. 新增公钥</h1>
+<p>想要通过SSH访问Coding，需要先新增一个公钥，同时在Coding端增加公钥配置</p>
+<div class="code-area-wrap"><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ssh-agent -t rsa -C <span class="string">"your.email@example.com"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Creates a new ssh key, using the provided email as a label</span></span><br><span class="line"><span class="comment"># Generating public/private rsa key pair.</span></span><br><span class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/Users/you/.ssh/id_rsa): [Press enter]  // 推荐使用默认地址，如果以前的有用，就改为新的名字例如 id_ras_Coding_email@example.com 这个文件路径后面会用到</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):   //此处点击 Enter 键即可，也可以填写密码，填写密码后每次使用 SSH 方式推送代码时都会要求输入密码，由于这个 Key 也不是用于军事目的，所以也无需设置密码。</span><br></pre></td></tr></tbody></table></figure></div>
+<p>然后将生成的<code>.pub</code>公钥添加到Coding的公钥配置中，使用命令测试连接是否成功</p>
+<div class="code-area-wrap"><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@e.coding.net</span><br></pre></td></tr></tbody></table></figure></div>
+<p>输入 <code>yes</code> 允许新增host，如果显示已经通过则正常，但是我在验证过程中依旧显示</p>
+<div class="code-area-wrap"><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Permission denied (publickey)</span><br></pre></td></tr></tbody></table></figure></div>
+<h1 id="2-发现解决问题的方法"><a class="markdownIt-Anchor" href="#2-发现解决问题的方法"></a> 2. 发现解决问题的方法</h1>
+<p>首先解释一下相关名词</p>
+<h2 id="ssh"><a class="markdownIt-Anchor" href="#ssh"></a> SSH</h2>
+<p>全称 Secure Shell ，一个允许两台电脑之间通过安全的连接进行数据交换的网络协议，通过加密博爱挣了数据库的保密性和完整性。SSH采用公钥加密技术来验证远程主机，以及允许远程主机验证用户。</p>
+<h2 id="ssh-keygen"><a class="markdownIt-Anchor" href="#ssh-keygen"></a> ssh-keygen</h2>
+<p>用于为SSH生成、管理和转换认证密钥，支持RSA和DSA两种认证密钥，生成密钥就是使用的此命令。</p>
+<h2 id="ssh-agent"><a class="markdownIt-Anchor" href="#ssh-agent"></a> ssh-agent</h2>
+<p>一种用于保存公钥身份验证所使用的私钥的程序，如果私钥交给ssh-agent保管，其它程序需要验证身份的时候可以将验证申请交给ssh-agent来完成整个认证过程。</p>
+<hr>
+<p>同时ssh-agent也可能带来问题，在Windows下尝试使用SSH进行身份验证时就可能出现<code>Permission denied (publickey)</code> 的问题，<strong>主要可能的原因就是公钥未加载到ssh-agent中</strong>，<code>ssh-add -l</code>可以查看相应的ssh key是否被加载，这就到了下一个问题，ssh-add命令无法使用。</p>
+<h1 id="3-发现ssh-add无法使用"><a class="markdownIt-Anchor" href="#3-发现ssh-add无法使用"></a> 3. 发现ssh-add无法使用</h1>
+<p>输入命令</p>
+<div class="code-area-wrap"><figure class="highlight sh"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-add -l</span><br></pre></td></tr></tbody></table></figure></div>
+<p>就出现了 <code>Error connecting to agent: No such file or directory</code> 的问题。</p>
+<p>这是由于Windows下的服务<strong>OpenSSH Authentication Agent</strong> 未启动的原因，</p>
+<ol>
+<li>Windows下键入 WIN+R 输入 services.msc</li>
+<li>找到<strong>OpenSSH Authentication Agent</strong>服务，将启动类型修改为 <strong>自动</strong> ，同时启动此服务。</li>
+</ol>
+<p>此时 <code>ssh-add</code>命令就能够使用了。</p>
+<h1 id="4-将coding的ssh-key添加到ssh-agent下"><a class="markdownIt-Anchor" href="#4-将coding的ssh-key添加到ssh-agent下"></a> 4. 将Coding的ssh key添加到ssh-agent下</h1>
+<p>使用以下命令添加ssh key到ssh-agent下</p>
+<div class="code-area-wrap"><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-add /Users/you/.ssh/id_ras_Coding_email@example.com  <span class="comment"># 这就是上面生成ssh key时写的地址</span></span><br></pre></td></tr></tbody></table></figure></div>
+<p>此时再通过 <code>ssh-add -l</code> 查看ssh-agent中管理的ssh key就有了新增的key。</p>
+<h1 id="5-测试coding"><a class="markdownIt-Anchor" href="#5-测试coding"></a> 5. 测试Coding</h1>
+<div class="code-area-wrap"><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@e.coding.net</span><br></pre></td></tr></tbody></table></figure></div>
+<p>此时就能验证成功了</p>
+<div class="code-area-wrap"><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Warning: Permanently added <span class="string">'e.coding.net,(RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">Coding 提示: Hello Frank, You'</span>ve connected to Coding.net via SSH. This is a personal key.</span><br><span class="line">Frank，你好，你已经通过 SSH 协议认证 Coding.net 服务，这是一个个人公钥.</span><br></pre></td></tr></tbody></table></figure></div>
+</body></html>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/cactus/">Home</a></li>
+         
+          <li><a href="/cactus/archives/">Writing</a></li>
+         
+          <li><a href="/cactus/tags/">Tag</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/tzzs">Projects</a></li>
+         
+          <li><a href="https://imtzz.com/">Theme</a></li>
+         
+          <li><a href="/cactus/about/">About</a></li>
+         
+          <li><a href="/cactus/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%96%B0%E5%A2%9E%E5%85%AC%E9%92%A5"><span class="toc-number">1.</span> <span class="toc-text"> 1. 新增公钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%8F%91%E7%8E%B0%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text"> 2. 发现解决问题的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh"><span class="toc-number">2.1.</span> <span class="toc-text"> SSH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh-keygen"><span class="toc-number">2.2.</span> <span class="toc-text"> ssh-keygen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh-agent"><span class="toc-number">2.3.</span> <span class="toc-text"> ssh-agent</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%91%E7%8E%B0ssh-add%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text"> 3. 发现ssh-add无法使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%B0%86coding%E7%9A%84ssh-key%E6%B7%BB%E5%8A%A0%E5%88%B0ssh-agent%E4%B8%8B"><span class="toc-number">4.</span> <span class="toc-text"> 4. 将Coding的ssh key添加到ssh-agent下</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%B5%8B%E8%AF%95coding"><span class="toc-number">5.</span> <span class="toc-text"> 5. 测试Coding</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&text=Windows 增加多个可用SSH公钥"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&is_video=false&description=Windows 增加多个可用SSH公钥"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Windows 增加多个可用SSH公钥&body=Check out this article: https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&title=Windows 增加多个可用SSH公钥"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&name=Windows 增加多个可用SSH公钥&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://imtzz.com/cactus/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/&t=Windows 增加多个可用SSH公钥"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2022
+    TZZ
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/cactus/">Home</a></li><!--
+     --><!--
+       --><li><a href="/cactus/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/cactus/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">Projects</a></li><!--
+     --><!--
+       --><li><a href="https://imtzz.com/">Theme</a></li><!--
+     --><!--
+       --><li><a href="/cactus/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/cactus/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/cactus/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

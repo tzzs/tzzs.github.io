@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Windows下迁移User下的用户目录到非系统盘 | TAN'S BLOG</title><meta name="keywords" content="Windows"><meta name="author" content="TZZ"><meta name="copyright" content="TZZ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="先进入Windows的修复模式，进入修复模式的命令行功能。 如果能够登录Windows, 按住Shift点击重启,则能够直接进入修复模式. 如果无法进入Windows界面, (我的主板是ASUS, 目前没找到好的办法可以直接从BIOS进入), 可以在见到ASUS图标后, 按住关机键强制重启, 重复三次, 则可进入.   使用diskpart命令查看盘符（😭我的Windows里的盘符与disk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows下迁移User下的用户目录到非系统盘">
+<meta property="og:url" content="https://imtzz.com/2020/12/15/Windows%E4%B8%8B%E8%BF%81%E7%A7%BBUser%E4%B8%8B%E7%9A%84%E7%94%A8%E6%88%B7%E7%9B%AE%E5%BD%95%E5%88%B0%E9%9D%9E%E7%B3%BB%E7%BB%9F%E7%9B%98/index.html">
+<meta property="og:site_name" content="TAN&#39;S BLOG">
+<meta property="og:description" content="先进入Windows的修复模式，进入修复模式的命令行功能。 如果能够登录Windows, 按住Shift点击重启,则能够直接进入修复模式. 如果无法进入Windows界面, (我的主板是ASUS, 目前没找到好的办法可以直接从BIOS进入), 可以在见到ASUS图标后, 按住关机键强制重启, 重复三次, 则可进入.   使用diskpart命令查看盘符（😭我的Windows里的盘符与disk">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/2020/08/windows-logo-social.png">
+<meta property="article:published_time" content="2020-12-15T15:49:58.000Z">
+<meta property="article:modified_time" content="2022-08-20T12:49:58.659Z">
+<meta property="article:author" content="TZZ">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/2020/08/windows-logo-social.png"><link rel="shortcut icon" href="/img/imtzz64.ico"><link rel="canonical" href="https://imtzz.com/2020/12/15/Windows%E4%B8%8B%E8%BF%81%E7%A7%BBUser%E4%B8%8B%E7%9A%84%E7%94%A8%E6%88%B7%E7%9B%AE%E5%BD%95%E5%88%B0%E9%9D%9E%E7%B3%BB%E7%BB%9F%E7%9B%98/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?828512642a85c276ab188101baac616e";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-132580685-2"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-132580685-2');
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Windows下迁移User下的用户目录到非系统盘',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-08-20 20:49:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tzzs/hexo-butterfly@main/index.css"><link rel="stylesheet" href="/data/butterfly.index.css"><meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="TAN'S BLOG" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar_c.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">61</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">46</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/movies"><i class="fa-fw fa fa-film"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-bars"></i><span> 主题</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/cactus"><i class="fa-fw fas fa-angle-double-right"></i><span> cactus</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/2020/08/windows-logo-social.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">TAN'S BLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/movies"><i class="fa-fw fa fa-film"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-bars"></i><span> 主题</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/cactus"><i class="fa-fw fas fa-angle-double-right"></i><span> cactus</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Windows下迁移User下的用户目录到非系统盘</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-12-15T15:49:58.000Z" title="发表于 2020-12-15 23:49:58">2020-12-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-08-20T12:49:58.659Z" title="更新于 2022-08-20 20:49:58">2022-08-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Windows/">Windows</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Windows/Windows10/">Windows10</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><html><head></head><body><ol>
+<li>
+<p>先进入Windows的修复模式，进入修复模式的命令行功能。</p>
+<p>如果能够登录Windows, 按住Shift点击重启,则能够直接进入修复模式.</p>
+<p>如果无法进入Windows界面, (我的主板是ASUS, 目前没找到好的办法可以直接从BIOS进入), 可以在见到ASUS图标后, 按住关机键强制重启, 重复三次, 则可进入.</p>
+</li>
+<li>
+<p>使用diskpart命令查看盘符（😭我的Windows里的盘符与diskpart的不一致,导致我重启了N多次）</p>
+<p>此时CMD一般显示的是X盘, 这是正常的不要惊慌.</p>
+<div class="code-area-wrap"><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入diskpart工具</span></span><br><span class="line">diskpart</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有的硬盘</span></span><br><span class="line">list disk</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入系统盘所在的硬盘</span></span><br><span class="line">select disk 2 </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看当前硬盘的磁盘盘符 C: D:</span></span><br><span class="line">LIST VOLUME</span><br></pre></td></tr></tbody></table></figure></div>
+</li>
+<li>
+<p>根据查看的盘符编写命令</p>
+<p>想要将C:\Users\XXX 迁移到 D:\Users\XXX</p>
+<p>在diskpart中查看到的盘符分别为 G: 和 H: , 但是这里有个问题要注意, 等下G:\Users设置软链接的时候依旧要链到D:\Users , <strong>这点很重要(因为我重启了好几次)</strong>.</p>
+<div class="code-area-wrap"><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">robocopy 文件复制   /E 复制子目录(包括空目录) /COPYALL 复制所有文件信息  /XJ 排除接合点(I don<span class="string">'t know what this is.) /XD排除某个文件</span></span></span><br><span class="line">robocopy "G:\Users" "D:\Users" /E /COPYALL /XJ /XD "G:\Users\Administrator"</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">如果上一步复制失败,说有某个文件夹正在使用就可以使用/XD跳过对应的文件夹</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">如果仅迁移当前用户,则可以仅复制 G:\Users\userName 目录 到 D:\Users\userName</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">删除G:\Users目录, 应为删除后才能创建软连接</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">rmdir 删除文件夹 /S 递归删除 /Q 安静模式,不会确认是否需要删除</span></span></span><br><span class="line">rmdir "C:\Users" /S /Q</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">上两步成功,就基本成功了</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">mklink 创建软链接 /J 链接类型为目录链接</span></span></span><br><span class="line">mklink "G:\Users" "D:\Users" /J</span><br></pre></td></tr></tbody></table></figure></div>
+</li>
+<li>
+<p>执行完成以上步骤后, 开机确认, 打开C:\Users 确认是否与 D:\Users 内容不同, 如果不相同可能就是mklink链接目录不对(即diskpart中的盘符与Windows开机后的盘符不一致, 按照第三步重新编写命令执行).</p>
+</li>
+</ol>
+</body></html></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://imtzz.com">TZZ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://imtzz.com/2020/12/15/Windows%E4%B8%8B%E8%BF%81%E7%A7%BBUser%E4%B8%8B%E7%9A%84%E7%94%A8%E6%88%B7%E7%9B%AE%E5%BD%95%E5%88%B0%E9%9D%9E%E7%B3%BB%E7%BB%9F%E7%9B%98/">https://imtzz.com/2020/12/15/Windows%E4%B8%8B%E8%BF%81%E7%A7%BBUser%E4%B8%8B%E7%9A%84%E7%94%A8%E6%88%B7%E7%9B%AE%E5%BD%95%E5%88%B0%E9%9D%9E%E7%B3%BB%E7%BB%9F%E7%9B%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a> 许可协议。转载请注明来自 <a href="https://imtzz.com" target="_blank">TAN'S BLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Windows/">Windows</a></div><div class="post_share"><div class="social-share" data-image="https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/2020/08/windows-logo-social.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/"><img class="prev-cover" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-windows10-laptop.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Windows10下无法更改新应用的保存位置</div></div></a></div><div class="next-post pull-right"><a href="/2020/11/29/Typero%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87%E5%88%B0Tencent-Cos/"><img class="next-cover" src="/img/vector_landscape_3.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Typero自动上传图片到Tencent COS</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2019/12/13/SSH%E8%BF%9E%E6%8E%A5WSL/" title="SSH连接WSL"><img class="cover" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-wsl-1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2022-08-20</div><div class="title">SSH连接WSL</div></div></a></div><div><a href="/2019/12/13/Windows-10-%E5%90%AF%E5%8A%A8%E9%A1%B9%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BD%8D%E7%BD%AE/" title="Windows 10 启动项注册表位置"><img class="cover" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-windows10-laptop.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2022-08-20</div><div class="title">Windows 10 启动项注册表位置</div></div></a></div><div><a href="/2020/02/23/Windows-%E5%A2%9E%E5%8A%A0%E5%A4%9A%E4%B8%AA%E5%8F%AF%E7%94%A8SSH%E5%85%AC%E9%92%A5/" title="Windows 增加多个可用SSH公钥"><img class="cover" src="https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/2020/08/windows-logo-social.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2022-08-20</div><div class="title">Windows 增加多个可用SSH公钥</div></div></a></div><div><a href="/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/" title="Windows10下无法更改新应用的保存位置"><img class="cover" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-windows10-laptop.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2022-08-20</div><div class="title">Windows10下无法更改新应用的保存位置</div></div></a></div><div><a href="/2021/09/27/change-the-WSL-starting-diectory-in-windows-terminal/" title="change the WSL starting diectory in windows terminal"><img class="cover" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-wsl-1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2022-08-20</div><div class="title">change the WSL starting diectory in windows terminal</div></div></a></div><div><a href="/2019/12/13/%E5%88%A0%E9%99%A4%E7%94%B5%E8%84%91%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%AD%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95-%E6%8E%88%E4%BA%88%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E9%80%89%E9%A1%B9/" title="删除电脑文件夹中右键菜单-授予访问权限选项"><img class="cover" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-windows01.png" alt="cover"><div class="content is-center"><div class="date"><i class="fas fa-history fa-fw"></i> 2022-08-20</div><div class="title">删除电脑文件夹中右键菜单-授予访问权限选项</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar_c.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">TZZ</div><div class="author-info__description">Have fun!</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">61</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">46</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tzzs"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/tzzs" target="_blank" title="Github"><i class="fab fa-github-square"></i></a><a class="social-icon" href="mailto:tzzprc@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="Atom"><i class="fa fa-rss"></i></a><a class="social-icon" href="http://bing2.imtzz.com" target="_blank" title="BING2"><i class="fas fa-images"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Happy New Year!</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/" title="简单理解 java.lang.Throwable"><img src="/img/vector_landscape_2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="简单理解 java.lang.Throwable"/></a><div class="content"><a class="title" href="/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/" title="简单理解 java.lang.Throwable">简单理解 java.lang.Throwable</a><time datetime="2022-08-15T14:05:07.000Z" title="发表于 2022-08-15 22:05:07">2022-08-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/06/How-to-config-a-proxy-for-WSL2/" title="How to config a proxy for WSL2"><img src="/img/vector_landscape_1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="How to config a proxy for WSL2"/></a><div class="content"><a class="title" href="/2022/06/06/How-to-config-a-proxy-for-WSL2/" title="How to config a proxy for WSL2">How to config a proxy for WSL2</a><time datetime="2022-06-06T03:27:07.000Z" title="发表于 2022-06-06 11:27:07">2022-06-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/" title="[fixed]-bash: command not found when using ssh connect to server"><img src="/img/vector_landscape_3.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="[fixed]-bash: command not found when using ssh connect to server"/></a><div class="content"><a class="title" href="/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/" title="[fixed]-bash: command not found when using ssh connect to server">[fixed]-bash: command not found when using ssh connect to server</a><time datetime="2022-02-21T12:41:07.000Z" title="发表于 2022-02-21 20:41:07">2022-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/" title="Downloading CanvasKit failure error when running flutter on brower"><img src="/img/vector_landscape_3.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Downloading CanvasKit failure error when running flutter on brower"/></a><div class="content"><a class="title" href="/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/" title="Downloading CanvasKit failure error when running flutter on brower">Downloading CanvasKit failure error when running flutter on brower</a><time datetime="2022-02-17T14:38:57.000Z" title="发表于 2022-02-17 22:38:57">2022-02-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/" title="配置Flutter国内镜像源"><img src="/img/vector_landscape_1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="配置Flutter国内镜像源"/></a><div class="content"><a class="title" href="/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/" title="配置Flutter国内镜像源">配置Flutter国内镜像源</a><time datetime="2022-02-17T14:33:03.000Z" title="发表于 2022-02-17 22:33:03">2022-02-17</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://46c4ts1tskv22sdav81j9c69-wpengine.netdna-ssl.com/wp-content/uploads/prod/2020/08/windows-logo-social.png')"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By TZZ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"><img class="icp-icon" src="/img/icp.png" alt="icp icon"><span>鲁ICP备17030961号-4</span></a>,<div id="cc-myssl-id"><a target="_blank" rel="noopener" href="https://myssl.com/imtzz.com?from=mysslid"><img src="https://static.myssl.com/res/images/myssl-id3.png" alt="myssl" style="max-height:50px;display:block;margin:0 auto"></a></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'mXhoH2fDQVPL7V7vg8lzhfKn-gzGzoHsz',
+      appKey: 't9e6QrKXBawmhwpoCfePOUMw',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/movies/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: true,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', 'UA-132580685-2', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div></body></html>
