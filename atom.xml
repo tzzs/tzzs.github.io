@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>TAN&#39;S BLOG</title>
-  <icon>https://imtzz.com/icon.png</icon>
+  <icon>https://tzzs.github.io/icon.png</icon>
   
-  <link href="https://imtzz.com/atom.xml" rel="self"/>
+  <link href="https://tzzs.github.io/atom.xml" rel="self"/>
   
-  <link href="https://imtzz.com/"/>
-  <updated>2022-08-20T12:49:58.659Z</updated>
-  <id>https://imtzz.com/</id>
+  <link href="https://tzzs.github.io/"/>
+  <updated>2022-08-15T14:06:31.728Z</updated>
+  <id>https://tzzs.github.io/</id>
   
   <author>
     <name>TZZ</name>
@@ -18,424 +18,439 @@
   
   <entry>
     <title>简单理解 java.lang.Throwable</title>
-    <link href="https://imtzz.com/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/"/>
-    <id>https://imtzz.com/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/</id>
+    <link href="https://tzzs.github.io/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/"/>
+    <id>https://tzzs.github.io/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/</id>
     <published>2022-08-15T14:05:07.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2022-08-15T14:06:31.728Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;javalangthrowable&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#javalangthrowable&quot;&gt;&lt;/a&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;javalangthrowable&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#javalangthrowable&quot;&gt;&lt;/a&gt; java.lang.Throwable&lt;/h1&gt;
+&lt;p&gt;&lt;a</summary>
         
       
     
     
     
-    <category term="java" scheme="https://imtzz.com/categories/java/"/>
+    <category term="java" scheme="https://tzzs.github.io/categories/java/"/>
     
     
-    <category term="java" scheme="https://imtzz.com/tags/java/"/>
+    <category term="java" scheme="https://tzzs.github.io/tags/java/"/>
     
-    <category term="throwable" scheme="https://imtzz.com/tags/throwable/"/>
+    <category term="throwable" scheme="https://tzzs.github.io/tags/throwable/"/>
     
   </entry>
   
   <entry>
     <title>How to config a proxy for WSL2</title>
-    <link href="https://imtzz.com/2022/06/06/How-to-config-a-proxy-for-WSL2/"/>
-    <id>https://imtzz.com/2022/06/06/How-to-config-a-proxy-for-WSL2/</id>
+    <link href="https://tzzs.github.io/2022/06/06/How-to-config-a-proxy-for-WSL2/"/>
+    <id>https://tzzs.github.io/2022/06/06/How-to-config-a-proxy-for-WSL2/</id>
     <published>2022-06-06T03:27:07.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2022-06-06T18:37:31.074Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;I met some problems when I downloaded some files from GitHub on WSL2. I cannot download files when I connect to</summary>
+    <summary type="html">&lt;p&gt;I met some problems when I downloaded some files from GitHub on WSL2. I cannot download files when I connect to GitHub directly. So, I</summary>
         
       
     
     
     
-    <category term="WSL2" scheme="https://imtzz.com/categories/WSL2/"/>
+    <category term="WSL2" scheme="https://tzzs.github.io/categories/WSL2/"/>
     
     
-    <category term="wsl2" scheme="https://imtzz.com/tags/wsl2/"/>
+    <category term="wsl2" scheme="https://tzzs.github.io/tags/wsl2/"/>
     
-    <category term="proxy" scheme="https://imtzz.com/tags/proxy/"/>
+    <category term="proxy" scheme="https://tzzs.github.io/tags/proxy/"/>
     
   </entry>
   
   <entry>
     <title>[fixed]-bash: command not found when using ssh connect to server</title>
-    <link href="https://imtzz.com/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/"/>
-    <id>https://imtzz.com/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/</id>
+    <link href="https://tzzs.github.io/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/"/>
+    <id>https://tzzs.github.io/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/</id>
     <published>2022-02-21T12:41:07.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2022-06-06T18:32:54.531Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;problem&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#problem&quot;&gt;&lt;/a&gt; Problem&lt;/h2&gt;
-&lt;p&gt;之前在项目里面写了一个 shell 脚本，用在 Github</summary>
+    <summary type="html">&lt;h2 id=&quot;problem&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#problem&quot;&gt;&lt;/a&gt; Problem&lt;/h2&gt;
+&lt;p&gt;之前在项目里面写了一个 shell 脚本，用在 Github action 中部署项目到服务器上，但是最近用</summary>
         
       
     
     
     
-    <category term="Linux" scheme="https://imtzz.com/categories/Linux/"/>
+    <category term="Linux" scheme="https://tzzs.github.io/categories/Linux/"/>
     
     
-    <category term="ssh" scheme="https://imtzz.com/tags/ssh/"/>
+    <category term="ssh" scheme="https://tzzs.github.io/tags/ssh/"/>
     
-    <category term="linux" scheme="https://imtzz.com/tags/linux/"/>
+    <category term="linux" scheme="https://tzzs.github.io/tags/linux/"/>
     
-    <category term="github action" scheme="https://imtzz.com/tags/github-action/"/>
+    <category term="github action" scheme="https://tzzs.github.io/tags/github-action/"/>
     
-    <category term="shell" scheme="https://imtzz.com/tags/shell/"/>
+    <category term="shell" scheme="https://tzzs.github.io/tags/shell/"/>
     
   </entry>
   
   <entry>
     <title>Downloading CanvasKit failure error when running flutter on brower</title>
-    <link href="https://imtzz.com/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/"/>
-    <id>https://imtzz.com/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/</id>
+    <link href="https://tzzs.github.io/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/"/>
+    <id>https://tzzs.github.io/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/</id>
     <published>2022-02-17T14:38:57.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2022-06-06T18:32:54.531Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;reason&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#reason&quot;&gt;&lt;/a&gt; Reason&lt;/h2&gt;
+    <summary type="html">&lt;h2 id=&quot;reason&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#reason&quot;&gt;&lt;/a&gt; Reason&lt;/h2&gt;
 &lt;p&gt;此问题是由于国内无法直接访问</summary>
         
       
     
     
     
-    <category term="Flutter" scheme="https://imtzz.com/categories/Flutter/"/>
+    <category term="Flutter" scheme="https://tzzs.github.io/categories/Flutter/"/>
     
     
-    <category term="flutter" scheme="https://imtzz.com/tags/flutter/"/>
+    <category term="flutter" scheme="https://tzzs.github.io/tags/flutter/"/>
     
   </entry>
   
   <entry>
     <title>配置Flutter国内镜像源</title>
-    <link href="https://imtzz.com/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/"/>
-    <id>https://imtzz.com/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</id>
+    <link href="https://tzzs.github.io/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/"/>
+    <id>https://tzzs.github.io/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</id>
     <published>2022-02-17T14:33:03.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2022-06-06T18:32:54.531Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;windows&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#windows&quot;&gt;&lt;/a&gt;</summary>
+    <summary type="html">&lt;h2 id=&quot;windows&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#windows&quot;&gt;&lt;/a&gt; Windows&lt;/h2&gt;
+&lt;p&gt;新增两个环境变量&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PUB_HOSTED_URL
+&lt;ul&gt;
+&lt;li&gt;&lt;a</summary>
         
       
     
     
     
-    <category term="Flutter" scheme="https://imtzz.com/categories/Flutter/"/>
+    <category term="Flutter" scheme="https://tzzs.github.io/categories/Flutter/"/>
     
     
-    <category term="flutter" scheme="https://imtzz.com/tags/flutter/"/>
+    <category term="flutter" scheme="https://tzzs.github.io/tags/flutter/"/>
     
   </entry>
   
   <entry>
     <title>Spring Cloud Gateway and Eureka</title>
-    <link href="https://imtzz.com/2022/01/13/Spring-Cloud-Gateway-and-Eureka/"/>
-    <id>https://imtzz.com/2022/01/13/Spring-Cloud-Gateway-and-Eureka/</id>
+    <link href="https://tzzs.github.io/2022/01/13/Spring-Cloud-Gateway-and-Eureka/"/>
+    <id>https://tzzs.github.io/2022/01/13/Spring-Cloud-Gateway-and-Eureka/</id>
     <published>2022-01-13T13:10:08.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2022-06-06T18:32:54.531Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;具体实现可参考代码 &lt;a href=&quot;https://github.com/tzzs/gatewayEurekaDemo&quot;&gt;Spring Cloud Gateway and Eureka</summary>
+    <summary type="html">&lt;p&gt;具体实现可参考代码 &lt;a href=&quot;https://github.com/tzzs/gatewayEurekaDemo&quot;&gt;Spring Cloud Gateway and Eureka</summary>
         
       
     
     
     
-    <category term="microservice" scheme="https://imtzz.com/categories/microservice/"/>
+    <category term="microservice" scheme="https://tzzs.github.io/categories/microservice/"/>
     
     
-    <category term="spring" scheme="https://imtzz.com/tags/spring/"/>
+    <category term="spring" scheme="https://tzzs.github.io/tags/spring/"/>
     
-    <category term="spring cloud" scheme="https://imtzz.com/tags/spring-cloud/"/>
+    <category term="spring cloud" scheme="https://tzzs.github.io/tags/spring-cloud/"/>
     
-    <category term="eureka" scheme="https://imtzz.com/tags/eureka/"/>
+    <category term="eureka" scheme="https://tzzs.github.io/tags/eureka/"/>
     
-    <category term="spring cloud gateway" scheme="https://imtzz.com/tags/spring-cloud-gateway/"/>
+    <category term="spring cloud gateway" scheme="https://tzzs.github.io/tags/spring-cloud-gateway/"/>
     
   </entry>
   
   <entry>
     <title>SM4 国密算法</title>
-    <link href="https://imtzz.com/2021/12/18/SM4-%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/"/>
-    <id>https://imtzz.com/2021/12/18/SM4-%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/</id>
+    <link href="https://tzzs.github.io/2021/12/18/SM4-%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/"/>
+    <id>https://tzzs.github.io/2021/12/18/SM4-%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/</id>
     <published>2021-12-18T12:22:57.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2021-12-28T11:39:00.338Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;font-size:100px&quot;&gt;SM4 算法&lt;/div&gt;
+    <summary type="html">&lt;div style=&quot;text-align:center;font-size:100px&quot;&gt;SM4 算法&lt;/div&gt;
 &lt;p&gt;[TOC]&lt;/p&gt;
-&lt;div style=&quot;page-break-after:</summary>
+&lt;div STYLE=&quot;page-break-after: always;&quot;&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a</summary>
         
       
     
     
     
-    <category term="加密" scheme="https://imtzz.com/categories/%E5%8A%A0%E5%AF%86/"/>
+    <category term="加密" scheme="https://tzzs.github.io/categories/%E5%8A%A0%E5%AF%86/"/>
     
     
-    <category term="sm4" scheme="https://imtzz.com/tags/sm4/"/>
+    <category term="sm4" scheme="https://tzzs.github.io/tags/sm4/"/>
     
-    <category term="go" scheme="https://imtzz.com/tags/go/"/>
+    <category term="go" scheme="https://tzzs.github.io/tags/go/"/>
     
   </entry>
   
   <entry>
     <title>Vue.js learning notes</title>
-    <link href="https://imtzz.com/2021/12/12/Vue-js-learning-notes/"/>
-    <id>https://imtzz.com/2021/12/12/Vue-js-learning-notes/</id>
+    <link href="https://tzzs.github.io/2021/12/12/Vue-js-learning-notes/"/>
+    <id>https://tzzs.github.io/2021/12/12/Vue-js-learning-notes/</id>
     <published>2021-12-12T12:29:44.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2021-12-18T16:49:44.134Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;div&gt;&lt;img src=&quot;logo.svg&quot; style=&quot;height:70px;&quot;&gt;&lt;/div&gt;
+    <summary type="html">&lt;div&gt;&lt;img src=&quot;logo.svg&quot; style=&quot;height:70px;&quot; /&gt;&lt;/div&gt;
+&lt;div style=&quot;text-align:center;font-size:200px&quot;&gt;Vue.js&lt;/div&gt;
 &lt;div</summary>
         
       
     
     
     
-    <category term="前端" scheme="https://imtzz.com/categories/%E5%89%8D%E7%AB%AF/"/>
+    <category term="前端" scheme="https://tzzs.github.io/categories/%E5%89%8D%E7%AB%AF/"/>
     
     
-    <category term="vue" scheme="https://imtzz.com/tags/vue/"/>
+    <category term="vue" scheme="https://tzzs.github.io/tags/vue/"/>
     
-    <category term="vue.js" scheme="https://imtzz.com/tags/vue-js/"/>
+    <category term="vue.js" scheme="https://tzzs.github.io/tags/vue-js/"/>
     
   </entry>
   
   <entry>
     <title>Approach to start minikube on a single-core server</title>
-    <link href="https://imtzz.com/2021/10/17/Approach-to-start-minikube-on-a-single-core-server/"/>
-    <id>https://imtzz.com/2021/10/17/Approach-to-start-minikube-on-a-single-core-server/</id>
+    <link href="https://tzzs.github.io/2021/10/17/Approach-to-start-minikube-on-a-single-core-server/"/>
+    <id>https://tzzs.github.io/2021/10/17/Approach-to-start-minikube-on-a-single-core-server/</id>
     <published>2021-10-17T14:10:28.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2021-10-20T15:24:09.445Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;I have an Aliyun server with single-core and 2GB memory. I installed minikube on it today. But I found it</summary>
+    <summary type="html">&lt;p&gt;I have an Aliyun server with single-core and 2GB memory. I installed minikube on it today. But I found it couldn’t run minikube.</summary>
         
       
     
     
     
-    <category term="kubernetes" scheme="https://imtzz.com/categories/kubernetes/"/>
+    <category term="kubernetes" scheme="https://tzzs.github.io/categories/kubernetes/"/>
     
     
-    <category term="Linux" scheme="https://imtzz.com/tags/Linux/"/>
+    <category term="Linux" scheme="https://tzzs.github.io/tags/Linux/"/>
     
-    <category term="kubectl" scheme="https://imtzz.com/tags/kubectl/"/>
+    <category term="kubectl" scheme="https://tzzs.github.io/tags/kubectl/"/>
     
-    <category term="kubernetes" scheme="https://imtzz.com/tags/kubernetes/"/>
+    <category term="kubernetes" scheme="https://tzzs.github.io/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>upgrade docker engine package to docker-ce on CentOS</title>
-    <link href="https://imtzz.com/2021/10/17/upgrade-docker-engine-package-to-docker-ce-on-CentOS/"/>
-    <id>https://imtzz.com/2021/10/17/upgrade-docker-engine-package-to-docker-ce-on-CentOS/</id>
+    <link href="https://tzzs.github.io/2021/10/17/upgrade-docker-engine-package-to-docker-ce-on-CentOS/"/>
+    <id>https://tzzs.github.io/2021/10/17/upgrade-docker-engine-package-to-docker-ce-on-CentOS/</id>
     <published>2021-10-17T13:18:17.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2021-10-20T15:27:10.537Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;blockquote&gt;
-&lt;p&gt;Older version of Docker were called &lt;code&gt;docker&lt;/code&gt; or &lt;code&gt;docker-engine&lt;/code&gt;. The Docker</summary>
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Older version of Docker were called &lt;code&gt;docker&lt;/code&gt; or &lt;code&gt;docker-engine&lt;/code&gt;. The Docker Engine package is now</summary>
         
       
     
     
     
-    <category term="kubernetes" scheme="https://imtzz.com/categories/kubernetes/"/>
+    <category term="kubernetes" scheme="https://tzzs.github.io/categories/kubernetes/"/>
     
     
-    <category term="Linux" scheme="https://imtzz.com/tags/Linux/"/>
+    <category term="Linux" scheme="https://tzzs.github.io/tags/Linux/"/>
     
-    <category term="kubectl" scheme="https://imtzz.com/tags/kubectl/"/>
+    <category term="kubectl" scheme="https://tzzs.github.io/tags/kubectl/"/>
     
-    <category term="kubernetes" scheme="https://imtzz.com/tags/kubernetes/"/>
+    <category term="kubernetes" scheme="https://tzzs.github.io/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>Installing and setting up kubectl on Linux</title>
-    <link href="https://imtzz.com/2021/10/17/installing-and-setting-up-kubectl-on-Linux/"/>
-    <id>https://imtzz.com/2021/10/17/installing-and-setting-up-kubectl-on-Linux/</id>
+    <link href="https://tzzs.github.io/2021/10/17/installing-and-setting-up-kubectl-on-Linux/"/>
+    <id>https://tzzs.github.io/2021/10/17/installing-and-setting-up-kubectl-on-Linux/</id>
     <published>2021-10-17T12:43:44.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2021-10-20T15:21:02.749Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h2 id=&quot;安装kubectl&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#安装kubectl&quot;&gt;&lt;/a&gt;</summary>
+    <summary type="html">&lt;h2 id=&quot;安装kubectl&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#安装kubectl&quot;&gt;&lt;/a&gt; 安装kubectl&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;获取kubectl安装包&lt;/p&gt;
+&lt;figure</summary>
         
       
     
     
     
-    <category term="kubernetes" scheme="https://imtzz.com/categories/kubernetes/"/>
+    <category term="kubernetes" scheme="https://tzzs.github.io/categories/kubernetes/"/>
     
     
-    <category term="Linux" scheme="https://imtzz.com/tags/Linux/"/>
+    <category term="Linux" scheme="https://tzzs.github.io/tags/Linux/"/>
     
-    <category term="kubectl" scheme="https://imtzz.com/tags/kubectl/"/>
+    <category term="kubectl" scheme="https://tzzs.github.io/tags/kubectl/"/>
     
-    <category term="kubernetes" scheme="https://imtzz.com/tags/kubernetes/"/>
+    <category term="kubernetes" scheme="https://tzzs.github.io/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>change the WSL starting diectory in windows terminal</title>
-    <link href="https://imtzz.com/2021/09/27/change-the-WSL-starting-diectory-in-windows-terminal/"/>
-    <id>https://imtzz.com/2021/09/27/change-the-WSL-starting-diectory-in-windows-terminal/</id>
+    <link href="https://tzzs.github.io/2021/09/27/change-the-WSL-starting-diectory-in-windows-terminal/"/>
+    <id>https://tzzs.github.io/2021/09/27/change-the-WSL-starting-diectory-in-windows-terminal/</id>
     <published>2021-09-27T11:41:30.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2021-10-22T18:06:46.599Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;ol&gt;
+    <summary type="html">&lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;Open Settings, Profiles, Ubuntu-20.04(This is your WSL terminal in Windows Terminal), General in</summary>
+&lt;p&gt;Open Settings, Profiles, Ubuntu-20.04(This is your WSL terminal in Windows Terminal), General in turn.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Then</summary>
         
       
     
     
     
-    <category term="Windows" scheme="https://imtzz.com/categories/Windows/"/>
+    <category term="Windows" scheme="https://tzzs.github.io/categories/Windows/"/>
     
     
-    <category term="WSL" scheme="https://imtzz.com/tags/WSL/"/>
+    <category term="WSL" scheme="https://tzzs.github.io/tags/WSL/"/>
     
-    <category term="Windows" scheme="https://imtzz.com/tags/Windows/"/>
+    <category term="Windows" scheme="https://tzzs.github.io/tags/Windows/"/>
     
-    <category term="WindowsTerminal" scheme="https://imtzz.com/tags/WindowsTerminal/"/>
+    <category term="WindowsTerminal" scheme="https://tzzs.github.io/tags/WindowsTerminal/"/>
     
   </entry>
   
   <entry>
     <title>cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library</title>
-    <link href="https://imtzz.com/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/"/>
-    <id>https://imtzz.com/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/</id>
+    <link href="https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/"/>
+    <id>https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/</id>
     <published>2021-08-14T14:19:58.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2021-10-20T15:43:38.206Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1 id=&quot;question&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#question&quot;&gt;&lt;/a&gt; QUESTION&lt;/h1&gt;
-&lt;div</summary>
+    <summary type="html">&lt;h1 id=&quot;question&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#question&quot;&gt;&lt;/a&gt; QUESTION&lt;/h1&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td</summary>
         
       
     
     
     
-    <category term="Oracle" scheme="https://imtzz.com/categories/Oracle/"/>
+    <category term="Oracle" scheme="https://tzzs.github.io/categories/Oracle/"/>
     
-    <category term="Python" scheme="https://imtzz.com/categories/Python/"/>
+    <category term="Python" scheme="https://tzzs.github.io/categories/Python/"/>
     
     
-    <category term="Python" scheme="https://imtzz.com/tags/Python/"/>
+    <category term="Python" scheme="https://tzzs.github.io/tags/Python/"/>
     
-    <category term="Oracle" scheme="https://imtzz.com/tags/Oracle/"/>
+    <category term="Oracle" scheme="https://tzzs.github.io/tags/Oracle/"/>
     
   </entry>
   
   <entry>
     <title>Smart Light Strip</title>
-    <link href="https://imtzz.com/2021/06/26/Smart-Light-Strip/"/>
-    <id>https://imtzz.com/2021/06/26/Smart-Light-Strip/</id>
+    <link href="https://tzzs.github.io/2021/06/26/Smart-Light-Strip/"/>
+    <id>https://tzzs.github.io/2021/06/26/Smart-Light-Strip/</id>
     <published>2021-06-25T16:29:39.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2021-10-20T15:12:48.943Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;[TOC]&lt;/p&gt;
+    <summary type="html">&lt;p&gt;[TOC]&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ESP8266 (LiLon NodeMcu V3)&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;The port diagram below is for</summary>
+&lt;p&gt;The port diagram below is for reference. Picture from this &lt;a</summary>
         
       
     
     
     
-    <category term="IOT" scheme="https://imtzz.com/categories/IOT/"/>
+    <category term="IOT" scheme="https://tzzs.github.io/categories/IOT/"/>
     
     
-    <category term="Blinker" scheme="https://imtzz.com/tags/Blinker/"/>
+    <category term="Blinker" scheme="https://tzzs.github.io/tags/Blinker/"/>
     
-    <category term="ESP8266" scheme="https://imtzz.com/tags/ESP8266/"/>
+    <category term="ESP8266" scheme="https://tzzs.github.io/tags/ESP8266/"/>
     
-    <category term="WS2812" scheme="https://imtzz.com/tags/WS2812/"/>
+    <category term="WS2812" scheme="https://tzzs.github.io/tags/WS2812/"/>
     
   </entry>
   
   <entry>
     <title>Maven project cannot load maven repository depedency</title>
-    <link href="https://imtzz.com/2021/01/15/Maven-project-cannot-load-maven-repository-depedency/"/>
-    <id>https://imtzz.com/2021/01/15/Maven-project-cannot-load-maven-repository-depedency/</id>
+    <link href="https://tzzs.github.io/2021/01/15/Maven-project-cannot-load-maven-repository-depedency/"/>
+    <id>https://tzzs.github.io/2021/01/15/Maven-project-cannot-load-maven-repository-depedency/</id>
     <published>2021-01-15T15:56:43.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2021-10-20T16:06:35.998Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;涉及的错误信息：&lt;/p&gt;
+    <summary type="html">&lt;p&gt;涉及的错误信息：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;parent.relativePath points at wrong local&lt;/li&gt;
 &lt;li&gt;Could not transfer artifact</summary>
@@ -444,153 +459,153 @@
     
     
     
-    <category term="Java" scheme="https://imtzz.com/categories/Java/"/>
+    <category term="Java" scheme="https://tzzs.github.io/categories/Java/"/>
     
-    <category term="Maven" scheme="https://imtzz.com/categories/Java/Maven/"/>
+    <category term="Maven" scheme="https://tzzs.github.io/categories/Java/Maven/"/>
     
     
-    <category term="Maven" scheme="https://imtzz.com/tags/Maven/"/>
+    <category term="Maven" scheme="https://tzzs.github.io/tags/Maven/"/>
     
   </entry>
   
   <entry>
     <title>127.0.0.1 and 0.0.0.0</title>
-    <link href="https://imtzz.com/2021/01/04/127-0-0-1-and-0-0-0-0/"/>
-    <id>https://imtzz.com/2021/01/04/127-0-0-1-and-0-0-0-0/</id>
+    <link href="https://tzzs.github.io/2021/01/04/127-0-0-1-and-0-0-0-0/"/>
+    <id>https://tzzs.github.io/2021/01/04/127-0-0-1-and-0-0-0-0/</id>
     <published>2021-01-04T12:57:17.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2021-07-10T20:08:26.418Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;今天在服务器测试django项目，直接使用的默认命令 &lt;code&gt;python manage.py runserver 8000&lt;/code&gt; 启动的，然后项目就会启动在 127.0.0.1:8000 端口上。此时我想使用</summary>
+    <summary type="html">&lt;p&gt;今天在服务器测试django项目，直接使用的默认命令 &lt;code&gt;python manage.py runserver 8000&lt;/code&gt; 启动的，然后项目就会启动在 127.0.0.1:8000 端口上。此时我想使用 ECS</summary>
         
       
     
     
     
-    <category term="Linux" scheme="https://imtzz.com/categories/Linux/"/>
+    <category term="Linux" scheme="https://tzzs.github.io/categories/Linux/"/>
     
     
-    <category term="Linux" scheme="https://imtzz.com/tags/Linux/"/>
+    <category term="Linux" scheme="https://tzzs.github.io/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title> Nginx server SSL configuration file reference</title>
-    <link href="https://imtzz.com/2020/12/19/Nginx-server-SSL-configuration-file-reference/"/>
-    <id>https://imtzz.com/2020/12/19/Nginx-server-SSL-configuration-file-reference/</id>
+    <link href="https://tzzs.github.io/2020/12/19/Nginx-server-SSL-configuration-file-reference/"/>
+    <id>https://tzzs.github.io/2020/12/19/Nginx-server-SSL-configuration-file-reference/</id>
     <published>2020-12-18T18:02:13.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2021-10-22T17:26:55.552Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;以下配置文件供参考，此配置在当前网站可用。&lt;/p&gt;
-&lt;div class=&quot;code-area-wrap&quot;&gt;&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td</summary>
+    <summary type="html">&lt;p&gt;以下配置文件供参考，此配置在当前网站可用。&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span</summary>
         
       
     
     
     
-    <category term="Nginx" scheme="https://imtzz.com/categories/Nginx/"/>
+    <category term="Nginx" scheme="https://tzzs.github.io/categories/Nginx/"/>
     
     
-    <category term="Nginx" scheme="https://imtzz.com/tags/Nginx/"/>
+    <category term="Nginx" scheme="https://tzzs.github.io/tags/Nginx/"/>
     
-    <category term="HTTPS" scheme="https://imtzz.com/tags/HTTPS/"/>
+    <category term="HTTPS" scheme="https://tzzs.github.io/tags/HTTPS/"/>
     
-    <category term="SSL" scheme="https://imtzz.com/tags/SSL/"/>
+    <category term="SSL" scheme="https://tzzs.github.io/tags/SSL/"/>
     
   </entry>
   
   <entry>
     <title>Nginx 403 error: directory index of [folder] is forbidden</title>
-    <link href="https://imtzz.com/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/"/>
-    <id>https://imtzz.com/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/</id>
+    <link href="https://tzzs.github.io/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/"/>
+    <id>https://tzzs.github.io/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/</id>
     <published>2020-12-18T17:53:56.000Z</published>
-    <updated>2022-08-20T12:49:58.655Z</updated>
+    <updated>2021-10-22T17:26:47.291Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;今天对服务器上的Nginx配置SSL证书的时候，写了一个很傻的错误，导致它出现 &lt;code&gt;Nginx 403 error: directory index of [folder] is</summary>
+    <summary type="html">&lt;p&gt;今天对服务器上的Nginx配置SSL证书的时候，写了一个很傻的错误，导致它出现 &lt;code&gt;Nginx 403 error: directory index of [folder] is</summary>
         
       
     
     
     
-    <category term="Nginx" scheme="https://imtzz.com/categories/Nginx/"/>
+    <category term="Nginx" scheme="https://tzzs.github.io/categories/Nginx/"/>
     
     
-    <category term="Https" scheme="https://imtzz.com/tags/Https/"/>
+    <category term="Https" scheme="https://tzzs.github.io/tags/Https/"/>
     
-    <category term="Nginx" scheme="https://imtzz.com/tags/Nginx/"/>
+    <category term="Nginx" scheme="https://tzzs.github.io/tags/Nginx/"/>
     
   </entry>
   
   <entry>
     <title>配置Github Actions过程中的一些问题</title>
-    <link href="https://imtzz.com/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/"/>
-    <id>https://imtzz.com/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/</id>
+    <link href="https://tzzs.github.io/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/"/>
+    <id>https://tzzs.github.io/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/</id>
     <published>2020-12-18T16:29:52.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2021-10-22T17:34:41.404Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;ol&gt;
+    <summary type="html">&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;在Actions中切换分支&lt;/p&gt;
- &lt;div class=&quot;code-area-wrap&quot;&gt;&lt;figure class=&quot;highlight yml&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td</summary>
+ &lt;figure class=&quot;highlight yml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span</summary>
         
       
     
     
     
-    <category term="CI/CD" scheme="https://imtzz.com/categories/CI-CD/"/>
+    <category term="CI/CD" scheme="https://tzzs.github.io/categories/CI-CD/"/>
     
     
-    <category term="CI/CD" scheme="https://imtzz.com/tags/CI-CD/"/>
+    <category term="CI/CD" scheme="https://tzzs.github.io/tags/CI-CD/"/>
     
-    <category term="Github Actions" scheme="https://imtzz.com/tags/Github-Actions/"/>
+    <category term="Github Actions" scheme="https://tzzs.github.io/tags/Github-Actions/"/>
     
   </entry>
   
   <entry>
     <title>Windows10下无法更改新应用的保存位置</title>
-    <link href="https://imtzz.com/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/"/>
-    <id>https://imtzz.com/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/</id>
+    <link href="https://tzzs.github.io/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/"/>
+    <id>https://tzzs.github.io/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/</id>
     <published>2020-12-16T14:55:34.000Z</published>
-    <updated>2022-08-20T12:49:58.659Z</updated>
+    <updated>2021-10-22T17:49:16.082Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;​		前两天重新安装了Windows，今天正好想要从Windows</summary>
+    <summary type="html">&lt;p&gt;​		前两天重新安装了Windows，今天正好想要从Windows</summary>
         
       
     
     
     
-    <category term="Windows" scheme="https://imtzz.com/categories/Windows/"/>
+    <category term="Windows" scheme="https://tzzs.github.io/categories/Windows/"/>
     
-    <category term="Windows10" scheme="https://imtzz.com/categories/Windows/Windows10/"/>
+    <category term="Windows10" scheme="https://tzzs.github.io/categories/Windows/Windows10/"/>
     
     
-    <category term="Windows" scheme="https://imtzz.com/tags/Windows/"/>
+    <category term="Windows" scheme="https://tzzs.github.io/tags/Windows/"/>
     
-    <category term="Windows10" scheme="https://imtzz.com/tags/Windows10/"/>
+    <category term="Windows10" scheme="https://tzzs.github.io/tags/Windows10/"/>
     
   </entry>
   

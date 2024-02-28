@@ -1,386 +1,405 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>TAN'S BLOG</title><meta name="keywords" content="tzz,java,c,linux,blog,code,python,go,sql"><meta name="author" content="TZZ"><meta name="copyright" content="TZZ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Have fun!">
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Have fun!">
 <meta property="og:type" content="website">
 <meta property="og:title" content="TAN&#39;S BLOG">
-<meta property="og:url" content="https://imtzz.com/page/2/index.html">
+<meta property="og:url" content="https://tzzs.github.io/page/2/index.html">
 <meta property="og:site_name" content="TAN&#39;S BLOG">
 <meta property="og:description" content="Have fun!">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://imtzz.com/img/avatar_c.png">
 <meta property="article:author" content="TZZ">
 <meta property="article:tag" content="tzz,java,c,linux,blog,code,python,go,sql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://imtzz.com/img/avatar_c.png"><link rel="shortcut icon" href="/img/imtzz64.ico"><link rel="canonical" href="https://imtzz.com/page/2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?828512642a85c276ab188101baac616e";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-132580685-2"></script><script>window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'UA-132580685-2');
-</script><script>const GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '天',
-  date_suffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'TAN\'S BLOG',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2022-08-20 21:04:37'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
-
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
-        }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
-        }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
-
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
-        }
-        return item.value
-      }
-    }
-  
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
-  
-      win.activateDarkMode = function () {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = function () {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
+    
+      
         
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
-    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tzzs/hexo-butterfly@main/index.css"><link rel="stylesheet" href="/data/butterfly.index.css"><meta name="generator" content="Hexo 6.2.0"><link rel="alternate" href="/atom.xml" title="TAN'S BLOG" type="application/atom+xml">
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar_c.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">61</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">46</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/movies"><i class="fa-fw fa fa-film"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-bars"></i><span> 主题</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/cactus"><i class="fa-fw fas fa-angle-double-right"></i><span> cactus</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">TAN'S BLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/movies"><i class="fa-fw fa fa-film"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-bars"></i><span> 主题</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/cactus"><i class="fa-fw fas fa-angle-double-right"></i><span> cactus</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2021/10/17/installing-and-setting-up-kubectl-on-Linux/" title="Installing and setting up kubectl on Linux"><img class="post_bg" src="https://pic2.zhimg.com/v2-6e8551679401587b165b37c62fbd1f13_720w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Installing and setting up kubectl on Linux"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/10/17/installing-and-setting-up-kubectl-on-Linux/" title="Installing and setting up kubectl on Linux">Installing and setting up kubectl on Linux</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-10-17T12:43:44.000Z" title="发表于 2021-10-17 20:43:44">2021-10-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/kubernetes/">kubernetes</a></span></div><div class="content"> 安装kubectl
+    <!-- title -->
+    <title>TAN&#39;S BLOG</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
 
 
-获取kubectl安装包
-1curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    <!-- Umami Analytics -->
 
 
-下载kubectl校验文件
-1curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
 
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="TAN&#39;S BLOG" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
 
-验证文件
-1echo "$(&lt;kubectl.sha256) kubectl" | sha256sum --check
-输出：
-1kubectl: OK
-
-
-验证kubectl配置
-1kubectl cluster-info
-
-
- kubectl配置和插件
- 自动补全
-
-
-安装bash-completion
-1yum install bash-completion
-
-
-测试是否安装完成（type后有空格）
-1type _init_completion
- ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/09/27/change-the-WSL-starting-diectory-in-windows-terminal/" title="change the WSL starting diectory in windows terminal"><img class="post_bg" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-wsl-1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="change the WSL starting diectory in windows terminal"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/09/27/change-the-WSL-starting-diectory-in-windows-terminal/" title="change the WSL starting diectory in windows terminal">change the WSL starting diectory in windows terminal</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-09-27T11:41:30.000Z" title="发表于 2021-09-27 19:41:30">2021-09-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Windows/">Windows</a></span></div><div class="content">
-
-Open Settings, Profiles, Ubuntu-20.04(This is your WSL terminal in Windows Terminal), General in turn.
-
-
-Then you can see the setting of Starting directory， change the value to \\wsl.localhost\Ubuntu-20.04\home\ubuntu.
-This value may be different,  you need to change the content of the ubuntu-20.04 section according to your WSL version.
-
-
-Restart your Windows Terminal and you will be see that it has taken effect.
-
-
-</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/" title="cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><img class="post_bg" src="https://www.fujitsu.com/emeia/imagesgig5/oracle-db580x224_tcm158-40873_tcm158-2750236-32.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/" title="cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library">cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-08-14T14:19:58.000Z" title="发表于 2021-08-14 22:19:58">2021-08-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Oracle/">Oracle</a><i class="fas fa-angle-right article-meta-link"></i><a class="article-meta__categories" href="/categories/Python/">Python</a></span></div><div class="content"> QUESTION
-1DatabaseError: DPI-1047: Cannot locate a 64-bit Oracle Client library: "The specified module could not be found". See https://oracle.github.io/odpi/doc/installation.html#windows for help
-
-
-检查是否安装对应版本的instantclient
-
-
-检查环境变量是否配置，如未配置需要使用cx_Oracle.init_oracle_client(lib_dir)进行配置
-
-
-运行instantclient目录下的genezi.exe检查是否能够正常运行，如果显示msvcr120.dll 找不到，则存在vc++环境未配置的问题。
-12Download and install the correct Visual Studio Redistributable from Microsoft. Instant Client 19 requires the Visual Studio 2017 r ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/06/26/Smart-Light-Strip/" title="Smart Light Strip"><img class="post_bg" src="https://content.instructables.com/ORIG/FCL/V0OG/IVO7W206/FCLV0OGIVO7W206.jpg?auto=webp&amp;frame=1&amp;width=678&amp;fit=bounds&amp;md=14cee154242999ffcbd64652017d4a3a" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Smart Light Strip"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/06/26/Smart-Light-Strip/" title="Smart Light Strip">Smart Light Strip</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-06-25T16:29:39.000Z" title="发表于 2021-06-26 00:29:39">2021-06-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/IOT/">IOT</a></span></div><div class="content">[TOC]
-
-ESP8266 (LiLon NodeMcu V3)
-
-The port diagram below is for reference. Picture from this site.
-
- HOW TO USE BLINKER TO CREATE A SMART LIGHT STRIP
- 1. Install Arduino
-You cloud download the Arduino IDE from this website Software | Arduino.
-
- 2. Download library
-Click Project -&gt; Load Library -&gt; Manage Library, then enter Blinker to download the library.
-Use the same method to download Adafruit_NeoPixel  and ArduinoJson library.
-​		At this step, the environment setup has been completed.  ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/01/15/Maven-project-cannot-load-maven-repository-depedency/" title="Maven project cannot load maven repository depedency"><img class="post_bg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Apache_Maven_logo.svg/2560px-Apache_Maven_logo.svg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Maven project cannot load maven repository depedency"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/01/15/Maven-project-cannot-load-maven-repository-depedency/" title="Maven project cannot load maven repository depedency">Maven project cannot load maven repository depedency</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-01-15T15:56:43.000Z" title="发表于 2021-01-15 23:56:43">2021-01-15</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Java/">Java</a><i class="fas fa-angle-right article-meta-link"></i><a class="article-meta__categories" href="/categories/Java/Maven/">Maven</a></span></div><div class="content">涉及的错误信息：
-
-parent.relativePath points at wrong local
-Could not transfer artifact org.springframework.boot:spring-boot-starter-parent:pom:2.4.1 from/to
-
-今天碰了一个错误，就是新建的Spring Boot的项目，但是发现pom.xml中的依赖一直无法自动下载，手动更新也不行，昨天晚上搞了2个小时也没找到什么原因。今天突然在IDEA中的一个错误信息显示控制台中，发现我原来设置的仓库地址【D:\Program Files\Apache】只有 D:\Program 这一部分s是蓝色的高亮状态。我突然想起来是不是因为路径中不能有空格的原因，最后把Maven仓库地址修改为了【D:\dev\maven-repository】，果然就好了，🤡竟是我自己。
-</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/01/04/127-0-0-1-and-0-0-0-0/" title="127.0.0.1 and 0.0.0.0"><img class="post_bg" src="/img/vector_landscape_2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="127.0.0.1 and 0.0.0.0"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/01/04/127-0-0-1-and-0-0-0-0/" title="127.0.0.1 and 0.0.0.0">127.0.0.1 and 0.0.0.0</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-01-04T12:57:17.000Z" title="发表于 2021-01-04 20:57:17">2021-01-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span></div><div class="content">今天在服务器测试django项目，直接使用的默认命令 python manage.py runserver 8000 启动的，然后项目就会启动在 127.0.0.1:8000 端口上。此时我想使用 ECS 服务器IP访问8000端口，查看运行情况结果访问失败。本来以为是阿里服务器安全规则导致，我重新更新了规则，放开了8000端口结果开始不行。后来才想到，可能是启动IP的问题，导致外界无法访问。
- 127.0.0.1
-所有以127开头的IP均为回环地址，即我们在主机上发送给127IP的内容都会被主机自己接收，根本发不出去，同样外界也无法通过此IP访问到自己。当我们的项目启动IP为127.0.0.1:8000，则此IP仅能被当前主机访问，外界无法通过8000端口访问。
-正常的数据会类型下面路径传输：
-123graph LR数据包 --&gt; IP层 --&gt; 链路层 --&gt; 外部网络
-但是回环地址的数据无法抵达链路层就被IP层获取，返回当前主机指定端口：
-123graph LR数据包 --&gt; IP层 --&gt; |拦截|本机8000端口
- 0.0.0.0
-0.0.0.0 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/12/19/Nginx-server-SSL-configuration-file-reference/" title=" Nginx server SSL configuration file reference"><img class="post_bg" src="https://www.nginx.com/wp-content/uploads/2018/08/NGINX-logo-rgb-large.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt=" Nginx server SSL configuration file reference"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/19/Nginx-server-SSL-configuration-file-reference/" title=" Nginx server SSL configuration file reference"> Nginx server SSL configuration file reference</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-12-18T18:02:13.000Z" title="发表于 2020-12-19 02:02:13">2020-12-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Nginx/">Nginx</a></span></div><div class="content">以下配置文件供参考，此配置在当前网站可用。
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546server {  listen 80;  # 请求域名  server_name xxx.com;  # rewrite 用于将所有http请求自动转换为https  rewrite ^(.*)$ https://$host$1 permanent;  root /web;  location / {    root /web/public;    index index.html;  }}server {  # Https默认请求端口  listen       443 ssl;  # 请求域名  server_name xxx.com;  location / {    # 项目根目录    root /web/public;    # 请求主页名 会与上面的路径拼接获取对应文件    index index.html;  }    # 证书pem与key文件的位置  ss ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/" title="Nginx 403 error: directory index of [folder] is forbidden"><img class="post_bg" src="https://www.nginx.com/wp-content/uploads/2018/08/NGINX-logo-rgb-large.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nginx 403 error: directory index of [folder] is forbidden"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/19/Nginx-403-error-directory-index-of-folder-is-forbidden/" title="Nginx 403 error: directory index of [folder] is forbidden">Nginx 403 error: directory index of [folder] is forbidden</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-12-18T17:53:56.000Z" title="发表于 2020-12-19 01:53:56">2020-12-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Nginx/">Nginx</a></span></div><div class="content">今天对服务器上的Nginx配置SSL证书的时候，写了一个很傻的错误，导致它出现 Nginx 403 error: directory index of [folder] is forbidden这个错误，在日志中显示一下内容：
-12020/12/19 01:50:55 [error] 30312#0: *1 directory index of "/web" is forbidden, client: xxx.xxx.xxx.xxx, server: imtzz.com, request: "GET / HTTP/1.1", host: "imtzz.com"
-显示被拒绝，我们本来以为是文件夹权限的问题，发现修改为777后依旧由此错误，最后发现是nginx的conf文件中 index 后面的index.html （写成了 index.hmtl, 导致找不到主页才会访问被拒绝）写错了🙂 ，心态爆炸。
-</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" title="配置Github Actions过程中的一些问题"><img class="post_bg" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-githubaction.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="配置Github Actions过程中的一些问题"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/19/%E9%85%8D%E7%BD%AEGithub%20Actions%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" title="配置Github Actions过程中的一些问题">配置Github Actions过程中的一些问题</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-12-18T16:29:52.000Z" title="发表于 2020-12-19 00:29:52">2020-12-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/CI-CD/">CI/CD</a></span></div><div class="content">
-
-在Actions中切换分支
- 1234567- name: Checkout Codes  run: |    git clone -b hexo https://${{secrets.CODING_TOKEN_NAME}}:${{secrets.CODINGTOKEN}}@${Coding} hexo    cd master    ls  env:    Coding: e.coding.net/imtzz/Pages.git
-
-
-如何使用SSH登录远程服务器
-服务器：A
-Action 服务器：B
-
-
-首先需要获取服务器A的密钥，用于CI服务器B远程免密登录，并且对应的服务器A公钥要加在A的~/.ssh/authorized_keys中。
-1cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
-
-
-
-在Github Secrets中配置以下几项内容
-SERVER_IP：服务器A的IP地址
-
-SERVER_USERNAME：要登陆到服务器A使用的用户名（要与密钥匹配）
-
-SERVER_PRIVATE_KEY：服务器A密钥（id ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/" title="Windows10下无法更改新应用的保存位置"><img class="post_bg" src="https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-windows10-laptop.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Windows10下无法更改新应用的保存位置"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/16/Windows10%E4%B8%8B%E6%97%A0%E6%B3%95%E6%9B%B4%E6%94%B9%E6%96%B0%E5%BA%94%E7%94%A8%E7%9A%84%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE/" title="Windows10下无法更改新应用的保存位置">Windows10下无法更改新应用的保存位置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-12-16T14:55:34.000Z" title="发表于 2020-12-16 22:55:34">2020-12-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Windows/">Windows</a><i class="fas fa-angle-right article-meta-link"></i><a class="article-meta__categories" href="/categories/Windows/Windows10/">Windows10</a></span></div><div class="content">​		前两天重新安装了Windows，今天正好想要从Windows Store里面安装软件，就想起来要修改一下软件安装位置（不然C盘占用的太多了）。但是发现无法修改，抛出错误代码0x80070002。
-​		试了几个方法都没有用，最终在神奇的知乎找到了解决办法。
-解决办法：
-​		删除想要移动的盘符内（我要修改到D盘，就是D盘内）的WindowsApps,  WpSystem,   WUDownloadCache,  用户同名文件夹，删除可能需要管理权限，WindowsApps如果无法删除的话，建议使用强力删除工具进行删除，然后再去设置里修改就完成了。
-</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/#content-inner">7</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar_c.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">TZZ</div><div class="author-info__description">Have fun!</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">61</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">46</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tzzs"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/tzzs" target="_blank" title="Github"><i class="fab fa-github-square"></i></a><a class="social-icon" href="mailto:tzzprc@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="Atom"><i class="fa fa-rss"></i></a><a class="social-icon" href="http://bing2.imtzz.com" target="_blank" title="BING2"><i class="fas fa-images"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Happy New Year!</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/" title="简单理解 java.lang.Throwable"><img src="/img/vector_landscape_2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="简单理解 java.lang.Throwable"/></a><div class="content"><a class="title" href="/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/" title="简单理解 java.lang.Throwable">简单理解 java.lang.Throwable</a><time datetime="2022-08-15T14:05:07.000Z" title="发表于 2022-08-15 22:05:07">2022-08-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/06/06/How-to-config-a-proxy-for-WSL2/" title="How to config a proxy for WSL2"><img src="/img/vector_landscape_1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="How to config a proxy for WSL2"/></a><div class="content"><a class="title" href="/2022/06/06/How-to-config-a-proxy-for-WSL2/" title="How to config a proxy for WSL2">How to config a proxy for WSL2</a><time datetime="2022-06-06T03:27:07.000Z" title="发表于 2022-06-06 11:27:07">2022-06-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/" title="[fixed]-bash: command not found when using ssh connect to server"><img src="/img/vector_landscape_3.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="[fixed]-bash: command not found when using ssh connect to server"/></a><div class="content"><a class="title" href="/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/" title="[fixed]-bash: command not found when using ssh connect to server">[fixed]-bash: command not found when using ssh connect to server</a><time datetime="2022-02-21T12:41:07.000Z" title="发表于 2022-02-21 20:41:07">2022-02-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/" title="Downloading CanvasKit failure error when running flutter on brower"><img src="/img/vector_landscape_3.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Downloading CanvasKit failure error when running flutter on brower"/></a><div class="content"><a class="title" href="/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/" title="Downloading CanvasKit failure error when running flutter on brower">Downloading CanvasKit failure error when running flutter on brower</a><time datetime="2022-02-17T14:38:57.000Z" title="发表于 2022-02-17 22:38:57">2022-02-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/" title="配置Flutter国内镜像源"><img src="/img/vector_landscape_1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="配置Flutter国内镜像源"/></a><div class="content"><a class="title" href="/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/" title="配置Flutter国内镜像源">配置Flutter国内镜像源</a><time datetime="2022-02-17T14:33:03.000Z" title="发表于 2022-02-17 22:33:03">2022-02-17</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
-            <i class="fas fa-folder-open"></i>
-            <span>分类</span>
-            <a class="card-more-btn" href="/categories/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a>
-            </div>
-            <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Algorithm/"><span class="card-category-list-name">Algorithm</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Blog/"><span class="card-category-list-name">Blog</span><span class="card-category-list-count">6</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Blog/Hexo/"><span class="card-category-list-name">Hexo</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Blog/WordPress/"><span class="card-category-list-name">WordPress</span><span class="card-category-list-count">2</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C/"><span class="card-category-list-name">C</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CDN/"><span class="card-category-list-name">CDN</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CI-CD/"><span class="card-category-list-name">CI/CD</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CentOS/"><span class="card-category-list-name">CentOS</span><span class="card-category-list-count">1</span></a></li>
-            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Blinker/" style="font-size: 1.1em; color: #999">Blinker</a> <a href="/tags/C/" style="font-size: 1.1em; color: #999">C</a> <a href="/tags/CDN/" style="font-size: 1.1em; color: #999">CDN</a> <a href="/tags/CI-CD/" style="font-size: 1.1em; color: #999">CI/CD</a> <a href="/tags/Coding/" style="font-size: 1.1em; color: #999">Coding</a> <a href="/tags/Django/" style="font-size: 1.18em; color: #999ca1">Django</a> <a href="/tags/ESP8266/" style="font-size: 1.1em; color: #999">ESP8266</a> <a href="/tags/Git/" style="font-size: 1.1em; color: #999">Git</a> <a href="/tags/Github-Actions/" style="font-size: 1.1em; color: #999">Github Actions</a> <a href="/tags/HTTPS/" style="font-size: 1.1em; color: #999">HTTPS</a> <a href="/tags/Hexo/" style="font-size: 1.34em; color: #99a3b0">Hexo</a> <a href="/tags/Https/" style="font-size: 1.1em; color: #999">Https</a> <a href="/tags/IDEA/" style="font-size: 1.1em; color: #999">IDEA</a> <a href="/tags/JDK8/" style="font-size: 1.1em; color: #999">JDK8</a> <a href="/tags/LeetCode/" style="font-size: 1.18em; color: #999ca1">LeetCode</a> <a href="/tags/LeetCode-CN/" style="font-size: 1.1em; color: #999">LeetCode CN</a> <a href="/tags/Linux/" style="font-size: 1.42em; color: #99a6b7">Linux</a> <a href="/tags/Maven/" style="font-size: 1.1em; color: #999">Maven</a> <a href="/tags/Nginx/" style="font-size: 1.26em; color: #999fa8">Nginx</a> <a href="/tags/Node-js/" style="font-size: 1.1em; color: #999">Node.js</a> <a href="/tags/Online-Judge/" style="font-size: 1.1em; color: #999">Online Judge</a> <a href="/tags/Oracle/" style="font-size: 1.1em; color: #999">Oracle</a> <a href="/tags/Python/" style="font-size: 1.26em; color: #999fa8">Python</a> <a href="/tags/SSH/" style="font-size: 1.1em; color: #999">SSH</a> <a href="/tags/SSL/" style="font-size: 1.1em; color: #999">SSL</a> <a href="/tags/Typora/" style="font-size: 1.1em; color: #999">Typora</a> <a href="/tags/Ubuntu/" style="font-size: 1.1em; color: #999">Ubuntu</a> <a href="/tags/WS2812/" style="font-size: 1.1em; color: #999">WS2812</a> <a href="/tags/WSL/" style="font-size: 1.18em; color: #999ca1">WSL</a> <a href="/tags/WebService/" style="font-size: 1.1em; color: #999">WebService</a> <a href="/tags/Windows/" style="font-size: 1.5em; color: #99a9bf">Windows</a> <a href="/tags/Windows10/" style="font-size: 1.1em; color: #999">Windows10</a> <a href="/tags/WindowsTerminal/" style="font-size: 1.1em; color: #999">WindowsTerminal</a> <a href="/tags/WordPress/" style="font-size: 1.1em; color: #999">WordPress</a> <a href="/tags/bing2/" style="font-size: 1.1em; color: #999">bing2</a> <a href="/tags/eureka/" style="font-size: 1.1em; color: #999">eureka</a> <a href="/tags/flutter/" style="font-size: 1.18em; color: #999ca1">flutter</a> <a href="/tags/github-action/" style="font-size: 1.1em; color: #999">github action</a> <a href="/tags/go/" style="font-size: 1.1em; color: #999">go</a> <a href="/tags/java/" style="font-size: 1.1em; color: #999">java</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/08/"><span class="card-archive-list-date">八月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/06/"><span class="card-archive-list-date">六月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/02/"><span class="card-archive-list-date">二月 2022</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/01/"><span class="card-archive-list-date">一月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/12/"><span class="card-archive-list-date">十二月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/10/"><span class="card-archive-list-date">十月 2021</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/09/"><span class="card-archive-list-date">九月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/08/"><span class="card-archive-list-date">八月 2021</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">61</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2018-11-15T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2022-08-20T13:04:36.528Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2022 By TZZ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/"><img class="icp-icon" src="/img/icp.png" alt="icp icon"><span>鲁ICP备17030961号-4</span></a>,<div id="cc-myssl-id"><a target="_blank" rel="noopener" href="https://myssl.com/imtzz.com?from=mysslid"><img src="https://static.myssl.com/res/images/myssl-id3.png" alt="myssl" style="max-height:50px;display:block;margin:0 auto"></a></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
-  if (typeof pangu === 'object') pangu.autoSpacingPage()
-  else {
-    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
-      .then(() => {
-        pangu.autoSpacingPage()
-      })
-  }
-}
-
-function panguInit () {
-  if (true){
-    GLOBAL_CONFIG_SITE.isPost && panguFn()
-  } else {
-    panguFn()
-  }
-}
-
-document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
-  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
-  if ($mermaidWrap.length) {
-    window.runMermaid = () => {
-      window.loadMermaid = true
-      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
-
-      Array.from($mermaidWrap).forEach((item, index) => {
-        const mermaidSrc = item.firstElementChild
-        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
-        const mermaidID = 'mermaid-' + index
-        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
-        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
-          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
-        })
-      })
-    }
-
-    const loadMermaid = () => {
-      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
-    }
-
-    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
-  }
-})()</script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
-
-var pjax = new Pjax({
-  elements: 'a:not([target="_blank"]):not([href="/movies/"])',
-  selectors: pjaxSelectors,
-  cacheBust: false,
-  analytics: true,
-  scrollRestoration: false
-})
-
-document.addEventListener('pjax:send', function () {
-
-  // removeEventListener scroll 
-  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
-  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
-
-  typeof preloader === 'object' && preloader.initLoading()
-  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 h-card">
+        
+          <header id="header">
+  <a class="u-url u-uid" href="/">
   
-  if (window.aplayers) {
-    for (let i = 0; i < window.aplayers.length; i++) {
-      if (!window.aplayers[i].options.fixed) {
-        window.aplayers[i].destroy()
-      }
-    }
-  }
+    
+      <img id="logo" alt class="u-logo" src="/images/logo.png" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">TAN&#39;S BLOG</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="目录"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">首页</a></li><!--
+   --><!--
+     --><li><a href="/archives/">归档</a></li><!--
+   --><!--
+     --><li><a href="/tags/">标签</a></li><!--
+   --><!--
+     --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></li><!--
+   --><!--
+     --><li><a href="/about/">关于</a></li><!--
+   --><!--
+     --><li><a href="/search/">搜索</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
 
-  typeof typed === 'object' && typed.destroy()
+        
+        <section id="about" class="p-note">
+  
+    <p>Have fun!</p>
 
-  //reset readmode
-  const $bodyClassList = document.body.classList
-  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+  
+  
+    <p>
+      在这里找到我：
+      
+      
+      
+        
+        
+          <a class="icon u-url" target="_blank" rel="noopener me" href="http://github.com/tzzs" aria-label="github" title="github">
+            <i class="fa-brands fa-github"></i><!--
+      ---></a><!--
+    ---><!--
+    ---> 和 
+        
+      
+        
+        
+          <a class="icon u-email" target="_blank" rel="noopener" href="mailto:tzzprc#outlook.com" aria-label="mail" title="mail">
+            <i class="fa-solid fa-envelope"></i><!--
+      ---></a>
+        <!--
+    --->.
+        
+      
+    </p>
+  
+</section>
 
-  typeof disqusjs === 'object' && disqusjs.destroy()
-})
+<section id="writing">
+  <span class="h1"><a href="/archives/">文章</a></span>
+  
+  <ul class="post-list">
+    
+    
+      
+    
+    
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2022-08-15T14:06:31.728Z" class="dt-updated" itemprop="dateModified">2022-08-15</time>
+        
+      
+    </div>
 
-document.addEventListener('pjax:complete', function () {
-  window.refreshFn()
 
-  document.querySelectorAll('script[data-pjax]').forEach(item => {
-    const newScript = document.createElement('script')
-    const content = item.text || item.textContent || item.innerHTML || ""
-    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
-    newScript.appendChild(document.createTextNode(content))
-    item.parentNode.replaceChild(newScript, item)
-  })
+        <span>
+    
+        <a class="" href="/2022/08/15/%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3-java-lang-Throwable/">简单理解 java.lang.Throwable</a>
+    
 
-  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
 
-  typeof chatBtnFn === 'function' && chatBtnFn()
-  typeof panguInit === 'function' && panguInit()
+</span>
+      </li>
+    
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2022-06-06T18:37:31.074Z" class="dt-updated" itemprop="dateModified">2022-06-07</time>
+        
+      
+    </div>
 
-  // google analytics
-  typeof gtag === 'function' && gtag('config', 'UA-132580685-2', {'page_path': window.location.pathname});
 
-  // baidu analytics
-  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+        <span>
+    
+        <a class="" href="/2022/06/06/How-to-config-a-proxy-for-WSL2/">How to config a proxy for WSL2</a>
+    
 
-  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
 
-  // prismjs
-  typeof Prism === 'object' && Prism.highlightAll()
+</span>
+      </li>
+    
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2022-06-06T18:32:54.531Z" class="dt-updated" itemprop="dateModified">2022-06-07</time>
+        
+      
+    </div>
 
-  typeof preloader === 'object' && preloader.endLoading()
-})
 
-document.addEventListener('pjax:error', (e) => {
-  if (e.request.status === 404) {
-    pjax.loadUrl('/404.html')
-  }
-})</script></div></body></html>
+        <span>
+    
+        <a class="" href="/2022/02/17/Downloading-CanvasKit-failure-error-when-running-flutter-on-brower/">Downloading CanvasKit failure error when running flutter on brower</a>
+    
+
+
+</span>
+      </li>
+    
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2022-06-06T18:32:54.531Z" class="dt-updated" itemprop="dateModified">2022-06-07</time>
+        
+      
+    </div>
+
+
+        <span>
+    
+        <a class="" href="/2022/01/13/Spring-Cloud-Gateway-and-Eureka/">Spring Cloud Gateway and Eureka</a>
+    
+
+
+</span>
+      </li>
+    
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2022-06-06T18:32:54.531Z" class="dt-updated" itemprop="dateModified">2022-06-07</time>
+        
+      
+    </div>
+
+
+        <span>
+    
+        <a class="" href="/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/">[fixed]-bash: command not found when using ssh connect to server</a>
+    
+
+
+</span>
+      </li>
+    
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2022-06-06T18:32:54.531Z" class="dt-updated" itemprop="dateModified">2022-06-07</time>
+        
+      
+    </div>
+
+
+        <span>
+    
+        <a class="" href="/2022/02/17/%E9%85%8D%E7%BD%AEFlutter%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/">配置Flutter国内镜像源</a>
+    
+
+
+</span>
+      </li>
+    
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2021-12-28T11:39:00.338Z" class="dt-updated" itemprop="dateModified">2021-12-28</time>
+        
+      
+    </div>
+
+
+        <span>
+    
+        <a class="" href="/2021/12/18/SM4-%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/">SM4 国密算法</a>
+    
+
+
+</span>
+      </li>
+    
+      <li class="post-item">
+        
+    <div class="meta">
+      
+        
+          <time datetime="2021-12-18T16:49:44.134Z" class="dt-updated" itemprop="dateModified">2021-12-19</time>
+        
+      
+    </div>
+
+
+        <span>
+    
+        <a class="" href="/2021/12/12/Vue-js-learning-notes/">Vue.js learning notes</a>
+    
+
+
+</span>
+      </li>
+    
+  </ul>
+  
+</section>
+
+
+<section id="projects">
+  <span class="h1"><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></span>
+  <ul class="project-list">
+    
+      <li class="project-item">
+        <a target="_blank" rel="noopener" href="https://github.com/tzzs">GitHub</a>: <p>The Github Link.</p>
+
+      </li>
+    
+      <li class="project-item">
+        <a target="_blank" rel="noopener" href="https://github.com/tzzs/server-shell">Server Shell</a>: <p>A action could connect your self-server and execute commands on it via SSH.</p>
+
+      </li>
+    
+      <li class="project-item">
+        <a target="_blank" rel="noopener" href="https://github.com/tzzs/qcloud_cos">QCloud COS</a>: <p>A python script for upload image to Tencent COS in Typora.</p>
+
+      </li>
+    
+      <li class="project-item">
+        <a target="_blank" rel="noopener" href="https://github.com/tzzs/SmartLightStrip">Smart Light Trip</a>: <p>Smart light strip based on Blinker.</p>
+
+      </li>
+    
+  </ul>
+</section>
+
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2024
+    TZZ
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
