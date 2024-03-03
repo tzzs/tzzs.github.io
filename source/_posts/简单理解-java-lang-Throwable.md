@@ -3,9 +3,9 @@ title: 简单理解 java.lang.Throwable
 date: 2022-08-15 22:05:07
 update:
 categories:
-  - [java]
+  - [Java]
 tags:
-  - [java]
+  - [Java]
   - [throwable]
 cover:
 ---
