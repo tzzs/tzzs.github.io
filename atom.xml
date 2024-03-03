@@ -76,7 +76,7 @@
     <link href="https://tzzs.github.io/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/"/>
     <id>https://tzzs.github.io/2022/02/21/fixed-bash-command-not-found-when-using-ssh-connect-to-server/</id>
     <published>2022-02-21T12:41:07.000Z</published>
-    <updated>2024-03-03T17:08:05.776Z</updated>
+    <updated>2024-03-03T17:16:25.307Z</updated>
     
     
       
@@ -93,9 +93,9 @@
     <category term="Linux" scheme="https://tzzs.github.io/categories/Linux/"/>
     
     
-    <category term="Linux" scheme="https://tzzs.github.io/tags/Linux/"/>
-    
     <category term="ssh" scheme="https://tzzs.github.io/tags/ssh/"/>
+    
+    <category term="linux" scheme="https://tzzs.github.io/tags/linux/"/>
     
     <category term="github action" scheme="https://tzzs.github.io/tags/github-action/"/>
     
