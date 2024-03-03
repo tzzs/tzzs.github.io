@@ -44,7 +44,7 @@ top_img: /img/cafe.jpg
 
 ### 2021/6/21
 
-- 域名[https://imtzz.com](https://imtzz.com), 腾讯云 CDN 加速
+- ~~域名[https://imtzz.com](https://imtzz.com), 腾讯云 CDN 加速~~
 
 <!-- ### 2020/2/24
 - 启用域名[https://b.imtzz.com](https://b.imtzz.com)，Coding Pages直接访问

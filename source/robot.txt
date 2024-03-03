@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /data/
 
-sitemap: https://imtzz.com/sitemap.xml
+sitemap: https://tzzs.github.io/sitemap.xml
