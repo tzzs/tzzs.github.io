@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="QUESTION 1DatabaseError: DPI-1047: Cannot locate a 64-bit Oracle Client library: &quot;The specified module could not be found&quot;. See https:&#x2F;&#x2F;oracle.github.io&#x2F;odpi&#x2F;doc&#x2F;installation.html#windows f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library">
+<meta property="og:url" content="https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/index.html">
+<meta property="og:site_name" content="TAN&#39;S BLOG">
+<meta property="og:description" content="QUESTION 1DatabaseError: DPI-1047: Cannot locate a 64-bit Oracle Client library: &quot;The specified module could not be found&quot;. See https:&#x2F;&#x2F;oracle.github.io&#x2F;odpi&#x2F;doc&#x2F;installation.html#windows f">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-14T14:19:58.000Z">
+<meta property="article:modified_time" content="2021-10-20T15:43:38.206Z">
+<meta property="article:author" content="TZZ">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HME6Y8742L"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HME6Y8742L');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="TAN&#39;S BLOG" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2021/09/27/change-the-WSL-starting-diectory-in-windows-terminal/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2021/06/26/Smart-Light-Strip/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&text=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&is_video=false&description=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library&body=Check out this article: https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&name=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&t=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#question"><span class="toc-number">1.</span> <span class="toc-text"> QUESTION</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">TZZ</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-08-14T14:19:58.000Z" class="dt-published" itemprop="datePublished">2021-08-14</time>
+        
+        (Updated: <time datetime="2021-10-20T15:43:38.206Z" class="dt-updated" itemprop="dateModified">2021-10-20</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Oracle/">Oracle</a> › <a class="category-link" href="/categories/Python/">Python</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Oracle/" rel="tag">Oracle</a>, <a class="p-category" href="/tags/Python/" rel="tag">Python</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="question"><a class="markdownIt-Anchor" href="#question"></a> QUESTION</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DatabaseError: DPI-1047: Cannot locate a 64-bit Oracle Client library: &quot;The specified module could not be found&quot;. See https://oracle.github.io/odpi/doc/installation.html#windows for help</span><br></pre></td></tr></table></figure>
+<ol>
+<li>
+<p>检查是否安装对应版本的instantclient</p>
+</li>
+<li>
+<p>检查环境变量是否配置，如未配置需要使用cx_Oracle.init_oracle_client(lib_dir)进行配置</p>
+</li>
+<li>
+<p>运行instantclient目录下的genezi.exe检查是否能够正常运行，如果显示msvcr120.dll 找不到，则存在vc++环境未配置的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Download and install the correct Visual Studio Redistributable from Microsoft. Instant Client 19 requires the Visual Studio 2017 redistributable. Instant Client 18 and 12.2 require the Visual Studio 2013 redistributable. Instant Client 12.1 requires the Visual Studio 2010 redistributable.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>安装后重新运行即可</p>
+<p>本文参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/tinyleaf/article/details/82990879?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-2.control&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-2.control">https://blog.csdn.net/tinyleaf/article/details/82990879?utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-2.control&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-2.control</a></p>
+</li>
+</ol>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#question"><span class="toc-number">1.</span> <span class="toc-text"> QUESTION</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&text=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&is_video=false&description=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library&body=Check out this article: https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&title=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&name=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tzzs.github.io/2021/08/14/cx-Oracle-DPI-1047-Cannot-locate-a-64-bit-Oracle-Client-library/&t=cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2024
+    TZZ
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

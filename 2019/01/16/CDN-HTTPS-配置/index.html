@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="在 CDN-高级工具-证书管理界面 进行配置证书。  1.选择要配置证书的域名  2.选择证书 如果对应的域名在腾讯云托管了证书，可以直接选择使用。 如果选择自有证书，证书内容中填写 _public.crt 文件中的编码，私钥内容填写 .key 文件中的内容。 注：如果出现 证书链无法补齐，您可以自行补齐证书链 问题，可以在 证书链下载&#x2F;修复 页面进行证书链补齐，选择 上传证书 选择 _publi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDN HTTPS 配置">
+<meta property="og:url" content="https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="TAN&#39;S BLOG">
+<meta property="og:description" content="在 CDN-高级工具-证书管理界面 进行配置证书。  1.选择要配置证书的域名  2.选择证书 如果对应的域名在腾讯云托管了证书，可以直接选择使用。 如果选择自有证书，证书内容中填写 _public.crt 文件中的编码，私钥内容填写 .key 文件中的内容。 注：如果出现 证书链无法补齐，您可以自行补齐证书链 问题，可以在 证书链下载&#x2F;修复 页面进行证书链补齐，选择 上传证书 选择 _publi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-15T23:05:26.000Z">
+<meta property="article:modified_time" content="2021-10-22T17:39:58.976Z">
+<meta property="article:author" content="TZZ">
+<meta property="article:tag" content="tzz,java,c,linux,blog,code,python,go,sql">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CDN HTTPS 配置</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HME6Y8742L"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HME6Y8742L');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+      <link rel="alternate" href="/atom.xml" title="TAN&#39;S BLOG" type="application/atom+xml" />
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2019/01/16/Wordpress%E6%B7%BB%E5%8A%A0%E5%85%B1%E4%BA%AB%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2019/01/16/%E7%BD%91%E7%AB%99%E5%BC%80%E5%90%AFCDN%E5%8A%A0%E9%80%9F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&text=CDN HTTPS 配置"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&is_video=false&description=CDN HTTPS 配置"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CDN HTTPS 配置&body=Check out this article: https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&name=CDN HTTPS 配置&description=&lt;p&gt;在 &lt;a href=&#34;https://console.cloud.tencent.com/cdn/tools/certificate/deploy&#34;&gt;CDN-高级工具-证书管理界面&lt;/a&gt; 进行配置证书。&lt;/p&gt;
+&lt;h2 id=&#34;1选择要配置证书的域名&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#1选择要配置证书的域名&#34;&gt;&lt;/a&gt; 1.选择要配置证书的域名&lt;/h2&gt;
+&lt;h2 id=&#34;2选择证书&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#2选择证书&#34;&gt;&lt;/a&gt; 2.选择证书&lt;/h2&gt;
+&lt;p&gt;如果对应的域名在腾讯云托管了证书，可以直接选择使用。&lt;/p&gt;
+&lt;p&gt;如果选择自有证书，&lt;code&gt;证书内容&lt;/code&gt;中填写 &lt;code&gt;_public.crt&lt;/code&gt; 文件中的编码，&lt;code&gt;私钥内容&lt;/code&gt;填写 &lt;code&gt;.key&lt;/code&gt; 文件中的内容。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注&lt;/strong&gt;：如果出现 &lt;code&gt;证书链无法补齐，您可以自行补齐证书链&lt;/code&gt; 问题，可以在 &lt;a href=&#34;https://myssl.com/chain_download.html&#34;&gt;证书链下载/修复&lt;/a&gt; 页面进行证书链补齐，选择 &lt;strong&gt;&lt;code&gt;上传证书&lt;/code&gt;&lt;/strong&gt; 选择 &lt;code&gt;_public.crt&lt;/code&gt; 结尾的文件上传,即之前填写的证书文件，点击 &lt;strong&gt;&lt;code&gt;获取证书链&lt;/code&gt;&lt;/strong&gt; 按钮，即可生成完整的证书链，将生成的证书链复制粘贴到 &lt;code&gt;证书内容&lt;/code&gt; 中.&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&t=CDN HTTPS 配置"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E9%80%89%E6%8B%A9%E8%A6%81%E9%85%8D%E7%BD%AE%E8%AF%81%E4%B9%A6%E7%9A%84%E5%9F%9F%E5%90%8D"><span class="toc-number">1.</span> <span class="toc-text"> 1.选择要配置证书的域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E9%80%89%E6%8B%A9%E8%AF%81%E4%B9%A6"><span class="toc-number">2.</span> <span class="toc-text"> 2.选择证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E9%80%89%E6%8B%A9%E5%9B%9E%E6%BA%90%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text"> 3.选择回源方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E6%8F%90%E4%BA%A4"><span class="toc-number">4.</span> <span class="toc-text"> 4.提交</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        CDN HTTPS 配置
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">TZZ</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-01-15T23:05:26.000Z" class="dt-published" itemprop="datePublished">2019-01-16</time>
+        
+        (Updated: <time datetime="2021-10-22T17:39:58.976Z" class="dt-updated" itemprop="dateModified">2021-10-23</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/CDN/">CDN</a> › <a class="category-link" href="/categories/HTTPS/">HTTPS</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>在 <a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/cdn/tools/certificate/deploy">CDN-高级工具-证书管理界面</a> 进行配置证书。</p>
+<h2 id="1选择要配置证书的域名"><a class="markdownIt-Anchor" href="#1选择要配置证书的域名"></a> 1.选择要配置证书的域名</h2>
+<h2 id="2选择证书"><a class="markdownIt-Anchor" href="#2选择证书"></a> 2.选择证书</h2>
+<p>如果对应的域名在腾讯云托管了证书，可以直接选择使用。</p>
+<p>如果选择自有证书，<code>证书内容</code>中填写 <code>_public.crt</code> 文件中的编码，<code>私钥内容</code>填写 <code>.key</code> 文件中的内容。</p>
+<p><strong>注</strong>：如果出现 <code>证书链无法补齐，您可以自行补齐证书链</code> 问题，可以在 <a target="_blank" rel="noopener" href="https://myssl.com/chain_download.html">证书链下载/修复</a> 页面进行证书链补齐，选择 <strong><code>上传证书</code></strong> 选择 <code>_public.crt</code> 结尾的文件上传,即之前填写的证书文件，点击 <strong><code>获取证书链</code></strong> 按钮，即可生成完整的证书链，将生成的证书链复制粘贴到 <code>证书内容</code> 中.</p>
+<span id="more"></span>
+<h2 id="3选择回源方式"><a class="markdownIt-Anchor" href="#3选择回源方式"></a> 3.选择回源方式</h2>
+<p>HTTP: 全部通过HTTP进行回源。</p>
+<p>协议跟随：根据你访问网站的方式进行回源，HTTP方式访问即通过HTTP回源，HTTPS方式访问通过HTTPS进行回源。</p>
+<h2 id="4提交"><a class="markdownIt-Anchor" href="#4提交"></a> 4.提交</h2>
+<p>提交后，CDN会进行部署，然后会显示当前的证书状态。如果显示配置成功，可以浏览器访问HTTPS域名（如 <a target="_blank" rel="noopener" href="https://tzz6.xyz">https://tzz6.xyz</a> )测试，如果正常打开，即配置完成。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E9%80%89%E6%8B%A9%E8%A6%81%E9%85%8D%E7%BD%AE%E8%AF%81%E4%B9%A6%E7%9A%84%E5%9F%9F%E5%90%8D"><span class="toc-number">1.</span> <span class="toc-text"> 1.选择要配置证书的域名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E9%80%89%E6%8B%A9%E8%AF%81%E4%B9%A6"><span class="toc-number">2.</span> <span class="toc-text"> 2.选择证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E9%80%89%E6%8B%A9%E5%9B%9E%E6%BA%90%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text"> 3.选择回源方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E6%8F%90%E4%BA%A4"><span class="toc-number">4.</span> <span class="toc-text"> 4.提交</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&text=CDN HTTPS 配置"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&is_video=false&description=CDN HTTPS 配置"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CDN HTTPS 配置&body=Check out this article: https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&title=CDN HTTPS 配置"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&name=CDN HTTPS 配置&description=&lt;p&gt;在 &lt;a href=&#34;https://console.cloud.tencent.com/cdn/tools/certificate/deploy&#34;&gt;CDN-高级工具-证书管理界面&lt;/a&gt; 进行配置证书。&lt;/p&gt;
+&lt;h2 id=&#34;1选择要配置证书的域名&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#1选择要配置证书的域名&#34;&gt;&lt;/a&gt; 1.选择要配置证书的域名&lt;/h2&gt;
+&lt;h2 id=&#34;2选择证书&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#2选择证书&#34;&gt;&lt;/a&gt; 2.选择证书&lt;/h2&gt;
+&lt;p&gt;如果对应的域名在腾讯云托管了证书，可以直接选择使用。&lt;/p&gt;
+&lt;p&gt;如果选择自有证书，&lt;code&gt;证书内容&lt;/code&gt;中填写 &lt;code&gt;_public.crt&lt;/code&gt; 文件中的编码，&lt;code&gt;私钥内容&lt;/code&gt;填写 &lt;code&gt;.key&lt;/code&gt; 文件中的内容。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注&lt;/strong&gt;：如果出现 &lt;code&gt;证书链无法补齐，您可以自行补齐证书链&lt;/code&gt; 问题，可以在 &lt;a href=&#34;https://myssl.com/chain_download.html&#34;&gt;证书链下载/修复&lt;/a&gt; 页面进行证书链补齐，选择 &lt;strong&gt;&lt;code&gt;上传证书&lt;/code&gt;&lt;/strong&gt; 选择 &lt;code&gt;_public.crt&lt;/code&gt; 结尾的文件上传,即之前填写的证书文件，点击 &lt;strong&gt;&lt;code&gt;获取证书链&lt;/code&gt;&lt;/strong&gt; 按钮，即可生成完整的证书链，将生成的证书链复制粘贴到 &lt;code&gt;证书内容&lt;/code&gt; 中.&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://tzzs.github.io/2019/01/16/CDN-HTTPS-%E9%85%8D%E7%BD%AE/&t=CDN HTTPS 配置"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2024
+    TZZ
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/tzzs">项目</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
