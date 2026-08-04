@@ -36,17 +36,20 @@ const linkLabels: Record<string, string> = {
 	macos: 'macOS 版',
 	ios: 'iOS 版',
 	android: 'Android 版',
-	github: 'GitHub 发布页',
+	github: 'GitHub 仓库',
 	download: '下载安装包',
 	official: '官网下载',
+	marketplace: 'VS Code 扩展市场',
+	openVsx: 'Open VSX',
 };
 const labelFor = (key: string) => linkLabels[key] ?? key;
 
 const linkEntries = Object.entries(app.links ?? {});
 
 // 产品介绍：src/content/apps/<slug>/index.md
+// Astro 7 glob loader：entry.id = slug（文件名去扩展名，且尾部 /index 被移除）
 const introEntry = (await getCollection('apps')).find(
-	(entry) => entry.id === `${app.slug}/index`,
+	(entry) => entry.id === app.slug,
 );
 const IntroContent = introEntry ? (await render(introEntry)).Content : undefined;
 ---
@@ -54,7 +57,10 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 <SidebarLayout title={`${app.name} - ${SITE_TITLE}`} description={app.description}>
 	<article class="app-detail">
 		<header class="hero">
-			<h1 class="hero-name">{app.name}</h1>
+			<h1 class="hero-name">
+				{app.icon && <img class="hero-icon" src={app.icon} alt={`${app.name} 图标`} width={48} height={48} />}
+				{app.name}
+			</h1>
 			<p class="hero-desc">{app.description}</p>
 			<div class="hero-meta">
 				<span class:list={['badge', `badge-${app.status}`]}>
@@ -117,8 +123,15 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 		margin-bottom: var(--space-6);
 	}
 	.hero-name {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
 		margin: 0 0 var(--space-2);
 		font-size: 2rem;
+	}
+	.hero-icon {
+		border-radius: 10px;
+		flex-shrink: 0;
 	}
 	.hero-desc {
 		margin: 0 0 var(--space-3);

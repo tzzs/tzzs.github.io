@@ -19,6 +19,9 @@ const statusLabels: Record<App['status'], string> = {
 <article class="app-card">
 	<a href={href}>
 		<div class="app-card-header">
+			{
+				app.icon && <img class="app-card-icon" src={app.icon} alt={`${app.name} 图标`} width={32} height={32} />
+			}
 			<h3>{app.name}</h3>
 			<span class={`badge badge-${app.status}`}>{statusLabels[app.status]}</span>
 		</div>
@@ -32,3 +35,19 @@ const statusLabels: Record<App['status'], string> = {
 		</div>
 	</a>
 </article>
+
+<style>
+	.app-card-header {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+	.app-card-header h3 {
+		margin: 0;
+		flex: 1;
+	}
+	.app-card-icon {
+		border-radius: 6px;
+		flex-shrink: 0;
+	}
+</style>
