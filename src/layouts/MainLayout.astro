@@ -18,9 +18,9 @@ const { title, description, image } = Astro.props;
 	<head>
 		<BaseLayout title={title} description={description} image={image} />
 	</head>
-	<body class="bg-white font-grotesk text-black antialiased">
+	<body class="flex min-h-screen flex-col bg-white font-grotesk text-black antialiased">
 		<Navbar />
-		<main class="mx-auto w-full max-w-[1240px] px-5">
+		<main class="mx-auto w-full max-w-[1240px] flex-1 px-5">
 			<slot />
 		</main>
 		<Footer />
