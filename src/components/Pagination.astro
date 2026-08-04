@@ -19,13 +19,13 @@ const nextUrl = page < total ? url(page + 1) : null;
 		<nav class="pagination" aria-label="分页导航">
 			{
 				prevUrl
-					? <a class="pagination-prev" href={prevUrl}>← 上一页</a>
+					? <a href={prevUrl}>← 上一页</a>
 					: <span class="pagination-disabled">← 上一页</span>
 			}
 			<span class="pagination-info">第 {page} / {total} 页</span>
 			{
 				nextUrl
-					? <a class="pagination-next" href={nextUrl}>下一页 →</a>
+					? <a href={nextUrl}>下一页 →</a>
 					: <span class="pagination-disabled">下一页 →</span>
 			}
 		</nav>

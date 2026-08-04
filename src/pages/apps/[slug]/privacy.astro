@@ -3,7 +3,7 @@
 // 未知 slug 不在此生成（getStaticPaths 仅来自 apps 数组），返回 404；
 // 已知应用但 privacy.md 缺失时优雅降级为占位提示。
 import { getCollection, render } from 'astro:content';
-import SidebarLayout from '../../../layouts/SidebarLayout.astro';
+import MainLayout from '../../../layouts/MainLayout.astro';
 import { apps, type App } from '../../../data/apps';
 import { SITE_TITLE } from '../../../consts';
 
@@ -31,56 +31,42 @@ const dateText = pubDate
 	: undefined;
 ---
 
-<SidebarLayout
+<MainLayout
 	title={`${pageTitle} - ${app.name} - ${SITE_TITLE}`}
 	description={`${app.name} 的隐私政策`}
 >
-	<article class="doc-page">
-		<nav class="breadcrumb" aria-label="面包屑">
-			<a href={`/apps/${app.slug}/`}>&larr; {app.name}</a>
+	<article>
+		<!-- 面包屑：返回应用详情页 -->
+		<nav class="mb-6" aria-label="面包屑">
+			<a
+				class="text-sm font-medium text-text-soft transition-colors duration-150 hover:text-accent"
+				href={`/apps/${app.slug}/`}
+			>
+				&larr; {app.name}
+			</a>
 		</nav>
 
-		<header class="doc-header">
-			<h1>{pageTitle}</h1>
-			{dateText && <p class="doc-updated">最后更新：{dateText}</p>}
+		<header class="mb-8 border-b border-border pb-5">
+			<h1 class="text-3xl font-bold tracking-tight md:text-4xl">{pageTitle}</h1>
+			{dateText && <p class="mt-2 text-sm text-text-faint">最后更新：{dateText}</p>}
 		</header>
 
 		{
 			PrivacyContent ? (
 				// privacy.md 自带 H1（隐私政策），已在页头展示，隐藏正文首个 H1 避免重复
-				<div class="prose doc-prose">
+				<div class="prose">
 					<PrivacyContent />
 				</div>
 			) : (
-				<p class="empty">隐私政策暂未发布，敬请期待。</p>
+				<p class="text-text-faint">隐私政策暂未发布，敬请期待。</p>
 			)
 		}
 	</article>
-</SidebarLayout>
+</MainLayout>
 
 <style>
-	.breadcrumb {
-		margin-bottom: var(--space-4);
-		font-size: 0.9rem;
-	}
-	.doc-header {
-		margin-bottom: var(--space-5);
-		padding-bottom: var(--space-4);
-		border-bottom: 1px solid var(--border);
-	}
-	.doc-header h1 {
-		margin: 0 0 var(--space-2);
-	}
-	.doc-updated {
-		margin: 0;
-		font-size: 0.85rem;
-		color: var(--text-faint);
-	}
 	/* privacy.md 自带 H1（隐私政策），已由页头展示，隐藏正文首个 H1 */
-	.doc-prose :global(h1:first-child) {
+	.prose :global(h1:first-child) {
 		display: none;
-	}
-	.empty {
-		color: var(--text-faint);
 	}
 </style>

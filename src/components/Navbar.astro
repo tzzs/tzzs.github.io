@@ -1,0 +1,110 @@
+---
+// 顶部导航（Positivus 风格）：Logo + 导航链接 + 移动端汉堡菜单
+import { SITE_TITLE } from '../consts';
+
+const navItems = [
+	{ href: '/', label: '首页' },
+	{ href: '/apps/', label: '应用' },
+	{ href: '/blog/', label: '博客' },
+	{ href: '/about/', label: '关于' },
+	{ href: '/contact/', label: '联系' },
+];
+
+const { pathname } = Astro.url;
+const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+---
+
+<header class="sticky top-0 z-50 border-b border-gray bg-white/90 backdrop-blur">
+	<nav class="mx-auto flex w-full max-w-[1240px] items-center justify-between px-5 py-4">
+		<a href="/" class="flex items-center gap-2" aria-label="返回首页">
+			<span class="inline-block h-8 w-8 rounded-lg bg-green" aria-hidden="true"></span>
+			<span class="text-xl font-bold tracking-tight">{SITE_TITLE}</span>
+		</a>
+
+		<!-- 桌面端导航 -->
+		<ul class="hidden items-center gap-8 md:flex">
+			{
+				navItems.map((item) => (
+					<li>
+						<a
+							href={item.href}
+							class:list={[
+								'rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150',
+								isActive(item.href)
+									? 'bg-black text-white'
+									: 'text-black hover:bg-gray',
+							]}
+						>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+
+		<!-- 移动端汉堡按钮 -->
+		<button
+			id="nav-toggle"
+			type="button"
+			class="flex h-10 w-10 items-center justify-center rounded-lg border border-black md:hidden"
+			aria-label="切换导航菜单"
+			aria-expanded="false"
+			aria-controls="nav-mobile"
+		>
+			<svg id="nav-open-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-6 w-6">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+			</svg>
+			<svg id="nav-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-6 w-6">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+			</svg>
+		</button>
+	</nav>
+
+	<!-- 移动端下拉菜单 -->
+	<div id="nav-mobile" class="hidden border-t border-gray bg-white md:hidden">
+		<ul class="flex flex-col px-5 py-2">
+			{
+				navItems.map((item) => (
+					<li>
+						<a
+							href={item.href}
+							class:list={[
+								'block rounded-lg px-3 py-3 text-base font-medium',
+								isActive(item.href) ? 'bg-black text-white' : 'text-black hover:bg-gray',
+							]}
+						>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</header>
+
+<script>
+	// 移动端汉堡菜单切换（纯原生实现）
+	const toggle = document.getElementById('nav-toggle') as HTMLButtonElement;
+	const mobile = document.getElementById('nav-mobile') as HTMLDivElement;
+	const openIcon = document.getElementById('nav-open-icon') as SVGElement;
+	const closeIcon = document.getElementById('nav-close-icon') as SVGElement;
+
+	if (toggle && mobile) {
+		toggle.addEventListener('click', () => {
+			const isOpen = !mobile.classList.contains('hidden');
+			mobile.classList.toggle('hidden', isOpen);
+			openIcon.classList.toggle('hidden', !isOpen);
+			closeIcon.classList.toggle('hidden', isOpen);
+			toggle.setAttribute('aria-expanded', String(!isOpen));
+		});
+		// 点击菜单项后自动收起
+		mobile.querySelectorAll('a').forEach((link) => {
+			link.addEventListener('click', () => {
+				mobile.classList.add('hidden');
+				openIcon.classList.remove('hidden');
+				closeIcon.classList.add('hidden');
+				toggle.setAttribute('aria-expanded', 'false');
+			});
+		});
+	}
+</script>

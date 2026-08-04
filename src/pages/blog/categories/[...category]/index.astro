@@ -1,7 +1,7 @@
 ---
 // 分类聚合页：列出某一分类下的全部非草稿文章（按 pubDate 降序）
 import { getCollection } from 'astro:content';
-import SidebarLayout from '../../../../layouts/SidebarLayout.astro';
+import MainLayout from '../../../../layouts/MainLayout.astro';
 import PostCard from '../../../../components/PostCard.astro';
 import { SITE_TITLE } from '../../../../consts';
 
@@ -22,45 +22,22 @@ export async function getStaticPaths() {
 const { category, posts } = Astro.props;
 ---
 
-<SidebarLayout
+<MainLayout
 	title={`分类：${category} | ${SITE_TITLE}`}
 	description={`分类「${category}」下的全部文章`}
 >
-	<header class="page-header">
-		<h1>分类：{category}</h1>
-		<p class="page-sub">共 {posts.length} 篇文章</p>
+	<header class="mb-6">
+		<h1 class="text-3xl font-bold">分类：{category}</h1>
+		<p class="mt-1 text-sm text-[var(--text-faint)]">共 {posts.length} 篇文章</p>
 	</header>
 
 	{
 		posts.length > 0 ? (
-			<div class="post-list">
+			<div class="flex flex-col gap-6">
 				{posts.map((post) => <PostCard post={post} />)}
 			</div>
 		) : (
-			<p class="empty">该分类下暂无文章。</p>
+			<p class="text-[var(--text-faint)]">该分类下暂无文章。</p>
 		)
 	}
-</SidebarLayout>
-
-<style>
-	.page-header {
-		margin-bottom: 1.5rem;
-	}
-	.page-header h1 {
-		margin: 0 0 0.25rem;
-		font-size: 1.8rem;
-	}
-	.page-sub {
-		margin: 0;
-		color: var(--text-faint);
-		font-size: 0.9rem;
-	}
-	.post-list {
-		display: flex;
-		flex-direction: column;
-		gap: 1.25rem;
-	}
-	.empty {
-		color: var(--text-faint);
-	}
-</style>
+</MainLayout>

@@ -16,6 +16,12 @@ const blog = defineCollection({
 		categories: z.array(z.string()).default([]),
 		cover: z.string().optional(),
 		draft: z.boolean().default(false),
+		// Positivus 主题扩展字段（可选，向后兼容）
+		author: z.string().optional().default('TZZ'),
+		authImage: z.string().optional(),
+		image: z.string().optional(),
+		summary: z.string().optional(),
+		type: z.string().optional(),
 	}),
 });
 

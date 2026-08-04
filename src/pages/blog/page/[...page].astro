@@ -2,7 +2,7 @@
 // 博客列表第 2+ 页（/blog/page/2/ ...）。第 1 页在 /blog/（blog/index.astro）。
 import type { GetStaticPaths, Page } from 'astro';
 import type { CollectionEntry } from 'astro:content';
-import SidebarLayout from '../../../layouts/SidebarLayout.astro';
+import MainLayout from '../../../layouts/MainLayout.astro';
 import PostList from '../../../components/PostList.astro';
 import { SITE_TITLE } from '../../../consts';
 import { getBlogPosts, buildPageData, PAGE_SIZE } from '../../../lib/paginate';
@@ -21,9 +21,9 @@ export const getStaticPaths = (async () => {
 const { page } = Astro.props;
 ---
 
-<SidebarLayout
+<MainLayout
 	title={`博客 第 ${page.currentPage} 页 | ${SITE_TITLE}`}
 	description="TAN 的技术博客：编程踩坑记录与技术分享"
 >
 	<PostList page={page} />
-</SidebarLayout>
+</MainLayout>

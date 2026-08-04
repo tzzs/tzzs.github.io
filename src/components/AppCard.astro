@@ -16,38 +16,33 @@ const statusLabels: Record<App['status'], string> = {
 };
 ---
 
-<article class="app-card">
-	<a href={href}>
-		<div class="app-card-header">
-			{
-				app.icon && <img class="app-card-icon" src={app.icon} alt={`${app.name} 图标`} width={32} height={32} />
-			}
-			<h3>{app.name}</h3>
-			<span class={`badge badge-${app.status}`}>{statusLabels[app.status]}</span>
-		</div>
-		<p class="app-card-desc">{app.description}</p>
-		<div class="app-card-platforms">
-			{
-				app.platforms.map((platform) => (
-					<span class="platform">{platform}</span>
-				))
-			}
-		</div>
-	</a>
-</article>
-
-<style>
-	.app-card-header {
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
-	.app-card-header h3 {
-		margin: 0;
-		flex: 1;
-	}
-	.app-card-icon {
-		border-radius: 6px;
-		flex-shrink: 0;
-	}
-</style>
+<a
+	href={href}
+	class="group block rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]"
+>
+	<div class="flex items-center gap-2.5">
+		{
+			app.icon && (
+				<img
+					class="h-8 w-8 shrink-0 rounded-md"
+					src={app.icon}
+					alt={`${app.name} 图标`}
+					width={32}
+					height={32}
+				/>
+			)
+		}
+		<h3 class="min-w-0 flex-1 text-lg font-bold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
+			{app.name}
+		</h3>
+		<span class={`badge badge-${app.status}`}>{statusLabels[app.status]}</span>
+	</div>
+	<p class="mt-2 text-sm leading-relaxed text-[var(--text-soft)]">{app.description}</p>
+	<div class="mt-3 flex flex-wrap gap-2">
+		{
+			app.platforms.map((platform) => (
+				<span class="tag-pill">{platform}</span>
+			))
+		}
+	</div>
+</a>

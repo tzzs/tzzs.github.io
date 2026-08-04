@@ -1,0 +1,28 @@
+---
+// 主布局（Positivus 风格）：BaseLayout（head：SEO + 统计脚本）+ Navbar + 内容区 + Footer
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+	image?: string;
+}
+
+const { title, description, image } = Astro.props;
+---
+
+<html lang="zh-CN">
+	<head>
+		<BaseLayout title={title} description={description} image={image} />
+	</head>
+	<body class="bg-white font-grotesk text-black antialiased">
+		<Navbar />
+		<main class="mx-auto w-full max-w-[1240px] px-5">
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

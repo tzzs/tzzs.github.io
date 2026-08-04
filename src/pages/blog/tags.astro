@@ -1,7 +1,7 @@
 ---
 // 全部标签索引页：标签云（按文章数降序）
 import { getCollection } from 'astro:content';
-import SidebarLayout from '../../layouts/SidebarLayout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import { SITE_TITLE } from '../../consts';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -14,69 +14,29 @@ for (const post of posts) {
 const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
-<SidebarLayout title={`全部标签 | ${SITE_TITLE}`} description="博客全部标签索引">
-	<header class="page-header">
-		<h1>全部标签</h1>
-		<p class="page-sub">共 {sortedTags.length} 个标签</p>
+<MainLayout title={`全部标签 | ${SITE_TITLE}`} description="博客全部标签索引">
+	<header class="mb-6">
+		<h1 class="text-3xl font-bold">全部标签</h1>
+		<p class="mt-1 text-sm text-[var(--text-faint)]">共 {sortedTags.length} 个标签</p>
 	</header>
 
 	{
 		sortedTags.length > 0 ? (
-			<div class="tag-cloud">
+			<div class="flex flex-wrap gap-2.5">
 				{
 					sortedTags.map(([tag, count]) => (
-						<a href={`/blog/tags/${encodeURIComponent(tag)}/`}>
+						<a
+							class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-bg px-3.5 py-1 text-sm text-[var(--text-soft)] no-underline transition-colors duration-150 hover:border-[var(--accent)] hover:bg-[var(--accent-soft)] hover:text-[var(--accent)]"
+							href={`/blog/tags/${encodeURIComponent(tag)}/`}
+						>
 							{tag}
-							<span class="count">{count}</span>
+							<span class="text-xs text-[var(--text-faint)]">{count}</span>
 						</a>
 					))
 				}
 			</div>
 		) : (
-			<p class="empty">暂无标签。</p>
+			<p class="text-[var(--text-faint)]">暂无标签。</p>
 		)
 	}
-</SidebarLayout>
-
-<style>
-	.page-header {
-		margin-bottom: 1.5rem;
-	}
-	.page-header h1 {
-		margin: 0 0 0.25rem;
-		font-size: 1.8rem;
-	}
-	.page-sub {
-		margin: 0;
-		color: var(--text-faint);
-		font-size: 0.9rem;
-	}
-	.tag-cloud {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.625rem;
-	}
-	.tag-cloud a {
-		display: inline-block;
-		padding: 3px 14px;
-		border: 1px solid var(--border);
-		border-radius: 999px;
-		font-size: 0.9rem;
-		color: var(--text-soft);
-		text-decoration: none;
-		transition: border-color 0.15s ease, color 0.15s ease;
-	}
-	.tag-cloud a:hover {
-		border-color: var(--accent);
-		color: var(--accent);
-		text-decoration: none;
-	}
-	.tag-cloud .count {
-		margin-left: 4px;
-		font-size: 0.75em;
-		color: var(--text-faint);
-	}
-	.empty {
-		color: var(--text-faint);
-	}
-</style>
+</MainLayout>

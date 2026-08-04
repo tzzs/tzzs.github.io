@@ -2,9 +2,11 @@
 // 博客文章详情页
 // - 仅生成非草稿文章；草稿不生成页面（访问即 404）
 // - 正文中的 [TOC] 标记由 remark-toc-marker 插件在 markdown 渲染阶段
-//   替换为文章目录（h1-h3 锚点列表），无需在此额外处理
+//   替换为文章目录（h1-h3 锚点列表，class="article-toc"），样式已在 global.css
+// - katex 公式样式已随 global.css 引入，正文直接渲染即可
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-import SidebarLayout from '../../layouts/SidebarLayout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
+import TagList from '../../components/TagList.astro';
 import { SITE_TITLE } from '../../consts';
 
 export async function getStaticPaths() {
@@ -18,7 +20,8 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { title, description, pubDate, updated, tags = [], categories = [] } = post.data;
+const { title, description, pubDate, updated, tags = [], categories = [], cover, author = 'TZZ' } =
+	post.data;
 const { Content } = await render(post);
 
 // 上一篇 / 下一篇：按 pubDate 降序排序，比当前文章新的是「下一篇」
@@ -40,25 +43,48 @@ const dateText = (d: Date) =>
 	});
 ---
 
-<SidebarLayout title={`${title} | ${SITE_TITLE}`} description={description}>
-	<article class="post">
-		<header class="post-header">
-			<h1>{title}</h1>
-			<div class="post-meta">
+<MainLayout title={`${title} | ${SITE_TITLE}`} description={description}>
+	{/* 面包屑 */}
+	<nav class="mb-6 text-sm text-[var(--text-faint)]" aria-label="面包屑">
+		<a class="transition-colors duration-150 hover:text-[var(--accent)]" href="/">首页</a>
+		<span class="mx-2 text-[var(--border-strong)]">/</span>
+		<a class="transition-colors duration-150 hover:text-[var(--accent)]" href="/blog/">博客</a>
+		<span class="mx-2 text-[var(--border-strong)]">/</span>
+		<span class="text-[var(--text-soft)]">{title}</span>
+	</nav>
+
+	<article>
+		<header>
+			<h1 class="text-4xl font-extrabold leading-tight text-[var(--text)]">{title}</h1>
+
+			{/* 日期 / 作者 / 更新 / 分类 */}
+			<div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-[var(--text-faint)]">
 				<time datetime={pubDate.toISOString()}>{dateText(pubDate)}</time>
+				{author && (
+					<>
+						<span class="text-[var(--border-strong)]">·</span>
+						<span>作者：{author}</span>
+					</>
+				)}
 				{
 					updated && (
-						<span class="post-updated">
-							更新于
-							<time datetime={updated.toISOString()}>{dateText(updated)}</time>
-						</span>
+						<>
+							<span class="text-[var(--border-strong)]">·</span>
+							<span>
+								更新于
+								<time datetime={updated.toISOString()}>{dateText(updated)}</time>
+							</span>
+						</>
 					)
 				}
 				{
 					categories.length > 0 && (
-						<span class="post-categories">
+						<span class="inline-flex flex-wrap gap-1.5">
 							{categories.map((c) => (
-								<a class="pill" href={`/blog/categories/${encodeURIComponent(c)}/`}>
+								<a
+									class="inline-block rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs text-[var(--text-soft)] no-underline transition-colors duration-150 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+									href={`/blog/categories/${encodeURIComponent(c)}/`}
+								>
 									{c}
 								</a>
 							))}
@@ -66,170 +92,65 @@ const dateText = (d: Date) =>
 					)
 				}
 			</div>
+
 			{
 				tags.length > 0 && (
-					<ul class="tag-list post-tags">
-						{tags.map((tag) => (
-							<li>
-								<a href={`/blog/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
-							</li>
-						))}
-					</ul>
+					<div class="mt-4">
+						<TagList tags={tags} />
+					</div>
 				)
 			}
 		</header>
 
-		<div class="prose">
+		{
+			cover && (
+				<img
+					class="mt-6 w-full rounded-xl border border-[var(--border)] object-cover"
+					src={cover}
+					alt={title}
+				/>
+			)
+		}
+
+		<div class="prose mt-8">
 			<Content />
 		</div>
 
 		{
 			(prevPost || nextPost) && (
-				<nav class="post-nav" aria-label="上一篇 / 下一篇">
+				<nav class="mt-10 flex justify-between gap-4 border-t border-[var(--border)] pt-5" aria-label="上一篇 / 下一篇">
 					{
 						nextPost ? (
-							<a class="post-nav-item post-nav-next" href={`/blog/${nextPost.id}/`}>
-								<span class="post-nav-label">下一篇</span>
-								<span class="post-nav-title">{nextPost.data.title}</span>
+							<a
+								class="group flex min-w-0 flex-1 flex-col gap-1 rounded-[var(--radius-card)] border border-[var(--border)] p-3 text-left no-underline transition-all duration-150 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]"
+								href={`/blog/${nextPost.id}/`}
+							>
+								<span class="text-xs text-[var(--text-faint)]">← 下一篇</span>
+								<span class="truncate text-sm font-medium text-[var(--text)]">
+									{nextPost.data.title}
+								</span>
 							</a>
 						) : (
-							<span class="post-nav-item" aria-hidden="true" />
+							<span class="flex-1" aria-hidden="true" />
 						)
 					}
 					{
 						prevPost ? (
-							<a class="post-nav-item post-nav-prev" href={`/blog/${prevPost.id}/`}>
-								<span class="post-nav-label">上一篇</span>
-								<span class="post-nav-title">{prevPost.data.title}</span>
+							<a
+								class="group flex min-w-0 flex-1 flex-col gap-1 rounded-[var(--radius-card)] border border-[var(--border)] p-3 text-right no-underline transition-all duration-150 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]"
+								href={`/blog/${prevPost.id}/`}
+							>
+								<span class="text-xs text-[var(--text-faint)]">上一篇 →</span>
+								<span class="truncate text-sm font-medium text-[var(--text)]">
+									{prevPost.data.title}
+								</span>
 							</a>
 						) : (
-							<span class="post-nav-item" aria-hidden="true" />
+							<span class="flex-1" aria-hidden="true" />
 						)
 					}
 				</nav>
 			)
 		}
 	</article>
-</SidebarLayout>
-
-<style>
-	.post-header {
-		margin-bottom: 1.5rem;
-		padding-bottom: 1rem;
-		border-bottom: 1px solid var(--border);
-	}
-	.post-header h1 {
-		margin: 0 0 0.75rem;
-		font-size: 1.9rem;
-		line-height: 1.3;
-	}
-	.post-meta {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 0.5rem 0.75rem;
-		font-size: 0.85rem;
-		color: var(--text-faint);
-	}
-	.post-updated {
-		font-style: italic;
-	}
-	.post-categories {
-		display: inline-flex;
-		flex-wrap: wrap;
-		gap: 0.375rem;
-	}
-	.post-categories .pill {
-		display: inline-block;
-		padding: 1px 10px;
-		border: 1px solid var(--border);
-		border-radius: 999px;
-		font-size: 0.8rem;
-		color: var(--text-soft);
-		text-decoration: none;
-	}
-	.post-categories .pill:hover {
-		border-color: var(--accent);
-		color: var(--accent);
-		text-decoration: none;
-	}
-	.post-tags {
-		margin-top: 0.75rem;
-	}
-
-	.post-nav {
-		display: flex;
-		justify-content: space-between;
-		gap: 1rem;
-		margin-top: 2.5rem;
-		padding-top: 1.25rem;
-		border-top: 1px solid var(--border);
-	}
-	.post-nav-item {
-		flex: 1 1 0;
-		min-width: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-		padding: 0.75rem 1rem;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		text-decoration: none;
-		transition: border-color 0.15s ease, box-shadow 0.15s ease;
-	}
-	a.post-nav-item:hover {
-		border-color: var(--border-strong);
-		box-shadow: var(--shadow);
-		text-decoration: none;
-	}
-	.post-nav-next {
-		text-align: left;
-	}
-	.post-nav-prev {
-		text-align: right;
-	}
-	.post-nav-label {
-		font-size: 0.75rem;
-		color: var(--text-faint);
-	}
-	.post-nav-title {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		color: var(--text);
-		font-size: 0.95rem;
-	}
-</style>
-
-<style is:global>
-	/* 正文内 [TOC] 生成的目录（class 由 remark-toc-marker 插件写入） */
-	.article-toc {
-		margin: 1.5em 0;
-		padding: 1rem 1.25rem;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		background: var(--bg-soft);
-		list-style: none;
-	}
-	.article-toc > li {
-		margin: 0.25em 0;
-	}
-	.article-toc li {
-		list-style: none;
-	}
-	.article-toc ul {
-		list-style: none;
-		padding-left: 1.25em;
-		margin: 0.25em 0;
-	}
-	.article-toc a {
-		color: var(--text-soft);
-		text-decoration: none;
-		font-size: 0.95em;
-		transition: color 0.15s ease;
-	}
-	.article-toc a:hover {
-		color: var(--accent);
-		text-decoration: none;
-	}
-</style>
+</MainLayout>

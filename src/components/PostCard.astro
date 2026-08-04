@@ -1,6 +1,7 @@
 ---
 // 文章卡片：展示标题、日期、描述、标签，链接到 /blog/[slug]/
 import type { CollectionEntry } from 'astro:content';
+import TagList from './TagList.astro';
 
 interface Props {
 	/** 博客集合条目（getCollection('blog') 的返回值） */
@@ -17,24 +18,18 @@ const dateText = pubDate.toLocaleDateString('zh-CN', {
 });
 ---
 
-<article class="post-card">
-	<h2>
-		<a href={href}>{title}</a>
+<article class="rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]">
+	<time class="text-sm text-[var(--text-faint)]" datetime={pubDate.toISOString()}>{dateText}</time>
+	<h2 class="mt-2 text-xl font-bold text-[var(--text)]">
+		<a class="transition-colors duration-150 hover:text-[var(--accent)]" href={href}>{title}</a>
 	</h2>
-	<div class="post-card-meta">
-		<time datetime={pubDate.toISOString()}>{dateText}</time>
-		{
-			tags.length > 0 && (
-				<ul class="tag-list">
-					{tags.map((tag) => (
-						<li>
-							<a href={`/blog/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
-						</li>
-					))}
-				</ul>
-			)
-		}
-	</div>
-	{description && <p class="post-card-desc">{description}</p>}
-	<a class="post-card-more" href={href}>阅读全文 →</a>
+	{description && <p class="mt-2 text-sm leading-relaxed text-[var(--text-soft)]">{description}</p>}
+	{
+		tags.length > 0 && (
+			<div class="mt-3">
+				<TagList tags={tags} />
+			</div>
+		)
+	}
+	<a class="mt-3 inline-block text-sm font-medium text-[var(--accent)] hover:underline" href={href}>阅读全文 →</a>
 </article>

@@ -1,11 +1,11 @@
 ---
-// 门户首页：产品门户定位（Hero + 应用展示 + 最近文章 + 关于片段）
+// 门户首页（Positivus 落地页风格）：Hero + 应用展示 + 最近文章 + 关于片段
 import { getCollection } from 'astro:content';
-import SidebarLayout from '../layouts/SidebarLayout.astro';
+import MainLayout from '../layouts/MainLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import AppCard from '../components/AppCard.astro';
 import { apps } from '../data/apps';
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 // 最近文章：仅非草稿，按发布时间降序取 5 篇
 const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -13,163 +13,124 @@ const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
 	.slice(0, 5);
 ---
 
-<SidebarLayout
-	title={SITE_TITLE}
-	description="独立开发者 TZZ 的产品门户：正在开发的应用与技术博客"
->
-	<section class="hero">
-		<p class="hero-tagline">独立开发者工作室</p>
-		<h1 class="hero-title">{SITE_TITLE}</h1>
-		<p class="hero-desc">
-			你好，我是 TZZ，一名独立开发者。这里展示我正在开发的应用，
-			并记录编程路上的思考与经验。
-		</p>
-		<div class="hero-cta">
-			<a class="btn btn-primary" href="/apps/">查看应用</a>
-			<a class="btn" href="/blog/">阅读博客</a>
+<MainLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<!-- ===== Hero ===== -->
+	<section class="flex flex-col gap-12 py-12 sm:py-20 lg:flex-row lg:items-center lg:gap-16">
+		<div class="flex-1">
+			<p class="mb-6 w-fit rounded-lg bg-green px-3 py-1.5 text-sm font-medium text-black">
+				独立开发者工作室
+			</p>
+			<h1 class="text-5xl font-medium leading-[1.05] sm:text-6xl xl:text-7xl">
+				TAN'S <span class="font-outline-sm text-transparent">BLOG</span>
+			</h1>
+			<p class="mt-6 max-w-xl text-lg leading-relaxed text-text-soft lg:text-xl">
+				Tan 的技术博客与应用展示：Java、C、Python、Go、Linux 等方向的编程思考与工程实践。
+			</p>
+			<div class="mt-9 flex flex-wrap gap-4">
+				<a class="btn-tertiary" href="/apps/">查看应用</a>
+				<a class="btn-secondary" href="/blog/">阅读博客</a>
+			</div>
+		</div>
+		<div class="hidden flex-1 justify-center lg:flex">
+			<div
+				class="flex h-72 w-full max-w-sm items-center justify-center rounded-[2rem] bg-dark text-center"
+			>
+				<div>
+					<p class="text-7xl font-medium text-green">TZZ</p>
+					<p class="mt-4 text-sm tracking-[0.2em] text-white/70">独立开发者 · 技术博主</p>
+				</div>
+			</div>
 		</div>
 	</section>
 
-	<section class="section" aria-labelledby="apps-heading">
-		<div class="section-header">
-			<h2 id="apps-heading">正在开发的应用</h2>
-			<a class="section-more" href="/apps/">查看全部 →</a>
+	<!-- ===== 应用区 ===== -->
+	<section aria-labelledby="apps-heading" class="mt-16 sm:mt-24">
+		<div class="mb-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-10">
+			<h2
+				id="apps-heading"
+				class="w-fit shrink-0 rounded-lg bg-green px-2.5 py-1.5 text-3xl font-medium sm:text-4xl"
+			>
+				正在开发的应用
+			</h2>
+			<p class="text-text-soft sm:max-w-[560px]">
+				把想法做成产品。目前两个 VS Code 扩展已发布，更多工具正在开发中。
+			</p>
 		</div>
 		{
 			apps.length > 0 ? (
-				<div class="app-grid">
+				<div class="grid gap-6 md:grid-cols-2">
 					{apps.map((app) => <AppCard app={app} />)}
 				</div>
 			) : (
-				<p class="empty">暂无应用，敬请期待。</p>
+				<p class="rounded-2xl border border-dashed border-border px-6 py-12 text-center text-text-faint">
+					暂无应用，敬请期待。
+				</p>
+			)
+		}
+		{
+			apps.length > 0 && (
+				<div class="mt-10 text-center">
+					<a class="font-medium text-accent hover:underline" href="/apps/">查看全部应用 →</a>
+				</div>
 			)
 		}
 	</section>
 
-	<section class="section" aria-labelledby="blog-heading">
-		<div class="section-header">
-			<h2 id="blog-heading">最近文章</h2>
-			<a class="section-more" href="/blog/">查看全部 →</a>
+	<!-- ===== 博客区 ===== -->
+	<section aria-labelledby="blog-heading" class="mt-16 sm:mt-24">
+		<div class="mb-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-10">
+			<h2
+				id="blog-heading"
+				class="w-fit shrink-0 rounded-lg bg-green px-2.5 py-1.5 text-3xl font-medium sm:text-4xl"
+			>
+				最近文章
+			</h2>
+			<p class="text-text-soft sm:max-w-[560px]">
+				记录编程路上的思考与经验：踩坑记录、设计与工程实践。
+			</p>
 		</div>
 		{
 			recentPosts.length > 0 ? (
-				<div class="post-list">
+				<div class="flex flex-col gap-6">
 					{recentPosts.map((post) => <PostCard post={post} />)}
 				</div>
 			) : (
-				<p class="empty">还没有文章，敬请期待。</p>
+				<p class="rounded-2xl border border-dashed border-border px-6 py-12 text-center text-text-faint">
+					还没有文章，敬请期待。
+				</p>
+			)
+		}
+		{
+			recentPosts.length > 0 && (
+				<div class="mt-10 text-center">
+					<a class="font-medium text-accent hover:underline" href="/blog/">查看全部文章 →</a>
+				</div>
 			)
 		}
 	</section>
 
-	<section class="section" aria-labelledby="about-heading">
-		<div class="section-header">
-			<h2 id="about-heading">关于我</h2>
-			<a class="section-more" href="/about/">了解更多 →</a>
+	<!-- ===== About 片段 ===== -->
+	<section aria-labelledby="about-heading" class="mt-16 sm:mt-24">
+		<div class="mb-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-10">
+			<h2
+				id="about-heading"
+				class="w-fit shrink-0 rounded-lg bg-green px-2.5 py-1.5 text-3xl font-medium sm:text-4xl"
+			>
+				关于开发者
+			</h2>
+			<p class="text-text-soft sm:max-w-[560px]">介绍一下我，以及我平时在折腾的技术。</p>
 		</div>
-		<div class="about-card">
-			<p>
-				<strong>TZZ</strong>，独立开发者。主要技术方向：
-				Java、C、Python、Go，偶尔折腾移动端与前端。
-			</p>
-			<p>
-				喜欢把想法做成产品，也乐于把踩坑的过程写成文章。
-			</p>
+		<div
+			class="flex flex-col gap-8 rounded-[2rem] bg-black p-8 text-white sm:p-12 lg:flex-row lg:items-center lg:justify-between"
+		>
+			<div class="max-w-2xl">
+				<h3 class="text-2xl font-bold">你好，我是 TZZ</h3>
+				<p class="mt-3 leading-relaxed text-white/70">
+					一名独立开发者，技术方向覆盖 Java、C、Python、Go 与 Linux 等。
+					喜欢把想法做成产品，也乐于把踩坑的过程写成文章。
+				</p>
+			</div>
+			<a class="btn-tertiary w-fit shrink-0" href="/about/">了解更多 →</a>
 		</div>
 	</section>
-</SidebarLayout>
-
-<style>
-	.hero {
-		padding: 3.5rem 0 2rem;
-	}
-	.hero-tagline {
-		margin: 0 0 0.75rem;
-		font-size: 0.95rem;
-		letter-spacing: 0.15em;
-		color: var(--accent, #5b8def);
-		font-weight: 600;
-	}
-	.hero-title {
-		margin: 0 0 1rem;
-		font-size: 2.25rem;
-		line-height: 1.2;
-	}
-	.hero-desc {
-		margin: 0 0 1.75rem;
-		max-width: 42em;
-		line-height: 1.7;
-	}
-	.hero-cta {
-		display: flex;
-		gap: 0.75rem;
-		flex-wrap: wrap;
-	}
-	.btn {
-		display: inline-block;
-		padding: 0.6rem 1.4rem;
-		border-radius: 8px;
-		border: 1px solid var(--border, #ddd);
-		text-decoration: none;
-		font-weight: 600;
-		transition: opacity 0.15s ease;
-	}
-	.btn:hover {
-		opacity: 0.8;
-	}
-	.btn-primary {
-		background: var(--accent, #5b8def);
-		border-color: var(--accent, #5b8def);
-		color: #fff;
-	}
-
-	.section {
-		margin-top: 3rem;
-	}
-	.section-header {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 1rem;
-		border-bottom: 1px solid var(--border, #eee);
-		padding-bottom: 0.6rem;
-		margin-bottom: 1.25rem;
-	}
-	.section-header h2 {
-		margin: 0;
-		font-size: 1.4rem;
-	}
-	.section-more {
-		font-size: 0.9rem;
-		text-decoration: none;
-		color: var(--accent, #5b8def);
-		white-space: nowrap;
-	}
-
-	.app-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-		gap: 1rem;
-	}
-
-	.post-list {
-		display: flex;
-		flex-direction: column;
-		gap: 1.25rem;
-	}
-
-	.about-card {
-		border: 1px solid var(--border, #eee);
-		border-radius: 10px;
-		padding: 1.25rem 1.5rem;
-		line-height: 1.8;
-	}
-	.about-card p {
-		margin: 0.25rem 0;
-	}
-
-	.empty {
-		color: var(--muted, #888);
-		padding: 1rem 0;
-	}
-</style>
+</MainLayout>

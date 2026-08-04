@@ -1,49 +1,34 @@
 ---
 // 应用列表页：标题「应用」+ 每个应用渲染为卡片（名称/描述/状态徽章/平台），链接到 /apps/[slug]/
-import SidebarLayout from '../../layouts/SidebarLayout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import AppCard from '../../components/AppCard.astro';
 import { apps } from '../../data/apps';
 import { SITE_TITLE } from '../../consts';
 ---
 
-<SidebarLayout
+<MainLayout
 	title={`应用 - ${SITE_TITLE}`}
 	description="TZZ 正在开发的应用：AI Diary、LUT Studio、Markdown Editor 等产品的进展与下载"
 >
-	<article class="apps-page">
-		<header class="page-header">
-			<h1>应用</h1>
-			<p class="page-desc">
-				这里展示我正在开发的产品。当前均处于开发阶段，欢迎持续关注进展。
-			</p>
-		</header>
+	<section class="pb-10 pt-12 md:pt-16">
+		<h1 class="text-4xl font-bold tracking-tight md:text-5xl">
+			应用
+			<span class="ml-3 inline-block rounded-xl bg-green px-4 py-1 text-2xl font-semibold align-middle md:text-3xl">
+				Apps
+			</span>
+		</h1>
+		<p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft">
+			这里展示我正在开发的产品。当前均处于开发阶段，欢迎持续关注进展。
+		</p>
+	</section>
 
-		{
-			apps.length > 0 ? (
-				<div class="app-grid">
-					{apps.map((app) => <AppCard app={app} />)}
-				</div>
-			) : (
-				<p class="empty">暂无应用，敬请期待。</p>
-			)
-		}
-	</article>
-</SidebarLayout>
-
-<style>
-	.page-header h1 {
-		margin: 0 0 var(--space-2);
+	{
+		apps.length > 0 ? (
+			<div class="grid gap-6 md:grid-cols-2">
+				{apps.map((app) => <AppCard app={app} />)}
+			</div>
+		) : (
+			<p class="py-8 text-text-faint">暂无应用，敬请期待。</p>
+		)
 	}
-	.page-desc {
-		margin: 0 0 var(--space-6);
-		color: var(--text-soft);
-	}
-	.app-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-		gap: var(--space-4);
-	}
-	.empty {
-		color: var(--text-faint);
-	}
-</style>
+</MainLayout>
