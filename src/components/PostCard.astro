@@ -1,0 +1,40 @@
+---
+// 文章卡片：展示标题、日期、描述、标签，链接到 /blog/[slug]/
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	/** 博客集合条目（getCollection('blog') 的返回值） */
+	post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, tags = [] } = post.data;
+const href = `/blog/${post.id}/`;
+const dateText = pubDate.toLocaleDateString('zh-CN', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<article class="post-card">
+	<h2>
+		<a href={href}>{title}</a>
+	</h2>
+	<div class="post-card-meta">
+		<time datetime={pubDate.toISOString()}>{dateText}</time>
+		{
+			tags.length > 0 && (
+				<ul class="tag-list">
+					{tags.map((tag) => (
+						<li>
+							<a href={`/blog/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</div>
+	{description && <p class="post-card-desc">{description}</p>}
+	<a class="post-card-more" href={href}>阅读全文 →</a>
+</article>

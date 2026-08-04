@@ -1,0 +1,21 @@
+---
+// 标签链接列表：每个标签链接到 /blog/tags/[tag]/
+interface Props {
+	/** 标签名数组 */
+	tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+{
+	tags.length > 0 && (
+		<ul class="tag-list">
+			{tags.map((tag) => (
+				<li>
+					<a href={`/blog/tags/${encodeURIComponent(tag)}/`}>{tag}</a>
+				</li>
+			))}
+		</ul>
+	)
+}

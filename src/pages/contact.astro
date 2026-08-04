@@ -1,0 +1,90 @@
+---
+// 联系页：邮箱 / GitHub Issues / GitHub 主页（部分为占位，待更新）
+import SidebarLayout from '../layouts/SidebarLayout.astro';
+import { SITE_TITLE } from '../consts';
+
+// 占位邮箱，后续替换为真实邮箱
+const emailPlaceholder = 'hello@example.com';
+const githubProfile = 'https://github.com/tzzs';
+const githubIssues = 'https://github.com/tzzs/tzzs.github.io/issues';
+---
+
+<SidebarLayout
+	title={`联系 - ${SITE_TITLE}`}
+	description="联系 TZZ：邮箱、GitHub Issues 与开源主页"
+>
+	<article class="contact">
+		<header class="contact-header">
+			<h1>联系我</h1>
+			<p class="lead">有任何问题、建议或合作意向，欢迎通过以下方式联系。</p>
+		</header>
+
+		<section class="card">
+			<h2>邮箱</h2>
+			<p>
+				商务合作与技术咨询请发邮件至：
+				<a href={`mailto:${emailPlaceholder}`}>{emailPlaceholder}</a>
+			</p>
+			<p class="note">（占位邮箱，正式邮箱上线后更新）</p>
+		</section>
+
+		<section class="card">
+			<h2>GitHub Issues</h2>
+			<p>
+				遇到本站或应用的 Bug、有功能建议，欢迎到
+				<a href={githubIssues} rel="noopener noreferrer" target="_blank">
+					仓库 Issues
+				</a>
+				反馈（占位链接，仓库公开后生效）。
+			</p>
+		</section>
+
+		<section class="card">
+			<h2>开源主页</h2>
+			<p>
+				我的开源项目与代码仓库：
+				<a href={githubProfile} rel="noopener noreferrer" target="_blank">
+					{githubProfile}
+				</a>
+			</p>
+		</section>
+
+		<section class="card">
+			<h2>说明</h2>
+			<p class="note">
+				回复一般需要 1-3 个工作日；问题反馈请尽量描述复现步骤与环境，便于快速定位。
+			</p>
+		</section>
+	</article>
+</SidebarLayout>
+
+<style>
+	.contact-header h1 {
+		margin-top: 0;
+	}
+	.lead {
+		font-size: 1.05rem;
+		color: var(--text-soft);
+	}
+	.card {
+		margin-top: var(--space-5);
+		padding: var(--space-4) var(--space-5);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--bg);
+	}
+	.card h2 {
+		margin: 0 0 var(--space-3);
+		font-size: 1.15rem;
+	}
+	.card p {
+		margin: 0;
+	}
+	.card p + p {
+		margin-top: var(--space-2);
+	}
+	.note {
+		font-size: 0.85rem;
+		color: var(--text-faint);
+	}
+</style>

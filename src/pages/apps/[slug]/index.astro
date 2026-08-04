@@ -1,0 +1,217 @@
+---
+// 应用详情页：Hero（名称/描述/状态徽章/平台）→ 产品介绍与功能（index.md）→ 下载入口 → 子页导航
+// 未知 slug 不在此生成（未出现在 getStaticPaths 中），由站点返回 404；
+// 已知应用但内容缺失时优雅降级为占位提示。
+import { getCollection, render } from 'astro:content';
+import SidebarLayout from '../../../layouts/SidebarLayout.astro';
+import { apps, type App, type AppStatus } from '../../../data/apps';
+import { SITE_TITLE } from '../../../consts';
+
+export async function getStaticPaths() {
+	return apps.map((app) => ({
+		params: { slug: app.slug },
+		props: { app },
+	}));
+}
+
+interface Props {
+	app: App;
+}
+
+const { app } = Astro.props;
+
+const statusLabels: Record<AppStatus, string> = {
+	development: '开发中',
+	beta: '测试中',
+	released: '已发布',
+};
+
+// 下载链接标签：优先展示中文可读文案，未知 key 回退为原 key
+const linkLabels: Record<string, string> = {
+	appStore: 'App Store',
+	googlePlay: 'Google Play',
+	web: '网页版',
+	online: '在线版',
+	windows: 'Windows 版',
+	macos: 'macOS 版',
+	ios: 'iOS 版',
+	android: 'Android 版',
+	github: 'GitHub 发布页',
+	download: '下载安装包',
+	official: '官网下载',
+};
+const labelFor = (key: string) => linkLabels[key] ?? key;
+
+const linkEntries = Object.entries(app.links ?? {});
+
+// 产品介绍：src/content/apps/<slug>/index.md
+const introEntry = (await getCollection('apps')).find(
+	(entry) => entry.id === `${app.slug}/index`,
+);
+const IntroContent = introEntry ? (await render(introEntry)).Content : undefined;
+---
+
+<SidebarLayout title={`${app.name} - ${SITE_TITLE}`} description={app.description}>
+	<article class="app-detail">
+		<header class="hero">
+			<h1 class="hero-name">{app.name}</h1>
+			<p class="hero-desc">{app.description}</p>
+			<div class="hero-meta">
+				<span class:list={['badge', `badge-${app.status}`]}>
+					{statusLabels[app.status] ?? app.status}
+				</span>
+				<span class="hero-platforms">{app.platforms.join(' / ')}</span>
+			</div>
+		</header>
+
+		<section class="section" aria-labelledby="intro-heading">
+			<h2 id="intro-heading">产品介绍与功能</h2>
+			{
+				IntroContent ? (
+					// index.md 自带一级标题（应用名），Hero 已展示，故隐藏正文首个 H1 避免重复
+					<div class="prose app-prose">
+						<IntroContent />
+					</div>
+				) : (
+					<p class="empty">该应用的产品介绍即将上线，敬请期待。</p>
+				)
+			}
+		</section>
+
+		<section class="section" aria-labelledby="download-heading">
+			<h2 id="download-heading">下载</h2>
+			{
+				linkEntries.length > 0 ? (
+					<ul class="download-list">
+						{linkEntries.map(([key, url]) => (
+							<li>
+								<a href={url} target="_blank" rel="noopener noreferrer">
+									{labelFor(key)}
+								</a>
+							</li>
+						))}
+					</ul>
+				) : (
+					<p class="empty">敬请期待</p>
+				)
+			}
+		</section>
+
+		<nav class="sub-nav" aria-label={`${app.name} 子页面导航`}>
+			<a class="sub-nav-link" href={`/apps/${app.slug}/changelog/`}>
+				<span class="sub-nav-title">更新日志</span>
+				<span class="sub-nav-sub">版本记录与变更说明</span>
+			</a>
+			<a class="sub-nav-link" href={`/apps/${app.slug}/privacy/`}>
+				<span class="sub-nav-title">隐私政策</span>
+				<span class="sub-nav-sub">数据收集与使用说明</span>
+			</a>
+		</nav>
+	</article>
+</SidebarLayout>
+
+<style>
+	.hero {
+		padding: var(--space-4) 0 var(--space-6);
+		border-bottom: 1px solid var(--border);
+		margin-bottom: var(--space-6);
+	}
+	.hero-name {
+		margin: 0 0 var(--space-2);
+		font-size: 2rem;
+	}
+	.hero-desc {
+		margin: 0 0 var(--space-3);
+		max-width: 42em;
+		font-size: 1.05rem;
+		color: var(--text-soft);
+	}
+	.hero-meta {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+	}
+	.hero-platforms {
+		font-size: 0.9rem;
+		color: var(--text-faint);
+	}
+
+	.section {
+		margin-top: var(--space-6);
+	}
+	.section h2 {
+		margin: 0 0 var(--space-4);
+		padding-bottom: var(--space-2);
+		border-bottom: 1px solid var(--border);
+	}
+
+	/* index.md 自带 H1（应用名），Hero 已展示，隐藏正文首个 H1 避免重复 */
+	.app-prose :global(h1:first-child) {
+		display: none;
+	}
+
+	.download-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-3);
+	}
+	.download-list a {
+		display: inline-block;
+		padding: var(--space-2) var(--space-5);
+		border: 1px solid var(--accent);
+		border-radius: 6px;
+		color: var(--accent);
+		font-weight: 600;
+		text-decoration: none;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+	.download-list a:hover {
+		background: var(--accent);
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.sub-nav {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: var(--space-4);
+		margin-top: var(--space-6);
+	}
+	.sub-nav-link {
+		display: block;
+		padding: var(--space-4) var(--space-5);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--bg);
+		color: inherit;
+		text-decoration: none;
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	}
+	.sub-nav-link:hover {
+		border-color: var(--border-strong);
+		box-shadow: var(--shadow);
+		text-decoration: none;
+	}
+	.sub-nav-title {
+		display: block;
+		font-weight: 600;
+		color: var(--text);
+	}
+	.sub-nav-link:hover .sub-nav-title {
+		color: var(--accent);
+	}
+	.sub-nav-sub {
+		display: block;
+		margin-top: 2px;
+		font-size: 0.85rem;
+		color: var(--text-faint);
+	}
+
+	.empty {
+		color: var(--text-faint);
+	}
+</style>

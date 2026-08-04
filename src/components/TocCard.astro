@@ -1,0 +1,37 @@
+---
+// 文章目录卡片：由文章标题解析出的 headings 数组渲染锚点导航
+interface Heading {
+	/** 标题锚点 id（与渲染出的 h2/h3 的 id 对应） */
+	slug: string;
+	/** 标题文本 */
+	text: string;
+	/** 标题级别（2 = h2，3 = h3 ...） */
+	depth: number;
+}
+
+interface Props {
+	/** 文章标题列表 */
+	headings: Heading[];
+	/** 卡片标题（默认「目录」） */
+	title?: string;
+}
+
+const { headings, title = '目录' } = Astro.props;
+---
+
+{
+	headings.length > 0 && (
+		<nav class="toc-card" aria-label={title}>
+			<h4>{title}</h4>
+			<ul>
+				{
+					headings.map((h) => (
+						<li class={`toc-depth-${Math.min(Math.max(h.depth, 2), 4)}`}>
+							<a href={`#${h.slug}`}>{h.text}</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	)
+}

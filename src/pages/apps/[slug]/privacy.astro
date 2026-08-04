@@ -1,0 +1,86 @@
+---
+// 应用隐私政策页：渲染 src/content/apps/<slug>/privacy.md
+// 未知 slug 不在此生成（getStaticPaths 仅来自 apps 数组），返回 404；
+// 已知应用但 privacy.md 缺失时优雅降级为占位提示。
+import { getCollection, render } from 'astro:content';
+import SidebarLayout from '../../../layouts/SidebarLayout.astro';
+import { apps, type App } from '../../../data/apps';
+import { SITE_TITLE } from '../../../consts';
+
+export async function getStaticPaths() {
+	return apps.map((app) => ({
+		params: { slug: app.slug },
+		props: { app },
+	}));
+}
+
+interface Props {
+	app: App;
+}
+
+const { app } = Astro.props;
+
+const entry = (await getCollection('apps')).find(
+	(entry) => entry.id === `${app.slug}/privacy`,
+);
+const PrivacyContent = entry ? (await render(entry)).Content : undefined;
+const pageTitle = entry?.data.title ?? '隐私政策';
+const pubDate = entry?.data.pubDate;
+const dateText = pubDate
+	? pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
+	: undefined;
+---
+
+<SidebarLayout
+	title={`${pageTitle} - ${app.name} - ${SITE_TITLE}`}
+	description={`${app.name} 的隐私政策`}
+>
+	<article class="doc-page">
+		<nav class="breadcrumb" aria-label="面包屑">
+			<a href={`/apps/${app.slug}/`}>&larr; {app.name}</a>
+		</nav>
+
+		<header class="doc-header">
+			<h1>{pageTitle}</h1>
+			{dateText && <p class="doc-updated">最后更新：{dateText}</p>}
+		</header>
+
+		{
+			PrivacyContent ? (
+				// privacy.md 自带 H1（隐私政策），已在页头展示，隐藏正文首个 H1 避免重复
+				<div class="prose doc-prose">
+					<PrivacyContent />
+				</div>
+			) : (
+				<p class="empty">隐私政策暂未发布，敬请期待。</p>
+			)
+		}
+	</article>
+</SidebarLayout>
+
+<style>
+	.breadcrumb {
+		margin-bottom: var(--space-4);
+		font-size: 0.9rem;
+	}
+	.doc-header {
+		margin-bottom: var(--space-5);
+		padding-bottom: var(--space-4);
+		border-bottom: 1px solid var(--border);
+	}
+	.doc-header h1 {
+		margin: 0 0 var(--space-2);
+	}
+	.doc-updated {
+		margin: 0;
+		font-size: 0.85rem;
+		color: var(--text-faint);
+	}
+	/* privacy.md 自带 H1（隐私政策），已由页头展示，隐藏正文首个 H1 */
+	.doc-prose :global(h1:first-child) {
+		display: none;
+	}
+	.empty {
+		color: var(--text-faint);
+	}
+</style>

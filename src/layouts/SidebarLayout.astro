@@ -1,0 +1,87 @@
+---
+// 复刻 cactus 风格布局：
+// 桌面端左侧固定侧边栏（站点名 / 导航 / 标签云 / 页脚）+ 右侧内容区
+// 移动端侧边栏折叠为顶部导航
+import { getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import { COPYRIGHT_HOLDER, SITE_TITLE } from '../consts';
+
+interface Props {
+	/** 页面标题 */
+	title: string;
+	/** 页面描述 */
+	description?: string;
+	/** og:image（可选） */
+	image?: string;
+}
+
+const { title, description, image } = Astro.props;
+
+// 统计全部博客文章的标签（含草稿不影响展示，按出现次数降序）
+const posts = await getCollection('blog');
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+	for (const tag of post.data.tags ?? []) {
+		tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+	}
+}
+const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const nav = [
+	{ href: '/', label: '首页' },
+	{ href: '/apps/', label: '应用' },
+	{ href: '/blog/', label: '博客' },
+	{ href: '/about/', label: '关于' },
+	{ href: '/contact/', label: '联系' },
+];
+const isActive = (href: string) =>
+	href === '/' ? pathname === '/' : pathname.startsWith(href);
+
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseLayout title={title} description={description} image={image} />
+	</head>
+	<body>
+		<div class="layout">
+			<aside class="sidebar">
+				<a class="site-name" href="/">{SITE_TITLE}</a>
+
+				<nav class="nav" aria-label="主导航">
+					{
+						nav.map((item) => (
+							<a href={item.href} class:list={{ active: isActive(item.href) }}>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+
+				<section class="tags" aria-label="标签云">
+					<h3>标签</h3>
+					<div class="tag-cloud">
+						{
+							sortedTags.map(([tag, count]) => (
+								<a href={`/blog/tags/${encodeURIComponent(tag)}/`}>
+									{tag}<span class="count">{count}</span>
+								</a>
+							))
+						}
+					</div>
+				</section>
+
+				<footer class="sidebar-footer">
+					&copy; {year} {COPYRIGHT_HOLDER} · 保留所有权利
+				</footer>
+			</aside>
+
+			<main class="content">
+				<slot />
+			</main>
+		</div>
+	</body>
+</html>

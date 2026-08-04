@@ -1,0 +1,18 @@
+---
+// 博客列表第 1 页（/blog/）。静态路由：直接在 frontmatter 计算数据。
+// 第 2+ 页由 blog/page/[...page].astro（动态路由，props 传递）提供。
+import SidebarLayout from '../../layouts/SidebarLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { SITE_TITLE } from '../../consts';
+import { getBlogPosts, buildPageData } from '../../lib/paginate';
+
+const posts = await getBlogPosts();
+const page = buildPageData(posts, 1);
+---
+
+<SidebarLayout
+	title={`博客 | ${SITE_TITLE}`}
+	description="TAN 的技术博客：编程踩坑记录与技术分享"
+>
+	<PostList page={page} />
+</SidebarLayout>

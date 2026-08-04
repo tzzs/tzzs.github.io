@@ -1,0 +1,175 @@
+---
+// 门户首页：产品门户定位（Hero + 应用展示 + 最近文章 + 关于片段）
+import { getCollection } from 'astro:content';
+import SidebarLayout from '../layouts/SidebarLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import AppCard from '../components/AppCard.astro';
+import { apps } from '../data/apps';
+import { SITE_TITLE } from '../consts';
+
+// 最近文章：仅非草稿，按发布时间降序取 5 篇
+const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 5);
+---
+
+<SidebarLayout
+	title={SITE_TITLE}
+	description="独立开发者 TZZ 的产品门户：正在开发的应用与技术博客"
+>
+	<section class="hero">
+		<p class="hero-tagline">独立开发者工作室</p>
+		<h1 class="hero-title">{SITE_TITLE}</h1>
+		<p class="hero-desc">
+			你好，我是 TZZ，一名独立开发者。这里展示我正在开发的应用，
+			并记录编程路上的思考与经验。
+		</p>
+		<div class="hero-cta">
+			<a class="btn btn-primary" href="/apps/">查看应用</a>
+			<a class="btn" href="/blog/">阅读博客</a>
+		</div>
+	</section>
+
+	<section class="section" aria-labelledby="apps-heading">
+		<div class="section-header">
+			<h2 id="apps-heading">正在开发的应用</h2>
+			<a class="section-more" href="/apps/">查看全部 →</a>
+		</div>
+		{
+			apps.length > 0 ? (
+				<div class="app-grid">
+					{apps.map((app) => <AppCard app={app} />)}
+				</div>
+			) : (
+				<p class="empty">暂无应用，敬请期待。</p>
+			)
+		}
+	</section>
+
+	<section class="section" aria-labelledby="blog-heading">
+		<div class="section-header">
+			<h2 id="blog-heading">最近文章</h2>
+			<a class="section-more" href="/blog/">查看全部 →</a>
+		</div>
+		{
+			recentPosts.length > 0 ? (
+				<div class="post-list">
+					{recentPosts.map((post) => <PostCard post={post} />)}
+				</div>
+			) : (
+				<p class="empty">还没有文章，敬请期待。</p>
+			)
+		}
+	</section>
+
+	<section class="section" aria-labelledby="about-heading">
+		<div class="section-header">
+			<h2 id="about-heading">关于我</h2>
+			<a class="section-more" href="/about/">了解更多 →</a>
+		</div>
+		<div class="about-card">
+			<p>
+				<strong>TZZ</strong>，独立开发者。主要技术方向：
+				Java、C、Python、Go，偶尔折腾移动端与前端。
+			</p>
+			<p>
+				喜欢把想法做成产品，也乐于把踩坑的过程写成文章。
+			</p>
+		</div>
+	</section>
+</SidebarLayout>
+
+<style>
+	.hero {
+		padding: 3.5rem 0 2rem;
+	}
+	.hero-tagline {
+		margin: 0 0 0.75rem;
+		font-size: 0.95rem;
+		letter-spacing: 0.15em;
+		color: var(--accent, #5b8def);
+		font-weight: 600;
+	}
+	.hero-title {
+		margin: 0 0 1rem;
+		font-size: 2.25rem;
+		line-height: 1.2;
+	}
+	.hero-desc {
+		margin: 0 0 1.75rem;
+		max-width: 42em;
+		line-height: 1.7;
+	}
+	.hero-cta {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+	.btn {
+		display: inline-block;
+		padding: 0.6rem 1.4rem;
+		border-radius: 8px;
+		border: 1px solid var(--border, #ddd);
+		text-decoration: none;
+		font-weight: 600;
+		transition: opacity 0.15s ease;
+	}
+	.btn:hover {
+		opacity: 0.8;
+	}
+	.btn-primary {
+		background: var(--accent, #5b8def);
+		border-color: var(--accent, #5b8def);
+		color: #fff;
+	}
+
+	.section {
+		margin-top: 3rem;
+	}
+	.section-header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		border-bottom: 1px solid var(--border, #eee);
+		padding-bottom: 0.6rem;
+		margin-bottom: 1.25rem;
+	}
+	.section-header h2 {
+		margin: 0;
+		font-size: 1.4rem;
+	}
+	.section-more {
+		font-size: 0.9rem;
+		text-decoration: none;
+		color: var(--accent, #5b8def);
+		white-space: nowrap;
+	}
+
+	.app-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+		gap: 1rem;
+	}
+
+	.post-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.about-card {
+		border: 1px solid var(--border, #eee);
+		border-radius: 10px;
+		padding: 1.25rem 1.5rem;
+		line-height: 1.8;
+	}
+	.about-card p {
+		margin: 0.25rem 0;
+	}
+
+	.empty {
+		color: var(--muted, #888);
+		padding: 1rem 0;
+	}
+</style>

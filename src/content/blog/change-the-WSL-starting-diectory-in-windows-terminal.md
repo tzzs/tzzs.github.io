@@ -1,0 +1,25 @@
+---
+title: change the WSL starting diectory in windows terminal
+description: 1. Open Settings, Profiles, Ubuntu-20.04(This is your WSL terminal in Windows Terminal), General in turn.
+pubDate: '2021-09-27'
+tags:
+  - Windows
+  - WSL
+  - WindowsTerminal
+categories:
+  - Windows
+cover: https://cos5-1255991898.cos.ap-chongqing.myqcloud.com/tk/20211023-wsl-1.jpg
+---
+
+1. Open Settings, Profiles, Ubuntu-20.04(This is your WSL terminal in Windows Terminal), General in turn. 
+
+2. Then you can see the setting of Starting directory， change the value to `\\wsl.localhost\Ubuntu-20.04\home\ubuntu`. 
+
+   This value may be different,  you need to change the content of the ubuntu-20.04 section according to your WSL version.
+
+3. Restart your Windows Terminal and you will be see that it has taken effect.
+
+
+
+
+

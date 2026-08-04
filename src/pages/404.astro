@@ -1,0 +1,80 @@
+---
+// 404 页：页面不存在 + 返回首页 / 浏览应用 / 阅读博客
+import SidebarLayout from '../layouts/SidebarLayout.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<SidebarLayout
+	title={`页面不存在 - ${SITE_TITLE}`}
+	description="您访问的页面不存在，请返回首页或浏览其他栏目"
+>
+	<div class="notfound">
+		<p class="code">404</p>
+		<h1>页面不存在</h1>
+		<p class="msg">您访问的页面可能已被移除、改名，或地址输入有误。</p>
+		<div class="actions">
+			<a class="btn primary" href="/">返回首页</a>
+			<a class="btn" href="/apps/">浏览应用</a>
+			<a class="btn" href="/blog/">阅读博客</a>
+		</div>
+	</div>
+</SidebarLayout>
+
+<style>
+	.notfound {
+		max-width: 480px;
+		margin: var(--space-8) auto;
+		text-align: center;
+		padding: var(--space-8) var(--space-5);
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--bg-soft);
+	}
+	.code {
+		margin: 0;
+		font-family: var(--font-mono);
+		font-size: 4rem;
+		font-weight: 700;
+		line-height: 1;
+		color: var(--accent);
+	}
+	.notfound h1 {
+		margin: var(--space-3) 0 0;
+		font-size: 1.5rem;
+	}
+	.msg {
+		margin: var(--space-3) 0 0;
+		color: var(--text-soft);
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-3);
+		margin-top: var(--space-6);
+	}
+	.btn {
+		display: inline-block;
+		padding: var(--space-2) var(--space-5);
+		border: 1px solid var(--border);
+		border-radius: 6px;
+		color: var(--text);
+		text-decoration: none;
+		transition: border-color 0.15s ease, color 0.15s ease;
+	}
+	.btn:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+		text-decoration: none;
+	}
+	.btn.primary {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: #fff;
+	}
+	.btn.primary:hover {
+		background: var(--accent);
+		color: #fff;
+		opacity: 0.9;
+	}
+</style>

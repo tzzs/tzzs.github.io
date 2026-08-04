@@ -1,0 +1,87 @@
+---
+// 旧站 URL 重定向页（纯 Astro 路由实现，根级 catch-all）
+// 旧路径形如 2018/11/16/hello-world（见仓库根 url-checklist.txt，来自旧站 sitemap，已解码、中文原样）
+// 目标 = /blog/<slug>/，slug 取自旧路径最后一段，并映射到博客内容集合实际生成的 URL slug
+// （Astro 会对文件名做 slugify：小写、去除标点，故不能直接用原样最后一段）
+// 注意：getStaticPaths 会被 Astro 抽取到独立模块执行，不能引用 frontmatter 顶层变量/函数，
+// 且 import.meta.url 在该模块中指向打包产物，因此清单路径用 process.cwd()（构建时 cwd 为项目根）。
+import { getCollection } from 'astro:content';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+export async function getStaticPaths() {
+	// 与 Astro 内容集合 slugify 对齐的归一化键：小写、空白→连字符、去掉非 [字母/数字/中文/连字符] 字符
+	const normalize = (s: string) =>
+		s.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9一-鿿-]/g, '');
+
+	const posts = await getCollection('blog');
+	const byNorm = new Map<string, string>();
+	for (const post of posts) {
+		const key = normalize(post.id);
+		if (!byNorm.has(key)) byNorm.set(key, post.id);
+	}
+
+	const lines = readFileSync(resolve(process.cwd(), 'url-checklist.txt'), 'utf-8')
+		.split(/\r?\n/)
+		.map((l) => l.trim())
+		.filter(Boolean);
+
+	return lines.map((oldPath) => {
+		const last = oldPath.split('/').pop() ?? '';
+		const slug = byNorm.get(normalize(last)) ?? normalize(last);
+		return {
+			params: { path: oldPath },
+			props: { oldPath, target: `/blog/${slug}/` },
+		};
+	});
+}
+
+interface Props {
+	oldPath: string;
+	target: string;
+}
+
+const { oldPath, target } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="refresh" content={'0; url=' + target} />
+		<title>页面已迁移 - tzzs</title>
+		<style>
+			body {
+				font-family: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+				display: grid;
+				place-items: center;
+				min-height: 100vh;
+				margin: 0;
+				background: #fff;
+				color: #333;
+			}
+			p {
+				font-size: 1.05rem;
+				line-height: 1.7;
+				text-align: center;
+				padding: 0 1rem;
+			}
+			a {
+				color: #2563eb;
+			}
+			code {
+				background: #f3f4f6;
+				padding: 0.1em 0.4em;
+				border-radius: 4px;
+				font-size: 0.9em;
+			}
+		</style>
+	</head>
+	<body>
+		<p>
+			本页面（<code>{oldPath}</code>）已迁移到新地址，正在跳转：
+			<a href={target}>{target}</a>
+		</p>
+	</body>
+</html>

@@ -1,0 +1,45 @@
+---
+// 博客列表内容（分页第 1 页 /blog/ 与后续 /blog/page/N/ 共用）
+import type { Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import PostCard from './PostCard.astro';
+import Pagination from './Pagination.astro';
+import { pageUrl } from '../lib/paginate';
+
+interface Props {
+	page: Page<CollectionEntry<'blog'>>;
+}
+
+const { page } = Astro.props;
+---
+
+<header class="page-header">
+	<h1>博客</h1>
+	<p class="page-sub">共 {page.total} 篇文章</p>
+</header>
+
+<div class="post-list">
+	{page.data.map((post) => <PostCard post={post} />)}
+</div>
+
+<Pagination page={page.currentPage} total={page.lastPage} url={pageUrl} />
+
+<style>
+	.page-header {
+		margin-bottom: 1.5rem;
+	}
+	.page-header h1 {
+		margin: 0 0 0.25rem;
+		font-size: 1.8rem;
+	}
+	.page-sub {
+		margin: 0;
+		color: var(--text-faint);
+		font-size: 0.9rem;
+	}
+	.post-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+</style>
