@@ -103,7 +103,7 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 			}
 		</section>
 
-		<!-- 下载：app.links 渲染为小号按钮 -->
+		<!-- 下载：app.links 渲染为带图标的下划线链接（下载 ⬇ / 外部 ↗） -->
 		<section class="mt-10" aria-labelledby="download-heading">
 			<h2
 				id="download-heading"
@@ -113,19 +113,51 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 			</h2>
 			{
 				linkEntries.length > 0 ? (
-					<ul class="flex flex-wrap gap-3">
-						{linkEntries.map(([key, url]) => (
-							<li>
-								<a
-									class="btn-secondary px-5 py-2.5 text-sm"
-									href={url}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									{labelFor(key)}
-								</a>
-							</li>
-						))}
+					<ul class="flex flex-wrap gap-x-6 gap-y-3">
+						{linkEntries.map(([key, url]) => {
+							const isDownload =
+								key === 'download' || /\.(exe|msi|zip|vsix|dmg|apk)$/i.test(url);
+							return (
+								<li>
+									<a
+										class="group inline-flex items-center gap-1.5 font-medium text-accent underline decoration-accent/40 underline-offset-4 transition-colors duration-150 hover:text-[#0a4fb0] hover:decoration-accent"
+										href={url}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										{labelFor(key)}
+										{
+											isDownload ? (
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													stroke-width="2"
+													stroke="currentColor"
+													class="h-4 w-4 shrink-0 transition-transform duration-150 group-hover:translate-y-0.5"
+												>
+													<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4" />
+													<path stroke-linecap="round" stroke-linejoin="round" d="M5 20h14" />
+												</svg>
+											) : (
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													stroke-width="2"
+													stroke="currentColor"
+													class="h-4 w-4 shrink-0 transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+												>
+													<path stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6" />
+													<path stroke-linecap="round" stroke-linejoin="round" d="M20 4L10 14" />
+													<path stroke-linecap="round" stroke-linejoin="round" d="M14 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h6" />
+												</svg>
+											)
+										}
+									</a>
+								</li>
+							);
+						})}
 					</ul>
 				) : (
 					<p class="text-text-faint">敬请期待</p>

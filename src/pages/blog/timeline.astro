@@ -1,0 +1,396 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { SITE_TITLE } from '../../consts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const byYear = new Map<number, Map<number, typeof posts>>();
+for (const post of posts) {
+	const year = post.data.pubDate.getFullYear();
+	const month = post.data.pubDate.getMonth();
+	if (!byYear.has(year)) byYear.set(year, new Map());
+	const monthMap = byYear.get(year)!;
+	if (!monthMap.has(month)) monthMap.set(month, []);
+	monthMap.get(month)!.push(post);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags ?? []))].sort();
+const allCategories = [
+	...new Set(posts.flatMap((p) => p.data.categories ?? [])),
+].sort();
+
+const dateText = (d: Date) =>
+	d.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' });
+const monthNames = [
+	'1月',
+	'2月',
+	'3月',
+	'4月',
+	'5月',
+	'6月',
+	'7月',
+	'8月',
+	'9月',
+	'10月',
+	'11月',
+	'12月',
+];
+---
+
+<MainLayout title={`时间轴 | ${SITE_TITLE}`} description="博客文章时间轴，按时间浏览">
+	<PageHeader
+		title="时间轴"
+		badge="Timeline"
+		description={`共 ${posts.length} 篇文章，按时间轴浏览。`}
+	/>
+
+	<!-- 返回博客：与博客页「进入时间轴」横幅对称的醒目入口 -->
+	<a
+		href="/blog/"
+		class="group mb-10 flex flex-wrap items-center justify-between gap-4 rounded-[1.5rem] bg-dark px-6 py-5 text-white no-underline transition-transform duration-200 hover:-translate-y-0.5 sm:px-8"
+	>
+		<span class="flex items-center gap-3">
+			<span
+				class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-green"
+				aria-hidden="true"
+			>
+				<svg class="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.5A4.5 4.5 0 0 0 8 4H4v14h4a4 4 0 0 1 4 3 4 4 0 0 1 4-3h4V4h-4a4.5 4.5 0 0 0-4 2.5z" />
+				</svg>
+			</span>
+			<span class="min-w-0">
+				<span class="block font-semibold">返回博客</span>
+				<span class="block truncate text-sm text-white/70">浏览全部文章列表</span>
+			</span>
+		</span>
+		<span
+			class="flex shrink-0 items-center gap-1 rounded-full bg-green px-5 py-2 text-sm font-medium text-black transition-colors duration-200 group-hover:bg-white"
+		>
+			<svg class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m0 0l6-6m-6 6l6 6" />
+			</svg>
+			前往博客
+		</span>
+	</a>
+
+	<div class="timeline-layout">
+		<aside class="timeline-sidebar" id="filter-sidebar">
+			<h3 class="mb-3 text-xs font-semibold tracking-[0.15em] text-[var(--text-faint)]">筛选</h3>
+
+			<section class="mb-6">
+				<h4 class="mb-2 text-sm font-semibold text-[var(--text-soft)]">标签</h4>
+				<div class="collapsible-wrapper overflow-hidden transition-all duration-300" id="tag-filters-wrapper">
+					<div class="flex flex-wrap gap-1.5" id="tag-filters">
+						<button
+							class="filter-chip active"
+							data-filter="tag"
+							data-value=""
+						>
+							全部
+						</button>
+						{
+							allTags.map((tag) => (
+								<button
+									class="filter-chip"
+									data-filter="tag"
+									data-value={tag}
+								>
+									{tag}
+									<span class="filter-chip-count text-[var(--text-faint)]">
+										{posts.filter((p) => (p.data.tags ?? []).includes(tag)).length}
+									</span>
+								</button>
+							))
+						}
+					</div>
+				</div>
+				<button
+					class="mt-2 text-xs text-[var(--accent)] hover:underline"
+					id="toggle-tags"
+				>
+					展开
+				</button>
+			</section>
+
+			<section class="mb-6">
+				<h4 class="mb-2 text-sm font-semibold text-[var(--text-soft)]">分类</h4>
+				<div class="collapsible-wrapper overflow-hidden transition-all duration-300" id="category-filters-wrapper">
+					<div class="flex flex-wrap gap-1.5" id="category-filters">
+						<button
+							class="filter-chip active"
+							data-filter="category"
+							data-value=""
+						>
+							全部
+						</button>
+						{
+							allCategories.map((cat) => (
+								<button
+									class="filter-chip"
+									data-filter="category"
+									data-value={cat}
+								>
+									{cat}
+									<span class="filter-chip-count text-[var(--text-faint)]">
+										{posts.filter((p) => (p.data.categories ?? []).includes(cat)).length}
+									</span>
+								</button>
+							))
+						}
+					</div>
+				</div>
+				<button
+					class="mt-2 text-xs text-[var(--accent)] hover:underline"
+					id="toggle-categories"
+				>
+					展开
+				</button>
+			</section>
+
+			<button id="clear-filters" class="hidden text-sm text-[var(--accent)] hover:underline">
+				清除筛选
+			</button>
+		</aside>
+
+		<div class="timeline" id="timeline">
+			{
+				years.map((year) => (
+					<section class="timeline-year" data-year={year}>
+						<div class="timeline-node timeline-node-year">
+							<span class="timeline-node-dot"></span>
+							<h2 class="timeline-year-heading">
+								{year}
+								<span
+									class="timeline-year-count rounded-full bg-[var(--bg-soft)] px-2.5 py-0.5 text-xs font-normal text-[var(--text-faint)]"
+								>
+									{posts.filter((p) => p.data.pubDate.getFullYear() === year).length} 篇
+								</span>
+							</h2>
+						</div>
+						<div class="timeline-content">
+							{[...byYear.get(year)!.keys()].sort((a, b) => b - a).map((month) => (
+								<div class="timeline-month" data-month={month}>
+									<div class="timeline-node timeline-node-month">
+										<span class="timeline-node-dot timeline-node-dot-month"></span>
+										<span class="timeline-month-label">{monthNames[month]}</span>
+									</div>
+									<div class="timeline-posts">
+										<ul class="m-0 list-none p-0">
+											{byYear.get(year)!.get(month)!.map((post) => (
+												<li
+													class="timeline-post"
+													data-tags={(post.data.tags ?? []).join(',')}
+													data-categories={(post.data.categories ?? []).join(',')}
+												>
+													<time
+														class="timeline-post-date"
+														datetime={post.data.pubDate.toISOString()}
+													>
+														{dateText(post.data.pubDate)}
+													</time>
+													<a
+														class="timeline-post-title"
+														href={`/blog/${post.id}/`}
+													>
+														{post.data.title}
+													</a>
+												</li>
+											))}
+										</ul>
+									</div>
+								</div>
+							))}
+						</div>
+					</section>
+				))
+			}
+			<div
+				id="timeline-empty"
+				class="hidden rounded-2xl border border-dashed border-[var(--border)] px-6 py-12 text-center text-[var(--text-soft)]"
+			>
+				没有符合筛选条件的文章，换个筛选条件试试吧。
+			</div>
+		</div>
+	</div>
+</MainLayout>
+
+<script>
+	const tagWrapper = document.getElementById('tag-filters-wrapper');
+	const catWrapper = document.getElementById('category-filters-wrapper');
+	const tagToggle = document.getElementById('toggle-tags');
+	const catToggle = document.getElementById('toggle-categories');
+
+	function setupToggle(
+		wrapper: HTMLElement | null,
+		toggle: HTMLElement | null,
+	) {
+		if (!wrapper || !toggle) return;
+		toggle.addEventListener('click', () => {
+			const isExpanded = wrapper.classList.toggle('expanded');
+			toggle.textContent = isExpanded ? '收起' : '展开';
+		});
+	}
+
+	setupToggle(tagWrapper, tagToggle);
+	setupToggle(catWrapper, catToggle);
+
+	const chips = document.querySelectorAll('.filter-chip');
+	const posts = document.querySelectorAll('.timeline-post');
+	const clearBtn = document.getElementById('clear-filters');
+	let activeTag = '';
+	let activeCategory = '';
+
+	// 保存各 chip 的原始计数（构建时的静态数字），取消筛选时恢复
+	chips.forEach((c) => {
+		const countEl = c.querySelector('.filter-chip-count');
+		if (countEl) c.dataset.total = countEl.textContent;
+	});
+
+	// 分组高亮：仅更新当前筛选组（标签/分类），另一组选中状态保持不变
+	function syncGroupHighlight(filterType: string) {
+		const activeValue = filterType === 'tag' ? activeTag : activeCategory;
+		chips.forEach((c) => {
+			if (c.getAttribute('data-filter') !== filterType) return;
+			c.classList.toggle('active', (c.getAttribute('data-value') || '') === activeValue);
+		});
+	}
+
+	// 同时带有 tag 与 category 的文章数
+	function countIntersection(tag: string, category: string) {
+		let n = 0;
+		for (const post of posts) {
+			const tags = (post.getAttribute('data-tags') || '').split(',').filter(Boolean);
+			const cats = (post.getAttribute('data-categories') || '').split(',').filter(Boolean);
+			if (tags.includes(tag) && cats.includes(category)) n++;
+		}
+		return n;
+	}
+
+	// 级联隐藏 + 计数联动：选标签后，分类只显示与该标签有交集文章的候选，
+	// 且候选数量更新为交集文章数（反向同理）
+	function applyCascade() {
+		chips.forEach((chip) => {
+			const filterType = chip.getAttribute('data-filter');
+			const value = chip.getAttribute('data-value') || '';
+			const countEl = chip.querySelector('.filter-chip-count');
+			if (filterType === 'tag') {
+				// 计数：选中分类时显示与该分类的交集文章数，否则恢复总数
+				const count =
+					activeCategory && value !== ''
+						? countIntersection(value, activeCategory)
+						: Number(chip.dataset.total || 0);
+				const candidate = value === '' || count > 0;
+				chip.classList.toggle('filter-chip-hidden', !candidate);
+				if (countEl) countEl.textContent = String(count);
+			} else if (filterType === 'category') {
+				const count =
+					activeTag && value !== ''
+						? countIntersection(activeTag, value)
+						: Number(chip.dataset.total || 0);
+				const candidate = value === '' || count > 0;
+				chip.classList.toggle('filter-chip-hidden', !candidate);
+				if (countEl) countEl.textContent = String(count);
+			}
+		});
+		// 若当前选中的 chip 被级联隐藏（因切换另一组筛选），自动恢复该组为「全部」
+		const findActive = (type: string, value: string) =>
+			[...chips].find(
+				(c) =>
+					c.getAttribute('data-filter') === type &&
+					(c.getAttribute('data-value') || '') === value,
+			);
+		if (activeTag) {
+			const active = findActive('tag', activeTag);
+			if (!active || active.classList.contains('filter-chip-hidden')) {
+				activeTag = '';
+				syncGroupHighlight('tag');
+			}
+		}
+		if (activeCategory) {
+			const active = findActive('category', activeCategory);
+			if (!active || active.classList.contains('filter-chip-hidden')) {
+				activeCategory = '';
+				syncGroupHighlight('category');
+			}
+		}
+	}
+
+	function applyFilters() {
+		applyCascade();
+		let visibleCount = 0;
+		posts.forEach((post) => {
+			const postTags = (post.getAttribute('data-tags') || '').split(',').filter(Boolean);
+			const postCategories = (post.getAttribute('data-categories') || '').split(',').filter(Boolean);
+			const tagMatch = !activeTag || postTags.includes(activeTag);
+			const catMatch = !activeCategory || postCategories.includes(activeCategory);
+			const visible = tagMatch && catMatch;
+			post.classList.toggle('timeline-post-hidden', !visible);
+			if (visible) visibleCount++;
+		});
+
+		// 精简时间轴：无可见文章的月份、年份整段隐藏，避免保留空结构
+		const monthNodes = document.querySelectorAll('.timeline-month');
+		monthNodes.forEach((month) => {
+			const hasVisible = [...month.querySelectorAll('.timeline-post')].some(
+				(p) => !p.classList.contains('timeline-post-hidden'),
+			);
+			month.classList.toggle('hidden', !hasVisible);
+		});
+		const yearNodes = document.querySelectorAll('.timeline-year');
+		yearNodes.forEach((year) => {
+			const visiblePosts = year.querySelectorAll(
+				'.timeline-post:not(.timeline-post-hidden)',
+			);
+			const hasVisible = visiblePosts.length > 0;
+			year.classList.toggle('hidden', !hasVisible);
+			// 年份徽章计数随筛选结果同步更新
+			const countEl = year.querySelector('.timeline-year-count');
+			if (countEl && hasVisible) {
+				countEl.textContent = `${visiblePosts.length} 篇`;
+			}
+		});
+
+		// 全部无匹配时显示空状态提示
+		const emptyHint = document.getElementById('timeline-empty');
+		if (emptyHint) {
+			emptyHint.classList.toggle('hidden', visibleCount > 0);
+		}
+		if (clearBtn) {
+			clearBtn.classList.toggle('hidden', !activeTag && !activeCategory);
+		}
+	}
+
+	chips.forEach((chip) => {
+		chip.addEventListener('click', () => {
+			const filterType = chip.getAttribute('data-filter');
+			const value = chip.getAttribute('data-value') || '';
+			// 再次点击已选中的 chip 时取消筛选（回到「全部」）
+			if (filterType === 'tag') {
+				activeTag = activeTag === value ? '' : value;
+			} else if (filterType === 'category') {
+				activeCategory = activeCategory === value ? '' : value;
+			}
+			syncGroupHighlight(filterType);
+			applyFilters();
+		});
+	});
+
+	if (clearBtn) {
+		clearBtn.addEventListener('click', () => {
+			activeTag = '';
+			activeCategory = '';
+			chips.forEach((c) => c.classList.remove('active'));
+			chips.forEach((c) => {
+				if (c.getAttribute('data-value') === '') {
+					c.classList.add('active');
+				}
+			});
+			applyFilters();
+		});
+	}
+</script>

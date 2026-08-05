@@ -2,6 +2,7 @@
 // 全部标签索引页：标签云（按文章数降序）
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import { SITE_TITLE } from '../../consts';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -15,10 +16,11 @@ const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
 <MainLayout title={`全部标签 | ${SITE_TITLE}`} description="博客全部标签索引">
-	<header class="mb-6">
-		<h1 class="text-3xl font-bold">全部标签</h1>
-		<p class="mt-1 text-sm text-[var(--text-faint)]">共 {sortedTags.length} 个标签</p>
-	</header>
+	<PageHeader
+		title="全部标签"
+		badge="Tags"
+		description={`共 ${sortedTags.length} 个标签，按文章数排序。`}
+	/>
 
 	{
 		sortedTags.length > 0 ? (
