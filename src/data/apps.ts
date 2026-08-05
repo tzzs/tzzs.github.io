@@ -58,4 +58,15 @@ export const apps: App[] = [
       github: 'https://github.com/tzzs/vsce-thrift-support',
     },
   },
+  {
+    slug: 'peri-pilot',
+    name: '外设助手（PeriPilot）',
+    description: 'Windows 托盘应用：通过 2.4G 接收器读取鼠标/键盘电量，提供低电量与充满电提醒',
+    status: 'released',
+    platforms: ['Windows'],
+    icon: '/images/apps/peri-pilot/icon.png',
+    links: {
+      github: 'https://github.com/tzzs/peri-pilot',
+    },
+  },
 ];
