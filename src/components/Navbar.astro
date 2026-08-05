@@ -14,7 +14,10 @@ const { pathname } = Astro.url;
 const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 ---
 
-<header class="sticky top-0 z-50 border-b border-gray bg-white/90 backdrop-blur">
+<header
+	id="site-header"
+	class="sticky top-0 z-50 border-b border-transparent bg-transparent transition-all duration-200"
+>
 	<nav class="mx-auto flex w-full max-w-[1240px] items-center justify-between px-5 py-4">
 		<a href="/" class="flex items-center gap-2" aria-label="返回首页">
 			<span class="inline-block h-8 w-8 rounded-lg bg-green" aria-hidden="true"></span>
@@ -83,6 +86,21 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 </header>
 
 <script>
+	// 沉浸式导航：页面在顶部时透明融入内容，滚动后浮出白底 + 边框 + 模糊
+	const header = document.getElementById('site-header');
+	if (header) {
+		const applyNavState = () => {
+			const scrolled = window.scrollY > 0;
+			header.classList.toggle('bg-white/90', scrolled);
+			header.classList.toggle('border-gray', scrolled);
+			header.classList.toggle('backdrop-blur', scrolled);
+			header.classList.toggle('bg-transparent', !scrolled);
+			header.classList.toggle('border-transparent', !scrolled);
+		};
+		window.addEventListener('scroll', applyNavState, { passive: true });
+		applyNavState();
+	}
+
 	// 移动端汉堡菜单切换（纯原生实现）
 	const toggle = document.getElementById('nav-toggle') as HTMLButtonElement;
 	const mobile = document.getElementById('nav-mobile') as HTMLDivElement;
