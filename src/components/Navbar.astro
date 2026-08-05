@@ -86,8 +86,8 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 	// 移动端汉堡菜单切换（纯原生实现）
 	const toggle = document.getElementById('nav-toggle') as HTMLButtonElement;
 	const mobile = document.getElementById('nav-mobile') as HTMLDivElement;
-	const openIcon = document.getElementById('nav-open-icon') as SVGElement;
-	const closeIcon = document.getElementById('nav-close-icon') as SVGElement;
+	const openIcon = document.getElementById('nav-open-icon') as unknown as SVGElement;
+	const closeIcon = document.getElementById('nav-close-icon') as unknown as SVGElement;
 
 	if (toggle && mobile) {
 		toggle.addEventListener('click', () => {
