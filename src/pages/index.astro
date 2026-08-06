@@ -24,7 +24,7 @@ const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
 				TZZ'S <span class="font-outline-sm text-transparent">BLOG</span>
 			</h1>
 			<p class="mt-6 max-w-xl text-lg leading-relaxed text-text-soft lg:text-xl">
-				TZZ 的独立开发者主页：Java、C、Python、Go、Linux 等方向的编程实践与应用展示。
+				TZZ 的独立开发者主页：软件开发实践与应用展示。
 			</p>
 			<div class="mt-9 flex flex-wrap gap-4">
 				<a class="btn-tertiary" href="/apps/">查看应用</a>
@@ -33,11 +33,40 @@ const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		</div>
 		<div class="hidden flex-1 justify-center lg:flex">
 			<div
-				class="flex h-72 w-full max-w-sm items-center justify-center rounded-[2rem] bg-dark text-center"
+				class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-dark shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)]"
 			>
-				<div>
-					<p class="text-7xl font-medium text-green">TZZ</p>
-					<p class="mt-4 text-sm tracking-[0.2em] text-white/70">独立开发者</p>
+				<div
+					class="flex items-center gap-2 border-b border-white/10 bg-black/40 px-5 py-3.5"
+				>
+					<span class="h-3 w-3 rounded-full bg-[#ff5f57]"></span>
+					<span class="h-3 w-3 rounded-full bg-[#febc2e]"></span>
+					<span class="h-3 w-3 rounded-full bg-[#28c840]"></span>
+					<span class="ml-3 font-mono text-xs text-white/50">tzzs@portal — zsh</span>
+				</div>
+				<div class="space-y-4 px-6 py-7 font-mono text-sm">
+					<div>
+						<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">whoami</span></p>
+						<p class="mt-1 text-5xl font-bold text-green">TZZ</p>
+					</div>
+					<div>
+						<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">role</span></p>
+						<p class="mt-1 text-white/90">独立开发者</p>
+					</div>
+					<div>
+						<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">stack</span></p>
+						<p class="mt-1 flex flex-wrap gap-1.5">
+							{['Java', 'C', 'Python', 'Go', 'Linux'].map((lang) => (
+								<span
+									class="rounded-md border border-green/40 bg-green/10 px-2 py-0.5 text-xs text-green"
+								>
+									{lang}
+								</span>
+							))}
+						</p>
+					</div>
+					<p class="text-white/40">
+						<span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="inline-block h-4 w-2 animate-pulse bg-green/80 align-middle"></span>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -53,7 +82,7 @@ const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
 				正在开发的应用
 			</h2>
 			<p class="text-text-soft sm:max-w-[560px]">
-				把想法做成产品。目前两个 VS Code 扩展已发布，更多工具正在开发中。
+				目前三个工具已发布，更多正在开发中。
 			</p>
 		</div>
 		{
@@ -126,8 +155,7 @@ const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			<div class="max-w-2xl">
 				<h3 class="text-2xl font-bold">你好，我是 TZZ</h3>
 				<p class="mt-3 leading-relaxed text-white/70">
-					一名独立开发者，技术方向覆盖 Java、C、Python、Go 与 Linux 等。
-					喜欢把想法做成产品，也乐于把踩坑的过程写成文章。
+					一名独立开发者，平时写写代码，做做工具，写写博客。
 				</p>
 			</div>
 			<a class="btn-tertiary w-fit shrink-0" href="/about/">了解更多 →</a>
