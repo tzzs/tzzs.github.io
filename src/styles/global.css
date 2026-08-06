@@ -367,7 +367,102 @@ body {
   text-decoration: none;
 }
 
-/* KaTeX 深色模式兼容 */
+/* ===== 时间轴（原归档） ===== */
+.timeline-layout {
+  @apply flex gap-8;
+}
+.timeline-sidebar {
+  @apply w-64 shrink-0;
+}
+.timeline {
+  @apply relative flex-1;
+  padding-left: 0.5rem;
+}
+/* 每个年份是一条独立的时间轴段：年份圆点下方一条竖线贯穿该年所有月份 */
+.timeline-year {
+  @apply relative mb-10;
+}
+.timeline-year::after {
+  content: '';
+  position: absolute;
+  /* 线中心 = 6px（5-7px），与圆点中心对齐；z-index 0 让圆点盖在线上面 */
+  left: 5px;
+  top: 10px; /* 年份圆点中心（mt-1 4px + 圆点半径 6px） */
+  bottom: 0; /* 线止于该年最后一条内容底边，不再悬空延伸 */
+  width: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+.timeline-node {
+  @apply relative flex items-start gap-3;
+}
+/* 年份节点：品牌绿方块（里程碑标记，与 Navbar/横幅的绿色方块图标呼应）
+   relative z-10：盖住年份竖线，让线从节点背后穿过 */
+.timeline-node-dot {
+  @apply relative z-10 mt-1 h-3 w-3 shrink-0 rounded-[4px] bg-green;
+  box-shadow: 0 0 0 4px rgba(185, 255, 102, 0.35);
+}
+/* 月份节点：灰色圆点（次层级），同样盖住竖线 */
+.timeline-node-dot-month {
+  @apply relative z-10 h-3 w-3 rounded-full bg-[var(--text-faint)];
+  box-shadow: 0 0 0 3px var(--bg-soft);
+}
+.timeline-year-heading {
+  @apply mb-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-3xl font-bold tracking-tight;
+}
+.timeline-month {
+  @apply relative mb-6;
+}
+/* 月份：眉题式小标签（字距拉开，弱于年份层级） */
+.timeline-month-label {
+  @apply mb-2 block text-xs font-semibold tracking-[0.15em] text-[var(--text-faint)];
+}
+.timeline-posts {
+  @apply ml-7 border-l border-[var(--border)] pl-4;
+}
+.timeline-post {
+  @apply py-1.5;
+}
+/* 日期：等宽时间戳（开发者年表感） */
+.timeline-post-date {
+  @apply mr-3 font-mono text-sm text-[var(--text-faint)] tabular-nums;
+}
+.timeline-post-title {
+  @apply text-[15px] font-medium leading-snug text-[var(--text)] no-underline transition-colors duration-150 hover:text-[var(--accent)] hover:underline;
+}
+.timeline-post-hidden {
+  @apply hidden;
+}
+
+/* ===== 筛选芯片 ===== */
+.filter-chip {
+  @apply inline-flex items-center gap-1 rounded-full border border-border bg-bg-soft px-2.5 py-0.5 text-xs transition-colors duration-150;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+.filter-chip:hover {
+  @apply border-accent bg-accent-soft;
+  color: var(--accent);
+}
+.filter-chip.active {
+  @apply border-accent bg-accent-soft text-accent;
+}
+/* 级联隐藏：与 .filter-chip 同特异性且声明在后，覆盖其 display: inline-flex
+   （不能直接用 Tailwind 的 .hidden——utility 层优先级低于未分层规则） */
+.filter-chip-hidden {
+  display: none;
+}
+
+/* ===== 折叠容器 ===== */
+.collapsible-wrapper {
+  max-height: 10rem;
+  overflow: hidden;
+}
+.collapsible-wrapper.expanded {
+  max-height: 50rem;
+}
+
+/* ===== KaTeX 深色模式兼容 ===== */
 @media (prefers-color-scheme: dark) {
   .katex {
     color: var(--text);

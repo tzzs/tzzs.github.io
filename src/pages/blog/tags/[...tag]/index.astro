@@ -2,6 +2,7 @@
 // 标签聚合页：列出某一标签下的全部非草稿文章（按 pubDate 降序）
 import { getCollection } from 'astro:content';
 import MainLayout from '../../../../layouts/MainLayout.astro';
+import PageHeader from '../../../../components/PageHeader.astro';
 import PostCard from '../../../../components/PostCard.astro';
 import { SITE_TITLE } from '../../../../consts';
 
@@ -23,10 +24,10 @@ const { tag, posts } = Astro.props;
 ---
 
 <MainLayout title={`标签：${tag} | ${SITE_TITLE}`} description={`标签「${tag}」下的全部文章`}>
-	<header class="mb-6">
-		<h1 class="text-3xl font-bold">标签：{tag}</h1>
-		<p class="mt-1 text-sm text-[var(--text-faint)]">共 {posts.length} 篇文章</p>
-	</header>
+	<PageHeader
+		title={`标签：${tag}`}
+		description={`共 ${posts.length} 篇文章。`}
+	/>
 
 	{
 		posts.length > 0 ? (
