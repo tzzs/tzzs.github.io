@@ -5,6 +5,8 @@
 @theme {
   /* Positivus 色板（深色模式下深块提亮一级，维持层次） */
   --color-green: #b9ff66;
+  /* 强调绿：白天用深绿保证浅底上可见，夜间用品牌浅绿 */
+  --color-green-strong: light-dark(#65a30d, #b9ff66);
   --color-black: light-dark(#191a23, #21262d);
   --color-dark: light-dark(#292a32, #21262d);
   --color-gray: #f3f3f3;
@@ -42,24 +44,24 @@
    light-dark(浅色值, 深色值) 跟随系统偏好；[data-theme] 手动覆盖 color-scheme 强制翻转 */
 :root {
   color-scheme: light dark;
-  --bg: light-dark(#ffffff, #0d1117);
-  --bg-soft: light-dark(#f6f8fa, #161b22);
-  --bg-hover: light-dark(#eef1f4, #1c2129);
+  --bg: light-dark(#ffffff, #191a23);
+  --bg-soft: light-dark(#f6f8fa, #21262d);
+  --bg-hover: light-dark(#eef1f4, #292a32);
   --text: light-dark(#1f2328, #e6edf3);
   --text-soft: light-dark(#57606a, #9da7b3);
-  --text-faint: light-dark(#8b949e, #6e7681);
-  --border: light-dark(#d0d7de, #30363d);
-  --border-strong: light-dark(#afb8c1, #484f58);
+  --text-faint: light-dark(#8b949e, #7d8590);
+  --border: light-dark(#d0d7de, #3d3f4a);
+  --border-strong: light-dark(#afb8c1, #4f515c);
   --accent: light-dark(#0969da, #4493f8);
   --accent-soft: light-dark(#ddf4ff, #0c2d6b);
-  --code-bg: light-dark(#f6f8fa, #161b22);
+  --code-bg: light-dark(#f6f8fa, #21262d);
   --code-text: light-dark(#24292f, #e6edf3);
   --shadow: light-dark(0 1px 3px rgba(31, 35, 40, 0.08), 0 1px 3px rgba(1, 4, 9, 0.6));
   --radius: 8px;
   /* 描边文字 / 滚动后导航浮层 */
   --outline-color: light-dark(#191a23, #e6edf3);
-  --nav-bg: light-dark(rgba(255, 255, 255, 0.9), rgba(13, 17, 23, 0.9));
-  --nav-border: light-dark(#d0d7de, #30363d);
+  --nav-bg: light-dark(rgba(255, 255, 255, 0.9), rgba(25, 26, 35, 0.9));
+  --nav-border: light-dark(#d0d7de, #3d3f4a);
 }
 
 /* 手动主题覆盖：强制 color-scheme 即可让所有 light-dark() 变量翻转 */
