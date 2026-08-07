@@ -1,6 +1,6 @@
 ---
 title: 配置Github Actions过程中的一些问题
-description: 1. 在Actions中切换分支
+description: 记录Github Actions中切换分支与SSH远程登录服务器的问题解决过程
 pubDate: '2020-12-19'
 tags:
   - CI/CD

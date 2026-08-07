@@ -1,6 +1,6 @@
 ---
 title: Fliqlo 翻页时钟屏保
-description: 官方网址：https://fliqlo.com/
+description: Fliqlo翻页时钟屏保的官方网址与效果图展示
 pubDate: '2019-07-20'
 categories:
   - 推荐

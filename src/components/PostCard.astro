@@ -23,7 +23,12 @@ const dateText = pubDate.toLocaleDateString('zh-CN', {
 	<h2 class="mt-2 text-xl font-bold text-[var(--text)]">
 		<a class="transition-colors duration-150 hover:text-[var(--accent)]" href={href}>{title}</a>
 	</h2>
-	{description && <p class="mt-2 text-sm leading-relaxed text-[var(--text-soft)]">{description}</p>}
+	{
+		/* description 过滤：过短的碎片描述（如 "Problem"）不显示，避免卡片空洞 */
+		description && description.length >= 10 && (
+			<p class="mt-2 text-sm leading-relaxed text-[var(--text-soft)]">{description}</p>
+		)
+	}
 	{
 		tags.length > 0 && (
 			<div class="mt-3">

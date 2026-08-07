@@ -1,6 +1,6 @@
 ---
 title: CDN HTTPS 配置
-description: 在 CDN-高级工具-证书管理界面 进行配置证书。
+description: 在CDN证书管理界面为域名配置HTTPS证书并提交部署
 pubDate: '2019-01-16'
 categories:
   - CDN

@@ -1,6 +1,6 @@
 ---
 title: 网站开启CDN加速
-description: CDN
+description: 通过腾讯云CDN为网站开启加速并配置缓存规则
 pubDate: '2019-01-16'
 cover: https://img.alicdn.com/tfs/TB1jxiiG49YBuNjy0FfXXXIsVXa-1530-1140.png
 ---

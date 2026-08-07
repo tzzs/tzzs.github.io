@@ -1,6 +1,6 @@
 ---
 title: Hexo bug
-description: 修改文章的大小写后，重新部署无效
+description: 修改文章文件名大小写后部署无效的原因与解决办法
 pubDate: '2018-12-13'
 tags:
   - Hexo

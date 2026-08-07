@@ -1,6 +1,6 @@
 ---
 title: bing2 网站页面加载优化
-description: 网站：http://bing.tzz6.xyz
+description: 通过懒加载、缩略图与CDN加速优化网站页面加载速度
 pubDate: '2019-03-24'
 tags:
   - bing2

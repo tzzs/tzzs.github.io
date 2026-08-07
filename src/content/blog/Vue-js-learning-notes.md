@@ -1,6 +1,6 @@
 ---
 title: Vue.js learning notes
-description: Vue.js
+description: Vue.js学习笔记，涵盖渲染方式、指令、组件与路由等核心概念
 pubDate: '2021-12-12'
 tags:
   - vue

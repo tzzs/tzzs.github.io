@@ -1,6 +1,6 @@
 ---
 title: 在Docker Alpine中安装uwsgi
-description: uWSGI是一个由unbit提供的Web应用服务器，实现了WSGI规范。
+description: 在精简的Docker Alpine镜像中安装uwsgi失败时需先安装编译依赖包
 pubDate: '2019-02-19'
 categories:
   - Linux/Alpine

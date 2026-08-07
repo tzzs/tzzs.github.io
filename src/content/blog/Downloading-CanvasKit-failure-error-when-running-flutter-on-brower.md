@@ -1,6 +1,6 @@
 ---
 title: Downloading CanvasKit failure error when running flutter on brower
-description: Reason
+description: Flutter浏览器端下载CanvasKit失败，通过配置国内镜像源解决
 pubDate: '2022-02-17'
 tags:
   - flutter

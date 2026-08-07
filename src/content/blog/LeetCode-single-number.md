@@ -1,6 +1,6 @@
 ---
 title: '[LeetCode] single number'
-description: Single Number
+description: 利用异或运算找出数组中只出现一次的数字
 pubDate: '2020-08-31'
 tags:
   - LeetCode

@@ -1,6 +1,6 @@
 ---
 title: C语言 auto
-description: auto 被解释为一个自动存储变量的关键字，也就是申明一块临时的变量内存。
+description: auto在C语言中声明自动存储变量，在C++中作为类型说明符推断类型
 pubDate: '2020-08-26'
 categories:
   - C

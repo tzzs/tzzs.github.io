@@ -1,6 +1,6 @@
 ---
 title: Installing and setting up kubectl on Linux
-description: 安装kubectl
+description: Linux下安装kubectl并配置自动补全与插件的步骤
 pubDate: '2021-10-17'
 tags:
   - kubectl
