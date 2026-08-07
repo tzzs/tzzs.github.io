@@ -29,8 +29,8 @@ const isActive = (href: string) => {
 			<span class="text-xl font-bold tracking-tight">{SITE_TITLE}</span>
 		</a>
 
-		<!-- 桌面端导航 -->
-		<ul class="hidden items-center gap-8 md:flex">
+		<!-- 桌面端导航（ml-auto 推向右，与旧布局一致） -->
+		<ul class="hidden items-center gap-8 md:ml-auto md:flex">
 			{
 				navItems.map((item) => (
 					<li>
@@ -50,12 +50,12 @@ const isActive = (href: string) => {
 			}
 		</ul>
 
-		<div class="flex items-center gap-3">
-			<!-- 主题切换按钮：深色模式显示太阳（点击回浅色），浅色模式显示月亮 -->
+		<div class="ml-6 flex items-center gap-3">
+			<!-- 主题切换按钮：深色模式显示太阳（点击回浅色），浅色模式显示月亮；无边框，hover 圆形浅底 -->
 			<button
 				id="theme-toggle"
 				type="button"
-				class="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--text)] transition-colors duration-150 hover:bg-[var(--bg-hover)]"
+				class="flex h-10 w-10 items-center justify-center rounded-full text-[var(--text-soft)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text)]"
 				aria-label="切换主题"
 			>
 				<svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-5 w-5">
