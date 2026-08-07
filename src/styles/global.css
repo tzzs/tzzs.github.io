@@ -209,13 +209,13 @@ body {
 
   /* 分页 */
   .pagination {
-    @apply mt-8 flex items-center justify-between gap-4;
+    @apply mt-8 flex flex-wrap items-center justify-between gap-4;
   }
-  .pagination a,
-  .pagination span {
+  .pagination > a,
+  .pagination > span {
     @apply inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm;
   }
-  .pagination a {
+  .pagination > a {
     @apply transition-colors duration-150 hover:border-accent hover:text-accent;
     color: var(--text);
     text-decoration: none;
@@ -223,7 +223,32 @@ body {
   .pagination-disabled {
     color: var(--text-faint);
   }
-  .pagination-info {
+  /* 页码列表：方形按钮，当前页高亮为实底，省略号占位不可点 */
+  .pagination-pages {
+    @apply flex items-center gap-1.5;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pagination-pages li {
+    margin: 0;
+  }
+  .pagination-pages a,
+  .pagination-pages .page-current,
+  .pagination-pages .page-ellipsis {
+    @apply inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-border px-2 text-sm;
+    text-decoration: none;
+  }
+  .pagination-pages a {
+    @apply transition-colors duration-150 hover:border-accent hover:text-accent;
+    color: var(--text);
+  }
+  .pagination-pages .page-current {
+    @apply border-accent bg-accent;
+    color: #fff;
+  }
+  .pagination-pages .page-ellipsis {
+    border-color: transparent;
     color: var(--text-faint);
   }
 }
