@@ -111,6 +111,12 @@ body {
 
 /* ===== 组件层 ===== */
 @layer components {
+  /* 绿底块统一黑字：夜间模式下继承的浅色文字在绿底上不可读，绿块文字一律用 Positivus 黑
+     （显式 text-* 工具类优先级更高，仍可覆盖） */
+  .bg-green {
+    color: var(--color-black);
+  }
+
   /* 按钮（Positivus 风格） */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-xl border border-black bg-black px-7 py-4 font-medium text-white transition-colors duration-200 hover:bg-dark;
