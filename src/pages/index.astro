@@ -109,7 +109,15 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 		{
 			apps.length > 0 && (
 				<div class="mt-10 text-center">
-					<a class="font-medium text-accent hover:underline" href="/apps/">查看全部应用 →</a>
+					<a
+					class="group inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-2.5 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+					href="/apps/"
+				>
+					查看全部应用
+					<svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
+					</svg>
+				</a>
 				</div>
 			)
 		}
@@ -173,7 +181,15 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 		{
 			recentPosts.length > 0 && (
 				<div class="mt-10 text-center">
-					<a class="font-medium text-accent hover:underline" href="/blog/">查看全部文章 →</a>
+					<a
+					class="group inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-2.5 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+					href="/blog/"
+				>
+					查看全部文章
+					<svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
+					</svg>
+				</a>
 				</div>
 			)
 		}
