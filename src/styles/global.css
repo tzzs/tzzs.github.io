@@ -223,6 +223,31 @@ body {
   .pagination-disabled {
     color: var(--text-faint);
   }
+  .pagination-center {
+    @apply flex flex-wrap items-center justify-center gap-3;
+  }
+  /* 跳页输入框：数字输入 + 跳转按钮，回车或点击均可 */
+  .pagination-jump {
+    @apply inline-flex items-center gap-1.5 text-sm;
+    color: var(--text-faint);
+  }
+  .pagination-jump input {
+    @apply h-9 w-14 rounded-lg border border-border bg-bg px-2 text-center text-sm;
+    color: var(--text);
+  }
+  .pagination-jump input:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
+  .pagination-jump button {
+    @apply inline-flex h-9 items-center rounded-lg border border-border px-3 text-sm transition-colors duration-150;
+    color: var(--text);
+    background: var(--bg);
+    cursor: pointer;
+  }
+  .pagination-jump button:hover {
+    @apply border-accent text-accent;
+  }
   /* 页码列表：方形按钮，当前页高亮为实底，省略号占位不可点 */
   .pagination-pages {
     @apply flex items-center gap-1.5;
