@@ -18,7 +18,7 @@ const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
 	<section class="flex flex-col gap-12 py-12 sm:py-20 lg:flex-row lg:items-center lg:gap-16">
 		<div class="flex-1">
 			<p class="mb-6 w-fit rounded-lg bg-green px-3 py-1.5 text-sm font-medium text-black">
-				独立开发者工作室
+				独立开发者
 			</p>
 			<h1 class="text-5xl font-medium leading-[1.05] sm:text-6xl xl:text-7xl">
 				TZZ'S <span class="font-outline-sm text-transparent">BLOG</span>
@@ -33,40 +33,38 @@ const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		</div>
 		<div class="hidden flex-1 justify-center lg:flex">
 			<div
-				class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-dark shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)]"
+class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-dark shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)]"
 			>
-				<div
-					class="flex items-center gap-2 border-b border-white/10 bg-black/40 px-5 py-3.5"
-				>
-					<span class="h-3 w-3 rounded-full bg-[#ff5f57]"></span>
-					<span class="h-3 w-3 rounded-full bg-[#febc2e]"></span>
-					<span class="h-3 w-3 rounded-full bg-[#28c840]"></span>
-					<span class="ml-3 font-mono text-xs text-white/50">tzzs@portal — zsh</span>
+			<div
+				class="flex items-center gap-2 border-b border-white/10 bg-black/40 px-5 py-3.5"
+			>
+				<span class="h-3 w-3 rounded-full bg-[#ff5f57]"></span>
+				<span class="h-3 w-3 rounded-full bg-[#febc2e]"></span>
+				<span class="h-3 w-3 rounded-full bg-[#28c840]"></span>
+				<span class="ml-3 font-mono text-xs text-white/50">tzzs@portal — zsh</span>
+			</div>
+			<div class="space-y-4 px-6 py-7 font-mono text-sm">
+				<div>
+					<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">whoami</span></p>
+					<p class="mt-1 text-5xl font-bold text-green">TZZ</p>
 				</div>
-				<div class="space-y-4 px-6 py-7 font-mono text-sm">
-					<div>
-						<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">whoami</span></p>
-						<p class="mt-1 text-5xl font-bold text-green">TZZ</p>
-					</div>
-					<div>
-						<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">role</span></p>
-						<p class="mt-1 text-white/90">独立开发者</p>
-					</div>
-					<div>
-						<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">stack</span></p>
-						<p class="mt-1 flex flex-wrap gap-1.5">
-							{['Java', 'C', 'Python', 'Go', 'Linux'].map((lang) => (
-								<span
-									class="rounded-md border border-green/40 bg-green/10 px-2 py-0.5 text-xs text-green"
-								>
-									{lang}
-								</span>
-							))}
-						</p>
-					</div>
-					<p class="text-white/40">
-						<span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="inline-block h-4 w-2 animate-pulse bg-green/80 align-middle"></span>
+				<div>
+					<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">role</span></p>
+					<p class="mt-1 text-white/90">独立开发者</p>
+				</div>
+				<div>
+					<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">stack</span></p>
+					<p class="mt-1">
+						<span
+							class="inline-block rounded-md border border-green/40 bg-green/10 px-2 py-0.5 text-xs text-green"
+						>
+							AI
+						</span>
 					</p>
+				</div>
+				<p class="text-white/40">
+					<span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="inline-block h-4 w-2 animate-pulse bg-green/80 align-middle"></span>
+				</p>
 				</div>
 			</div>
 		</div>
