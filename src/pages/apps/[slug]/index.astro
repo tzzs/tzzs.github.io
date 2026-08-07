@@ -95,8 +95,8 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 				primaryLink && (
 					<div class="mt-7 flex flex-wrap items-center gap-3">
 						<a
-							/* 详情页 Hero 比主页首屏低一级：按钮从 hero 尺寸（py-4 px-7）收窄一档 */
-							class="btn-tertiary group px-5 py-2.5"
+							/* 主 CTA：迷你实底按钮（px-4 py-2），详情页比主页首屏低两级 */
+							class="btn-tertiary group px-4 py-2 text-sm"
 							href={primaryLink[1]}
 							target="_blank"
 							rel="noopener noreferrer"
@@ -108,7 +108,8 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 							/* 主链接已是 GitHub 时不重复展示次按钮 */
 							githubUrl && primaryLink[0] !== 'github' && (
 								<a
-									class="btn-secondary group px-5 py-2.5"
+									/* 次 CTA：幽灵胶囊（同下载区样式），实底主按钮不抢层级 */
+									class="group inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
 									href={githubUrl}
 									target="_blank"
 									rel="noopener noreferrer"
