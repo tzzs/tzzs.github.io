@@ -50,22 +50,40 @@ const isActive = (href: string) => {
 			}
 		</ul>
 
-		<!-- 移动端汉堡按钮 -->
-		<button
-			id="nav-toggle"
-			type="button"
-			class="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--text)] md:hidden"
-			aria-label="切换导航菜单"
-			aria-expanded="false"
-			aria-controls="nav-mobile"
-		>
-			<svg id="nav-open-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-6 w-6">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-			</svg>
-			<svg id="nav-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-6 w-6">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-			</svg>
-		</button>
+		<div class="flex items-center gap-3">
+			<!-- 主题切换按钮：深色模式显示太阳（点击回浅色），浅色模式显示月亮 -->
+			<button
+				id="theme-toggle"
+				type="button"
+				class="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--text)] transition-colors duration-150 hover:bg-[var(--bg-hover)]"
+				aria-label="切换主题"
+			>
+				<svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-5 w-5">
+					<circle cx="12" cy="12" r="4"></circle>
+					<path stroke-linecap="round" stroke-width="2" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+				</svg>
+				<svg id="theme-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-5 w-5">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+				</svg>
+			</button>
+
+			<!-- 移动端汉堡按钮 -->
+			<button
+				id="nav-toggle"
+				type="button"
+				class="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--text)] md:hidden"
+				aria-label="切换导航菜单"
+				aria-expanded="false"
+				aria-controls="nav-mobile"
+			>
+				<svg id="nav-open-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-6 w-6">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+				</svg>
+				<svg id="nav-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-6 w-6">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+				</svg>
+			</button>
+		</div>
 	</nav>
 
 	<!-- 移动端下拉菜单 -->
@@ -107,6 +125,36 @@ const isActive = (href: string) => {
 		};
 		window.addEventListener('scroll', applyNavState, { passive: true });
 		applyNavState();
+	}
+
+	// 主题切换：点击后写 data-theme + localStorage，图标随当前主题显隐
+	// 初始 data-theme 由 BaseLayout 内联脚本设置，未设置时跟随系统偏好
+	const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
+	const themeSun = document.getElementById('theme-sun') as unknown as SVGElement;
+	const themeMoon = document.getElementById('theme-moon') as unknown as SVGElement;
+
+	const isDarkTheme = () => {
+		const root = document.documentElement;
+		if (root.getAttribute('data-theme') === 'dark') return true;
+		if (root.getAttribute('data-theme') === 'light') return false;
+		return window.matchMedia('(prefers-color-scheme: dark)').matches;
+	};
+
+	const syncThemeIcon = () => {
+		const dark = isDarkTheme();
+		themeSun.classList.toggle('hidden', !dark);
+		themeMoon.classList.toggle('hidden', dark);
+	};
+
+	if (themeToggle && themeSun && themeMoon) {
+		syncThemeIcon();
+		themeToggle.addEventListener('click', () => {
+			const root = document.documentElement;
+			const next = isDarkTheme() ? 'light' : 'dark';
+			root.setAttribute('data-theme', next);
+			localStorage.setItem('theme', next);
+			syncThemeIcon();
+		});
 	}
 
 	// 移动端汉堡菜单切换（纯原生实现）

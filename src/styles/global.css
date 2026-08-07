@@ -3,22 +3,22 @@
 
 /* ===== Tailwind 4 主题令牌（@theme） ===== */
 @theme {
-  /* Positivus 色板 */
+  /* Positivus 色板（深色模式下深块提亮一级，维持层次） */
   --color-green: #b9ff66;
-  --color-black: #191a23;
-  --color-dark: #292a32;
+  --color-black: light-dark(#191a23, #21262d);
+  --color-dark: light-dark(#292a32, #21262d);
   --color-gray: #f3f3f3;
   --color-white: #ffffff;
 
-  /* 站点语义色 */
-  --color-accent: #0969da;
-  --color-accent-soft: #ddf4ff;
-  --color-text: #1f2328;
-  --color-text-soft: #57606a;
-  --color-text-faint: #8b949e;
-  --color-border: #d0d7de;
-  --color-bg: #ffffff;
-  --color-bg-soft: #f6f8fa;
+  /* 站点语义色：引用 :root 语义变量（light-dark 跟随系统，data-theme 手动覆盖） */
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-text: var(--text);
+  --color-text-soft: var(--text-soft);
+  --color-text-faint: var(--text-faint);
+  --color-border: var(--border);
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
 
   /* 状态徽章色 */
   --color-status-dev: #9a6700;
@@ -38,54 +38,36 @@
   --radius-card: 14px;
 }
 
-/* ===== 语义 CSS 变量（组件样式 + 深色模式） ===== */
+/* ===== 语义 CSS 变量（组件样式 + 深色模式） =====
+   light-dark(浅色值, 深色值) 跟随系统偏好；[data-theme] 手动覆盖 color-scheme 强制翻转 */
 :root {
-  --bg: #ffffff;
-  --bg-soft: #f6f8fa;
-  --bg-hover: #eef1f4;
-  --text: #1f2328;
-  --text-soft: #57606a;
-  --text-faint: #8b949e;
-  --border: #d0d7de;
-  --border-strong: #afb8c1;
-  --accent: #0969da;
-  --accent-soft: #ddf4ff;
-  --code-bg: #f6f8fa;
-  --code-text: #24292f;
-  --shadow: 0 1px 3px rgba(31, 35, 40, 0.08), 0 4px 12px rgba(31, 35, 40, 0.06);
+  color-scheme: light dark;
+  --bg: light-dark(#ffffff, #0d1117);
+  --bg-soft: light-dark(#f6f8fa, #161b22);
+  --bg-hover: light-dark(#eef1f4, #1c2129);
+  --text: light-dark(#1f2328, #e6edf3);
+  --text-soft: light-dark(#57606a, #9da7b3);
+  --text-faint: light-dark(#8b949e, #6e7681);
+  --border: light-dark(#d0d7de, #30363d);
+  --border-strong: light-dark(#afb8c1, #484f58);
+  --accent: light-dark(#0969da, #4493f8);
+  --accent-soft: light-dark(#ddf4ff, #0c2d6b);
+  --code-bg: light-dark(#f6f8fa, #161b22);
+  --code-text: light-dark(#24292f, #e6edf3);
+  --shadow: light-dark(0 1px 3px rgba(31, 35, 40, 0.08), 0 1px 3px rgba(1, 4, 9, 0.6));
   --radius: 8px;
-  /* 深色模式适配用：描边文字 / 滚动后导航浮层 */
-  --outline-color: #191a23;
-  --nav-bg: rgba(255, 255, 255, 0.9);
-  --nav-border: #d0d7de;
+  /* 描边文字 / 滚动后导航浮层 */
+  --outline-color: light-dark(#191a23, #e6edf3);
+  --nav-bg: light-dark(rgba(255, 255, 255, 0.9), rgba(13, 17, 23, 0.9));
+  --nav-border: light-dark(#d0d7de, #30363d);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d1117;
-    --bg-soft: #161b22;
-    --bg-hover: #1c2129;
-    --text: #e6edf3;
-    --text-soft: #9da7b3;
-    --text-faint: #6e7681;
-    --border: #30363d;
-    --border-strong: #484f58;
-    --accent: #4493f8;
-    --accent-soft: #0c2d6b;
-    --code-bg: #161b22;
-    --code-text: #e6edf3;
-    --shadow: 0 1px 3px rgba(1, 4, 9, 0.6);
-    /* 深色模式下描边文字用浅色，避免黑描边在黑背景上隐形 */
-    --outline-color: #e6edf3;
-    --nav-bg: rgba(13, 17, 23, 0.9);
-    --nav-border: #30363d;
-  }
-
-  /* 深色面板（bg-dark / bg-black）在深色页面上提亮一级，维持深块层次 */
-  .bg-dark,
-  .bg-black {
-    background-color: #21262d;
-  }
+/* 手动主题覆盖：强制 color-scheme 即可让所有 light-dark() 变量翻转 */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 /* ===== 字体 ===== */
@@ -563,11 +545,9 @@ body {
   }
 }
 
-/* ===== KaTeX 深色模式兼容 ===== */
-@media (prefers-color-scheme: dark) {
-  .katex {
-    color: var(--text);
-  }
+/* ===== KaTeX：公式颜色跟随主题文字色（--text 已随主题翻转） ===== */
+.katex {
+  color: var(--text);
 }
 
 /* ===== 工具类 ===== */
