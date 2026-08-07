@@ -65,8 +65,8 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 
 <MainLayout title={`${app.name} - ${SITE_TITLE}`} description={app.description}>
 	<article>
-		<!-- Hero：图标 + 名称 + 描述 + 状态徽章 + 平台 + 下载入口 -->
-		<header class="py-10 md:py-12">
+		<!-- Hero：图标 + 名称 + 描述 + 状态徽章 + 平台 + 下载入口（底部收紧，衔接产品介绍） -->
+		<header class="pt-10 pb-6 md:pt-12 md:pb-8">
 			<h1 class="flex items-center gap-4 text-3xl font-bold tracking-tight md:text-4xl">
 				{
 					app.icon && (
@@ -95,8 +95,8 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 				primaryLink && (
 					<div class="mt-7 flex flex-wrap items-center gap-3">
 						<a
-							/* 主 CTA：幽灵胶囊（与次按钮同款低调样式），hover 变主题蓝 */
-							class="group inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+							/* 主 CTA：绿色实底（对比用），hover 反色 */
+							class="btn-tertiary group px-4 py-2 text-sm"
 							href={primaryLink[1]}
 							target="_blank"
 							rel="noopener noreferrer"
@@ -108,8 +108,8 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 							/* 主链接已是 GitHub 时不重复展示次按钮 */
 							githubUrl && primaryLink[0] !== 'github' && (
 								<a
-									/* 次 CTA：幽灵胶囊（同下载区样式），实底主按钮不抢层级 */
-									class="group inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+									/* 次 CTA：绿色实底（与主按钮同款，对比用） */
+									class="btn-tertiary group px-4 py-2 text-sm"
 									href={githubUrl}
 									target="_blank"
 									rel="noopener noreferrer"
@@ -125,7 +125,7 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 		</header>
 
 		<!-- 产品介绍与功能：渲染 index.md -->
-		<section class="mt-10" aria-labelledby="intro-heading">
+		<section class="mt-5" aria-labelledby="intro-heading">
 			<h2
 				id="intro-heading"
 				class="mb-6 border-b border-border pb-3 text-2xl font-bold tracking-tight"
@@ -154,12 +154,12 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 			</h2>
 			{
 				linkEntries.length > 0 ? (
-					/* 下载列表：胶囊按钮（与主页「查看全部」同款幽灵样式），hover 变主题蓝 */
+					/* 下载列表：绿色实底迷你按钮，与 Hero CTA 同款样式 */
 					<ul class="flex flex-wrap gap-3">
 						{linkEntries.map(([key, url]) => (
 							<li>
 								<a
-									class="group inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-4 py-1.5 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+									class="btn-tertiary group px-4 py-2 text-sm"
 									href={url}
 									target="_blank"
 									rel="noopener noreferrer"
@@ -176,25 +176,39 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 			}
 		</section>
 
-		<!-- 子页导航：更新日志 + 隐私政策（卡片式链接） -->
+		<!-- 子页导航：更新日志 + 隐私政策（卡片式链接 + 圆形箭头按钮，明确可点击） -->
 		<nav class="mt-10 grid gap-6 md:grid-cols-2" aria-label={`${app.name} 子页面导航`}>
 			<a
-				class="group block rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]"
+				class="group flex items-center justify-between gap-4 rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]"
 				href={`/apps/${app.slug}/changelog/`}
 			>
-				<span class="block font-semibold text-text transition-colors duration-200 group-hover:text-accent">
-					更新日志
+				<span class="min-w-0">
+					<span class="block font-semibold text-text transition-colors duration-200 group-hover:text-accent">
+						更新日志
+					</span>
+					<span class="mt-0.5 block text-sm text-text-faint">版本记录与变更说明</span>
 				</span>
-				<span class="mt-0.5 block text-sm text-text-faint">版本记录与变更说明</span>
+				<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green text-black transition-colors duration-200 group-hover:bg-black group-hover:text-green">
+					<svg class="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
+					</svg>
+				</span>
 			</a>
 			<a
-				class="group block rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]"
+				class="group flex items-center justify-between gap-4 rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]"
 				href={`/apps/${app.slug}/privacy/`}
 			>
-				<span class="block font-semibold text-text transition-colors duration-200 group-hover:text-accent">
-					隐私政策
+				<span class="min-w-0">
+					<span class="block font-semibold text-text transition-colors duration-200 group-hover:text-accent">
+						隐私政策
+					</span>
+					<span class="mt-0.5 block text-sm text-text-faint">数据收集与使用说明</span>
 				</span>
-				<span class="mt-0.5 block text-sm text-text-faint">数据收集与使用说明</span>
+				<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green text-black transition-colors duration-200 group-hover:bg-black group-hover:text-green">
+					<svg class="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
+					</svg>
+				</span>
 			</a>
 		</nav>
 	</article>
