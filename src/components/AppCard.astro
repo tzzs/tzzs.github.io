@@ -5,9 +5,11 @@ import type { App } from '../data/apps';
 interface Props {
 	/** src/data/apps.ts 中的应用元数据 */
 	app: App;
+	/** 大卡模式：跨两列，用于 3 个应用的非对称网格（1 大 + 2 小），奇数个应用时避免悬空 */
+	featured?: boolean;
 }
 
-const { app } = Astro.props;
+const { app, featured = false } = Astro.props;
 const href = `/apps/${app.slug}/`;
 const statusLabels: Record<App['status'], string> = {
 	development: '开发中',
@@ -18,7 +20,7 @@ const statusLabels: Record<App['status'], string> = {
 
 <a
 	href={href}
-	class="group block rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]"
+	class={`group block rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)] ${featured ? 'md:col-span-2' : ''}`}
 >
 	<div class="flex items-center gap-2.5">
 		{
@@ -32,12 +34,12 @@ const statusLabels: Record<App['status'], string> = {
 				/>
 			)
 		}
-		<h3 class="min-w-0 flex-1 text-lg font-bold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)]">
+		<h3 class={`min-w-0 flex-1 font-bold text-[var(--text)] transition-colors duration-200 group-hover:text-[var(--accent)] ${featured ? 'text-xl' : 'text-lg'}`}>
 			{app.name}
 		</h3>
 		<span class={`badge badge-${app.status}`}>{statusLabels[app.status]}</span>
 	</div>
-	<p class="mt-2 text-sm leading-relaxed text-[var(--text-soft)]">{app.description}</p>
+	<p class={`mt-2 leading-relaxed text-[var(--text-soft)] ${featured ? 'text-base' : 'text-sm'}`}>{app.description}</p>
 	<div class="mt-3 flex flex-wrap gap-2">
 		{
 			app.platforms.map((platform) => (

@@ -6,6 +6,7 @@ const navItems = [
 	{ href: '/', label: '首页' },
 	{ href: '/apps/', label: '应用' },
 	{ href: '/blog/', label: '博客' },
+	{ href: '/blog/timeline/', label: '时间轴' },
 	{ href: '/about/', label: '关于' },
 	{ href: '/contact/', label: '联系' },
 ];
@@ -34,8 +35,8 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 							class:list={[
 								'rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150',
 								isActive(item.href)
-									? 'bg-black text-white'
-									: 'text-black hover:bg-gray',
+									? 'bg-[var(--text)] text-[var(--bg)]'
+									: 'text-[var(--text)] hover:bg-[var(--bg-hover)]',
 							]}
 						>
 							{item.label}
@@ -49,7 +50,7 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 		<button
 			id="nav-toggle"
 			type="button"
-			class="flex h-10 w-10 items-center justify-center rounded-lg border border-black md:hidden"
+			class="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--text)] md:hidden"
 			aria-label="切换导航菜单"
 			aria-expanded="false"
 			aria-controls="nav-mobile"
@@ -64,7 +65,7 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 	</nav>
 
 	<!-- 移动端下拉菜单 -->
-	<div id="nav-mobile" class="hidden border-t border-gray bg-white md:hidden">
+	<div id="nav-mobile" class="hidden border-t border-[var(--border)] bg-[var(--bg)] md:hidden">
 		<ul class="flex flex-col px-5 py-2">
 			{
 				navItems.map((item) => (
@@ -73,7 +74,9 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 							href={item.href}
 							class:list={[
 								'block rounded-lg px-3 py-3 text-base font-medium',
-								isActive(item.href) ? 'bg-black text-white' : 'text-black hover:bg-gray',
+								isActive(item.href)
+									? 'bg-[var(--text)] text-[var(--bg)]'
+									: 'text-[var(--text)] hover:bg-[var(--bg-hover)]',
 							]}
 						>
 							{item.label}
@@ -86,13 +89,14 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 </header>
 
 <script>
-	// 沉浸式导航：页面在顶部时透明融入内容，滚动后浮出白底 + 边框 + 模糊
+	// 沉浸式导航：页面在顶部时透明融入内容，滚动后浮出底色 + 边框 + 模糊
+	// 底色/边框用 CSS 变量（--nav-bg / --nav-border），深色模式下自动跟随主题
 	const header = document.getElementById('site-header');
 	if (header) {
 		const applyNavState = () => {
 			const scrolled = window.scrollY > 0;
-			header.classList.toggle('bg-white/90', scrolled);
-			header.classList.toggle('border-gray', scrolled);
+			header.classList.toggle('bg-[var(--nav-bg)]', scrolled);
+			header.classList.toggle('border-[var(--nav-border)]', scrolled);
 			header.classList.toggle('backdrop-blur', scrolled);
 			header.classList.toggle('bg-transparent', !scrolled);
 			header.classList.toggle('border-transparent', !scrolled);
