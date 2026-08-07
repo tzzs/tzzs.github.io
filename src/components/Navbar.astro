@@ -6,13 +6,17 @@ const navItems = [
 	{ href: '/', label: '首页' },
 	{ href: '/apps/', label: '应用' },
 	{ href: '/blog/', label: '博客' },
-	{ href: '/blog/timeline/', label: '时间轴' },
 	{ href: '/about/', label: '关于' },
 	{ href: '/contact/', label: '联系' },
 ];
 
 const { pathname } = Astro.url;
-const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+const isActive = (href: string) => {
+	if (href === '/') return pathname === '/';
+	// 时间轴不占导航位（从博客页横幅进入），其页面不高亮任何 tab
+	if (pathname.startsWith('/blog/timeline/')) return false;
+	return pathname.startsWith(href);
+};
 ---
 
 <header

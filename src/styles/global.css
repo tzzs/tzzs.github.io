@@ -328,6 +328,9 @@ body {
   padding: 0;
   background: none;
   font-size: 0.9em;
+  /* 无语言代码块（shiki 纯文本渲染）token 无内联色：
+     必须继承 pre 的主题前景色，否则被 .prose code 的浅色变量覆盖成黑底黑字 */
+  color: inherit;
 }
 .prose table {
   width: 100%;
