@@ -1,6 +1,6 @@
 ---
 title: Nginx server SSL configuration file reference
-description: 以下配置文件供参考，此配置在当前网站可用。
+description: Nginx服务器SSL配置参考，含HTTP跳转HTTPS与证书加载设置
 pubDate: '2020-12-19'
 tags:
   - Nginx

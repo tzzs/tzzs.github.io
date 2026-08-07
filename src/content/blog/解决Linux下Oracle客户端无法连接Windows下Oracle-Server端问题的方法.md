@@ -1,6 +1,6 @@
 ---
 title: 解决Linux下Oracle客户端无法连接Windows下Oracle Server端问题的方法
-description: 查看SERVICE_NAME
+description: 通过查询SERVICE_NAME并修改tnsnames.ora解决Oracle客户端跨平台连接问题
 pubDate: '2019-08-13'
 categories:
   - Linux

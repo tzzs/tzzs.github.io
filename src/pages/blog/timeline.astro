@@ -239,7 +239,8 @@ const monthNames = [
 	setupToggle(tagWrapper, tagToggle);
 	setupToggle(catWrapper, catToggle);
 
-	const chips = document.querySelectorAll('.filter-chip');
+	// HTMLElement 声明：chips 需要读写 dataset（NodeList 泛型默认 Element 没有 dataset）
+	const chips = document.querySelectorAll<HTMLElement>('.filter-chip');
 	const posts = document.querySelectorAll('.timeline-post');
 	const clearBtn = document.getElementById('clear-filters');
 	let activeTag = '';
@@ -375,7 +376,8 @@ const monthNames = [
 			} else if (filterType === 'category') {
 				activeCategory = activeCategory === value ? '' : value;
 			}
-			syncGroupHighlight(filterType);
+			// getAttribute 可能为 null：非 tag/category 时传空串（函数内不会匹配任何 chip）
+			syncGroupHighlight(filterType ?? '');
 			applyFilters();
 		});
 	});

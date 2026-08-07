@@ -1,6 +1,6 @@
 ---
 title: Smart Light Strip
-description: ESP8266 (LiLon NodeMcu V3)
+description: How to build a smart light strip with ESP8266 and the Blinker app
 pubDate: '2021-06-26'
 tags:
   - Blinker

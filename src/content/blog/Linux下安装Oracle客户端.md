@@ -1,6 +1,6 @@
 ---
 title: Linux下安装Oracle客户端
-description: 下载RPM包 RPM版本： 需要手动安装
+description: Linux下安装Oracle Instant Client并配置环境变量的完整步骤
 pubDate: '2019-08-12'
 categories:
   - Linux

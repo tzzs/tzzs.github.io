@@ -1,6 +1,6 @@
 ---
 title: 修改wordpress的翻译文件
-description: 之前WordPress博客的首页部分内容翻译错误，就想手动修改一下。
+description: 用Poedit修改WordPress主题翻译文件并编译为mo文件后上传覆盖
 pubDate: '2018-11-20'
 tags:
   - WordPress

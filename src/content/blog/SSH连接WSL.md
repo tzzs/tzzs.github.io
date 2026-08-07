@@ -1,6 +1,6 @@
 ---
 title: SSH连接WSL
-description: 重装 openssh-server
+description: 重装openssh-server并配置sshd_config后用SSH连接WSL
 pubDate: '2019-12-13'
 tags:
   - WSL

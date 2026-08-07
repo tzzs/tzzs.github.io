@@ -1,5 +1,6 @@
 ---
-// 分页组件：上一页 / 页码信息 / 下一页（配合 Astro 的 paginate() 使用）
+// 分页组件：上一页 / 页码列表（可点击跳转）/ 跳页输入框 / 下一页
+// 配合手写分页逻辑 src/lib/paginate.ts 使用
 interface Props {
 	/** 当前页码（从 1 开始） */
 	page: number;
@@ -12,6 +13,29 @@ interface Props {
 const { page, total, url } = Astro.props;
 const prevUrl = page > 1 ? url(page - 1) : null;
 const nextUrl = page < total ? url(page + 1) : null;
+
+// 全部页码的 URL（跳页输入框用，define:vars 注入前端脚本）
+const pageUrls = Array.from({ length: total }, (_, i) => url(i + 1));
+
+// 页码列表：总页数少（≤7）时全部显示，中间页直达；
+// 页数多时折叠为「当前页 ±2 + 首尾页 + 省略号」（如 1 2 … 6 [7] 8 … 12）
+const WINDOW = 2;
+let pageList: (number | '…')[];
+if (total <= 7) {
+	pageList = Array.from({ length: total }, (_, i) => i + 1);
+} else {
+	const pages = new Set<number>([1, total, page]);
+	for (let n = Math.max(1, page - WINDOW); n <= Math.min(total, page + WINDOW); n++) {
+		pages.add(n);
+	}
+	pageList = [];
+	let prev = 0;
+	for (const n of [...pages].sort((a, b) => a - b)) {
+		if (n - prev > 1) pageList.push('…');
+		pageList.push(n);
+		prev = n;
+	}
+}
 ---
 
 {
@@ -22,7 +46,29 @@ const nextUrl = page < total ? url(page + 1) : null;
 					? <a href={prevUrl}>← 上一页</a>
 					: <span class="pagination-disabled">← 上一页</span>
 			}
-			<span class="pagination-info">第 {page} / {total} 页</span>
+			<div class="pagination-center">
+				<ul class="pagination-pages">
+					{
+						pageList.map((n) =>
+							n === '…' ? (
+								<li class="page-ellipsis" aria-hidden="true">…</li>
+							) : n === page ? (
+								<li class="page-current" aria-current="page">{n}</li>
+							) : (
+								<li>
+									<a href={url(n)}>{n}</a>
+								</li>
+							),
+						)
+					}
+				</ul>
+				<form class="pagination-jump" aria-label="跳转到指定页">
+					<label for="page-jump">跳至</label>
+					<input id="page-jump" type="number" min="1" max={total} inputmode="numeric" />
+					<span>页</span>
+					<button type="submit">跳转</button>
+				</form>
+			</div>
 			{
 				nextUrl
 					? <a href={nextUrl}>下一页 →</a>
@@ -31,3 +77,19 @@ const nextUrl = page < total ? url(page + 1) : null;
 		</nav>
 	)
 }
+
+<script define:vars={{ pageUrls }}>
+	// 跳页输入框：提交时跳到对应 URL（仅限 1..total 范围）
+	// 注意：define:vars 内联脚本不做 TS 转译，不能使用 as 类型断言等 TS 语法
+	const form = document.querySelector('.pagination-jump');
+	const input = document.getElementById('page-jump');
+	if (form && input) {
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const n = parseInt(input.value, 10);
+			if (!Number.isNaN(n) && n >= 1 && n <= pageUrls.length) {
+				location.href = pageUrls[n - 1];
+			}
+		});
+	}
+</script>

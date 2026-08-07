@@ -1,6 +1,6 @@
 ---
 title: SM4 国密算法
-description: SM4 算法
+description: 介绍国密SM4分组对称加密算法的原理与Go代码实现
 pubDate: '2021-12-18'
 tags:
   - sm4

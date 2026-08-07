@@ -1,6 +1,6 @@
 ---
 title: 在Apache服务器上运行Django项目
-description: 服务器版本:CentOS 7.5
+description: 在CentOS 7.5的Apache服务器上安装mod_wsgi以运行Django项目
 pubDate: '2018-12-14'
 categories:
   - Apache

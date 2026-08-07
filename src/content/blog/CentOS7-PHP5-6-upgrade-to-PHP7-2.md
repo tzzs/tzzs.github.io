@@ -1,6 +1,6 @@
 ---
 title: CentOS7 PHP5.6 upgrade to PHP7.2
-description: 服务器信息
+description: 记录CentOS 7下使用yum将PHP 5.6升级到7.2的完整步骤
 pubDate: '2019-01-08'
 categories:
   - Linux/CentOS

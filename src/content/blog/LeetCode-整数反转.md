@@ -1,6 +1,6 @@
 ---
 title: LeetCode 整数反转
-description: 我采用的策略
+description: 通过字符串反转实现整数反转并处理符号与溢出问题
 pubDate: '2018-12-29'
 tags:
   - LeetCode

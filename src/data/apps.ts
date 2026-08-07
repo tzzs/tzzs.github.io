@@ -34,18 +34,6 @@ export interface App {
 /** 全部应用，顺序即列表页展示顺序 */
 export const apps: App[] = [
   {
-    slug: 'comment-doc-lens',
-    name: 'Comment Doc Lens',
-    description: '在 VS Code 引用处以内联提示展示定义注释与符号文档',
-    status: 'released',
-    platforms: ['VS Code'],
-    icon: '/images/apps/comment-doc-lens/icon.png',
-    links: {
-      marketplace: 'https://marketplace.visualstudio.com/items?itemName=tanzz.comment-doc-lens',
-      github: 'https://github.com/tzzs/comment-doc-lens',
-    },
-  },
-  {
     slug: 'thrift-support',
     name: 'Thrift Support',
     description: 'Apache Thrift IDL 语言智能支持：语法高亮、格式化、诊断与代码导航',
@@ -56,6 +44,18 @@ export const apps: App[] = [
       marketplace: 'https://marketplace.visualstudio.com/items?itemName=tanzz.thrift-support',
       openVsx: 'https://open-vsx.org/extension/tanzz/thrift-support',
       github: 'https://github.com/tzzs/vsce-thrift-support',
+    },
+  },
+  {
+    slug: 'comment-doc-lens',
+    name: 'Comment Doc Lens',
+    description: '在 VS Code 引用处以内联提示展示定义注释与符号文档',
+    status: 'released',
+    platforms: ['VS Code'],
+    icon: '/images/apps/comment-doc-lens/icon.png',
+    links: {
+      marketplace: 'https://marketplace.visualstudio.com/items?itemName=tanzz.comment-doc-lens',
+      github: 'https://github.com/tzzs/comment-doc-lens',
     },
   },
   {

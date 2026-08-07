@@ -20,7 +20,7 @@ import { SITE_TITLE } from '../../consts';
 	{
 		apps.length > 0 ? (
 			<div class="grid gap-6 md:grid-cols-2">
-				{apps.map((app) => <AppCard app={app} />)}
+				{apps.map((app, i) => <AppCard app={app} featured={i === 0} />)}
 			</div>
 		) : (
 			<p class="py-8 text-text-faint">暂无应用，敬请期待。</p>

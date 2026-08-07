@@ -1,6 +1,6 @@
 ---
 title: 配置Flutter国内镜像源
-description: Windows
+description: 配置PUB_HOSTED_URL与FLUTTER_STORAGE_BASE_URL环境变量使用Flutter国内镜像源
 pubDate: '2022-02-17'
 tags:
   - flutter

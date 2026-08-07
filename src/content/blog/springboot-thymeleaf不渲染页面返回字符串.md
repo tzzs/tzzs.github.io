@@ -1,6 +1,6 @@
 ---
 title: springboot thymeleaf不渲染页面返回字符串
-description: 错误信息：
+description: Spring Boot页面不渲染而返回字符串，解析@RestController与@Controller的区别
 pubDate: '2019-03-30'
 ---
 

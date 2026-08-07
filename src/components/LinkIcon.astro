@@ -1,0 +1,39 @@
+---
+// 链接图标：下载（⬇ 下移动画）/ 外部跳转（↗ 右上动效）
+// 用于应用详情页 Hero CTA 与下载列表，配合 .group 父元素 hover 动画
+interface Props {
+	/** 下载类链接显示下载箭头，否则显示外部跳转箭头 */
+	download?: boolean;
+}
+
+const { download = false } = Astro.props;
+---
+
+{
+	download ? (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke-width="2"
+			stroke="currentColor"
+			class="h-4 w-4 shrink-0 transition-transform duration-150 group-hover:translate-y-0.5"
+		>
+			<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4" />
+			<path stroke-linecap="round" stroke-linejoin="round" d="M5 20h14" />
+		</svg>
+	) : (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke-width="2"
+			stroke="currentColor"
+			class="h-4 w-4 shrink-0 transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+		>
+			<path stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6" />
+			<path stroke-linecap="round" stroke-linejoin="round" d="M20 4L10 14" />
+			<path stroke-linecap="round" stroke-linejoin="round" d="M14 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h6" />
+		</svg>
+	)
+}

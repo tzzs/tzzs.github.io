@@ -1,6 +1,6 @@
 ---
 title: '[fixed]-bash: command not found when using ssh connect to server'
-description: Problem
+description: SSH连接服务器执行脚本报command not found，因脚本中PATH变量覆盖环境变量所致
 pubDate: '2022-02-21'
 tags:
   - ssh

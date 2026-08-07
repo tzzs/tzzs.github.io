@@ -11,7 +11,12 @@ const navItems = [
 ];
 
 const { pathname } = Astro.url;
-const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+const isActive = (href: string) => {
+	if (href === '/') return pathname === '/';
+	// 时间轴不占导航位（从博客页横幅进入），其页面不高亮任何 tab
+	if (pathname.startsWith('/blog/timeline/')) return false;
+	return pathname.startsWith(href);
+};
 ---
 
 <header
@@ -24,8 +29,8 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 			<span class="text-xl font-bold tracking-tight">{SITE_TITLE}</span>
 		</a>
 
-		<!-- 桌面端导航 -->
-		<ul class="hidden items-center gap-8 md:flex">
+		<!-- 桌面端导航（ml-auto 推向右，与旧布局一致） -->
+		<ul class="hidden items-center gap-8 md:ml-auto md:flex">
 			{
 				navItems.map((item) => (
 					<li>
@@ -34,8 +39,8 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 							class:list={[
 								'rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150',
 								isActive(item.href)
-									? 'bg-black text-white'
-									: 'text-black hover:bg-gray',
+									? 'bg-[var(--text)] text-[var(--bg)]'
+									: 'text-[var(--text)] hover:bg-[var(--bg-hover)]',
 							]}
 						>
 							{item.label}
@@ -45,26 +50,44 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 			}
 		</ul>
 
-		<!-- 移动端汉堡按钮 -->
-		<button
-			id="nav-toggle"
-			type="button"
-			class="flex h-10 w-10 items-center justify-center rounded-lg border border-black md:hidden"
-			aria-label="切换导航菜单"
-			aria-expanded="false"
-			aria-controls="nav-mobile"
-		>
-			<svg id="nav-open-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-6 w-6">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-			</svg>
-			<svg id="nav-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-6 w-6">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-			</svg>
-		</button>
+		<div class="ml-6 flex items-center gap-3">
+			<!-- 主题切换按钮：深色模式显示太阳（点击回浅色），浅色模式显示月亮；无边框，hover 圆形浅底 -->
+			<button
+				id="theme-toggle"
+				type="button"
+				class="flex h-10 w-10 items-center justify-center rounded-full text-[var(--text-soft)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text)]"
+				aria-label="切换主题"
+			>
+				<svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-5 w-5">
+					<circle cx="12" cy="12" r="4"></circle>
+					<path stroke-linecap="round" stroke-width="2" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+				</svg>
+				<svg id="theme-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-5 w-5">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+				</svg>
+			</button>
+
+			<!-- 移动端汉堡按钮 -->
+			<button
+				id="nav-toggle"
+				type="button"
+				class="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--text)] md:hidden"
+				aria-label="切换导航菜单"
+				aria-expanded="false"
+				aria-controls="nav-mobile"
+			>
+				<svg id="nav-open-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-6 w-6">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+				</svg>
+				<svg id="nav-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-6 w-6">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+				</svg>
+			</button>
+		</div>
 	</nav>
 
 	<!-- 移动端下拉菜单 -->
-	<div id="nav-mobile" class="hidden border-t border-gray bg-white md:hidden">
+	<div id="nav-mobile" class="hidden border-t border-[var(--border)] bg-[var(--bg)] md:hidden">
 		<ul class="flex flex-col px-5 py-2">
 			{
 				navItems.map((item) => (
@@ -73,7 +96,9 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 							href={item.href}
 							class:list={[
 								'block rounded-lg px-3 py-3 text-base font-medium',
-								isActive(item.href) ? 'bg-black text-white' : 'text-black hover:bg-gray',
+								isActive(item.href)
+									? 'bg-[var(--text)] text-[var(--bg)]'
+									: 'text-[var(--text)] hover:bg-[var(--bg-hover)]',
 							]}
 						>
 							{item.label}
@@ -86,19 +111,50 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 </header>
 
 <script>
-	// 沉浸式导航：页面在顶部时透明融入内容，滚动后浮出白底 + 边框 + 模糊
+	// 沉浸式导航：页面在顶部时透明融入内容，滚动后浮出底色 + 边框 + 模糊
+	// 底色/边框用 CSS 变量（--nav-bg / --nav-border），深色模式下自动跟随主题
 	const header = document.getElementById('site-header');
 	if (header) {
 		const applyNavState = () => {
 			const scrolled = window.scrollY > 0;
-			header.classList.toggle('bg-white/90', scrolled);
-			header.classList.toggle('border-gray', scrolled);
+			header.classList.toggle('bg-[var(--nav-bg)]', scrolled);
+			header.classList.toggle('border-[var(--nav-border)]', scrolled);
 			header.classList.toggle('backdrop-blur', scrolled);
 			header.classList.toggle('bg-transparent', !scrolled);
 			header.classList.toggle('border-transparent', !scrolled);
 		};
 		window.addEventListener('scroll', applyNavState, { passive: true });
 		applyNavState();
+	}
+
+	// 主题切换：点击后写 data-theme + localStorage，图标随当前主题显隐
+	// 初始 data-theme 由 BaseLayout 内联脚本设置，未设置时跟随系统偏好
+	const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
+	const themeSun = document.getElementById('theme-sun') as unknown as SVGElement;
+	const themeMoon = document.getElementById('theme-moon') as unknown as SVGElement;
+
+	const isDarkTheme = () => {
+		const root = document.documentElement;
+		if (root.getAttribute('data-theme') === 'dark') return true;
+		if (root.getAttribute('data-theme') === 'light') return false;
+		return window.matchMedia('(prefers-color-scheme: dark)').matches;
+	};
+
+	const syncThemeIcon = () => {
+		const dark = isDarkTheme();
+		themeSun.classList.toggle('hidden', !dark);
+		themeMoon.classList.toggle('hidden', dark);
+	};
+
+	if (themeToggle && themeSun && themeMoon) {
+		syncThemeIcon();
+		themeToggle.addEventListener('click', () => {
+			const root = document.documentElement;
+			const next = isDarkTheme() ? 'light' : 'dark';
+			root.setAttribute('data-theme', next);
+			localStorage.setItem('theme', next);
+			syncThemeIcon();
+		});
 	}
 
 	// 移动端汉堡菜单切换（纯原生实现）

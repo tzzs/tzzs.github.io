@@ -18,6 +18,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = image ? new URL(image, Astro.site) : undefined;
 ---
 
+<!-- 主题初始化：localStorage 优先，未保存过则跟随系统偏好（置于 CSS 前，避免切换闪烁） -->
+<script is:inline>
+	(function () {
+		var saved = localStorage.getItem('theme');
+		var el = document.documentElement;
+		if (saved === 'dark') el.setAttribute('data-theme', 'dark');
+		else if (saved === 'light') el.setAttribute('data-theme', 'light');
+		// 未保存过：不设置 data-theme，CSS 通过 color-scheme: light dark 跟随系统
+	})();
+</script>
+
 <!-- 基础元信息 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />

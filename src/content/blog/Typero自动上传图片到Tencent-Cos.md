@@ -1,6 +1,6 @@
 ---
 title: Typero自动上传图片到Tencent COS
-description: Python实现上传脚本
+description: 用Python编写上传脚本让Typora自动上传图片到腾讯COS
 pubDate: '2020-11-29'
 tags:
   - Python

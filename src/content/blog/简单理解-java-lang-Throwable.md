@@ -1,6 +1,6 @@
 ---
 title: 简单理解 java.lang.Throwable
-description: java.lang.Throwable
+description: 简单理解java.lang.Throwable及Error与Exception两大子类的区别
 pubDate: '2022-08-15'
 tags:
   - Java

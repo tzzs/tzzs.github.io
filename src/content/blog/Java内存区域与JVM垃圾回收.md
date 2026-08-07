@@ -1,6 +1,6 @@
 ---
 title: Java内存区域与JVM垃圾回收
-description: 当前文章基于JDK1.8版本，JVM版本为HotSpot。
+description: 基于JDK1.8的HotSpot介绍Java内存区域划分与JVM垃圾回收机制
 pubDate: '2024-03-18'
 ---
 

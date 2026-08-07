@@ -1,6 +1,6 @@
 ---
 title: Nginx uWsgi 重新运行Django项目
-description: 重新启动NGINX 重新加载网站配置文件 sh nginx -s reload
+description: Django项目重新运行指南，重载Nginx配置并重启uWSGI服务
 pubDate: '2019-02-20'
 tags:
   - Nginx

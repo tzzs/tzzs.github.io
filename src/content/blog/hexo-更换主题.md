@@ -1,6 +1,6 @@
 ---
 title: hexo 更换主题
-description: 选择主题
+description: Hexo更换NexT主题的下载、安装与配置步骤
 pubDate: '2018-11-16'
 tags:
   - Hexo

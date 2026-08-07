@@ -1,6 +1,6 @@
 ---
 title: Windows下迁移User下的用户目录到非系统盘
-description: 1. 先进入Windows的修复模式，进入修复模式的命令行功能。
+description: 通过修复模式与robocopy将用户目录迁移到非系统盘并建立软链接
 pubDate: '2020-12-15'
 tags:
   - Windows

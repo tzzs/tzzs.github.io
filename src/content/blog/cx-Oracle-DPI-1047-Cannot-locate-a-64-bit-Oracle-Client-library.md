@@ -1,6 +1,6 @@
 ---
 title: 'cx_Oracle DPI-1047: Cannot locate a 64-bit Oracle Client library'
-description: QUESTION
+description: cx_Oracle报错DPI-1047无法定位64位Oracle客户端库的排查方法
 pubDate: '2021-08-14'
 tags:
   - Python

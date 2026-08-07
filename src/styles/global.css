@@ -3,22 +3,24 @@
 
 /* ===== Tailwind 4 主题令牌（@theme） ===== */
 @theme {
-  /* Positivus 色板 */
+  /* Positivus 色板（深色模式下深块提亮一级，维持层次） */
   --color-green: #b9ff66;
-  --color-black: #191a23;
-  --color-dark: #292a32;
+  /* 强调绿：白天用深绿保证浅底上可见，夜间用品牌浅绿 */
+  --color-green-strong: light-dark(#65a30d, #b9ff66);
+  --color-black: light-dark(#191a23, #21262d);
+  --color-dark: light-dark(#292a32, #21262d);
   --color-gray: #f3f3f3;
   --color-white: #ffffff;
 
-  /* 站点语义色 */
-  --color-accent: #0969da;
-  --color-accent-soft: #ddf4ff;
-  --color-text: #1f2328;
-  --color-text-soft: #57606a;
-  --color-text-faint: #8b949e;
-  --color-border: #d0d7de;
-  --color-bg: #ffffff;
-  --color-bg-soft: #f6f8fa;
+  /* 站点语义色：引用 :root 语义变量（light-dark 跟随系统，data-theme 手动覆盖） */
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-text: var(--text);
+  --color-text-soft: var(--text-soft);
+  --color-text-faint: var(--text-faint);
+  --color-border: var(--border);
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
 
   /* 状态徽章色 */
   --color-status-dev: #9a6700;
@@ -38,40 +40,36 @@
   --radius-card: 14px;
 }
 
-/* ===== 语义 CSS 变量（组件样式 + 深色模式） ===== */
+/* ===== 语义 CSS 变量（组件样式 + 深色模式） =====
+   light-dark(浅色值, 深色值) 跟随系统偏好；[data-theme] 手动覆盖 color-scheme 强制翻转 */
 :root {
-  --bg: #ffffff;
-  --bg-soft: #f6f8fa;
-  --bg-hover: #eef1f4;
-  --text: #1f2328;
-  --text-soft: #57606a;
-  --text-faint: #8b949e;
-  --border: #d0d7de;
-  --border-strong: #afb8c1;
-  --accent: #0969da;
-  --accent-soft: #ddf4ff;
-  --code-bg: #f6f8fa;
-  --code-text: #24292f;
-  --shadow: 0 1px 3px rgba(31, 35, 40, 0.08), 0 4px 12px rgba(31, 35, 40, 0.06);
+  color-scheme: light dark;
+  --bg: light-dark(#ffffff, #191a23);
+  --bg-soft: light-dark(#f6f8fa, #21262d);
+  --bg-hover: light-dark(#eef1f4, #292a32);
+  --text: light-dark(#1f2328, #e6edf3);
+  --text-soft: light-dark(#57606a, #9da7b3);
+  --text-faint: light-dark(#8b949e, #7d8590);
+  --border: light-dark(#d0d7de, #3d3f4a);
+  --border-strong: light-dark(#afb8c1, #4f515c);
+  --accent: light-dark(#0969da, #4493f8);
+  --accent-soft: light-dark(#ddf4ff, #0c2d6b);
+  --code-bg: light-dark(#f6f8fa, #21262d);
+  --code-text: light-dark(#24292f, #e6edf3);
+  --shadow: light-dark(0 1px 3px rgba(31, 35, 40, 0.08), 0 1px 3px rgba(1, 4, 9, 0.6));
   --radius: 8px;
+  /* 描边文字 / 滚动后导航浮层 */
+  --outline-color: light-dark(#191a23, #e6edf3);
+  --nav-bg: light-dark(rgba(255, 255, 255, 0.9), rgba(25, 26, 35, 0.9));
+  --nav-border: light-dark(#d0d7de, #3d3f4a);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d1117;
-    --bg-soft: #161b22;
-    --bg-hover: #1c2129;
-    --text: #e6edf3;
-    --text-soft: #9da7b3;
-    --text-faint: #6e7681;
-    --border: #30363d;
-    --border-strong: #484f58;
-    --accent: #4493f8;
-    --accent-soft: #0c2d6b;
-    --code-bg: #161b22;
-    --code-text: #e6edf3;
-    --shadow: 0 1px 3px rgba(1, 4, 9, 0.6);
-  }
+/* 手动主题覆盖：强制 color-scheme 即可让所有 light-dark() 变量翻转 */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 /* ===== 字体 ===== */
@@ -101,18 +99,24 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Positivus 文本轮廓类 */
+/* Positivus 文本轮廓类（描边色随主题：浅色黑描边 / 深色浅描边） */
 .font-outline {
-  -webkit-text-stroke: 2.5px black;
+  -webkit-text-stroke: 2.5px var(--outline-color);
   background-color: transparent;
 }
 .font-outline-sm {
-  -webkit-text-stroke: 1.2px black;
+  -webkit-text-stroke: 1.2px var(--outline-color);
   background-color: transparent;
 }
 
 /* ===== 组件层 ===== */
 @layer components {
+  /* 绿底块统一黑字：夜间模式下继承的浅色文字在绿底上不可读，绿块文字一律用 Positivus 黑
+     （显式 text-* 工具类优先级更高，仍可覆盖） */
+  .bg-green {
+    color: var(--color-black);
+  }
+
   /* 按钮（Positivus 风格） */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-xl border border-black bg-black px-7 py-4 font-medium text-white transition-colors duration-200 hover:bg-dark;
@@ -195,13 +199,13 @@ body {
 
   /* 分页 */
   .pagination {
-    @apply mt-8 flex items-center justify-between gap-4;
+    @apply mt-8 flex flex-wrap items-center justify-between gap-4;
   }
-  .pagination a,
-  .pagination span {
+  .pagination > a,
+  .pagination > span {
     @apply inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm;
   }
-  .pagination a {
+  .pagination > a {
     @apply transition-colors duration-150 hover:border-accent hover:text-accent;
     color: var(--text);
     text-decoration: none;
@@ -209,7 +213,57 @@ body {
   .pagination-disabled {
     color: var(--text-faint);
   }
-  .pagination-info {
+  .pagination-center {
+    @apply flex flex-wrap items-center justify-center gap-3;
+  }
+  /* 跳页输入框：数字输入 + 跳转按钮，回车或点击均可 */
+  .pagination-jump {
+    @apply inline-flex items-center gap-1.5 text-sm;
+    color: var(--text-faint);
+  }
+  .pagination-jump input {
+    @apply h-9 w-14 rounded-lg border border-border bg-bg px-2 text-center text-sm;
+    color: var(--text);
+  }
+  .pagination-jump input:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
+  .pagination-jump button {
+    @apply inline-flex h-9 items-center rounded-lg border border-border px-3 text-sm transition-colors duration-150;
+    color: var(--text);
+    background: var(--bg);
+    cursor: pointer;
+  }
+  .pagination-jump button:hover {
+    @apply border-accent text-accent;
+  }
+  /* 页码列表：方形按钮，当前页高亮为实底，省略号占位不可点 */
+  .pagination-pages {
+    @apply flex items-center gap-1.5;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pagination-pages li {
+    margin: 0;
+  }
+  .pagination-pages a,
+  .pagination-pages .page-current,
+  .pagination-pages .page-ellipsis {
+    @apply inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-border px-2 text-sm;
+    text-decoration: none;
+  }
+  .pagination-pages a {
+    @apply transition-colors duration-150 hover:border-accent hover:text-accent;
+    color: var(--text);
+  }
+  .pagination-pages .page-current {
+    @apply border-accent bg-accent;
+    color: #fff;
+  }
+  .pagination-pages .page-ellipsis {
+    border-color: transparent;
     color: var(--text-faint);
   }
 }
@@ -314,6 +368,9 @@ body {
   padding: 0;
   background: none;
   font-size: 0.9em;
+  /* 无语言代码块（shiki 纯文本渲染）token 无内联色：
+     必须继承 pre 的主题前景色，否则被 .prose code 的浅色变量覆盖成黑底黑字 */
+  color: inherit;
 }
 .prose table {
   width: 100%;
@@ -462,11 +519,43 @@ body {
   max-height: 50rem;
 }
 
-/* ===== KaTeX 深色模式兼容 ===== */
-@media (prefers-color-scheme: dark) {
-  .katex {
-    color: var(--text);
+/* ===== Hero 终端：命令逐行入场（stagger 淡入） ===== */
+.terminal-line {
+  opacity: 0;
+  animation: terminal-line-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.terminal-line:nth-child(1) {
+  animation-delay: 0.15s;
+}
+.terminal-line:nth-child(2) {
+  animation-delay: 0.45s;
+}
+.terminal-line:nth-child(3) {
+  animation-delay: 0.75s;
+}
+.terminal-line:nth-child(4) {
+  animation-delay: 1.05s;
+}
+@keyframes terminal-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .terminal-line {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* ===== KaTeX：公式颜色跟随主题文字色（--text 已随主题翻转） ===== */
+.katex {
+  color: var(--text);
 }
 
 /* ===== 工具类 ===== */
