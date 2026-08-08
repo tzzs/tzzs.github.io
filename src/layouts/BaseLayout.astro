@@ -65,9 +65,13 @@ const ogImage = image ? new URL(image, Astro.site) : undefined;
 		<script is:inline>
 			window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-HME6Y8742L');
 		</script>
-		<!-- 百度统计 -->
+		<!-- 百度统计：延迟到页面加载后空闲时注入，避免同步阻塞主线程（影响 TBT） -->
 		<script is:inline>
-			var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?828512642a85c276ab188101baac616e";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+			window.addEventListener('load', function () {
+				setTimeout(function () {
+					var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?828512642a85c276ab188101baac616e";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+				}, 3000);
+			});
 		</script>
 	</>
 )}
