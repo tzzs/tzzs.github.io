@@ -57,12 +57,17 @@ const ogImage = image ? new URL(image, Astro.site) : undefined;
 <meta name="twitter:description" content={description} />
 {ogImage && <meta name="twitter:image" content={ogImage} />}
 
-<!-- 统计脚本 -->
-<!-- Google Analytics 4（gtag.js） -->
-<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HME6Y8742L"></script>
-<script is:inline>
-	window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-HME6Y8742L');
-</script>
-<script is:inline>
-	var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?828512642a85c276ab188101baac616e";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
-</script>
+<!-- 统计脚本：仅生产构建加载（dev/preview 不加载，避免本地审计触发 GA 连接失败与百度统计弃用 API 告警） -->
+{import.meta.env.PROD && (
+	<>
+		<!-- Google Analytics 4（gtag.js） -->
+		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HME6Y8742L"></script>
+		<script is:inline>
+			window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-HME6Y8742L');
+		</script>
+		<!-- 百度统计 -->
+		<script is:inline>
+			var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?828512642a85c276ab188101baac616e";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();
+		</script>
+	</>
+)}
