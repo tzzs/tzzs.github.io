@@ -49,7 +49,8 @@
   --bg-hover: light-dark(#eef1f4, #292a32);
   --text: light-dark(#1f2328, #e6edf3);
   --text-soft: light-dark(#57606a, #9da7b3);
-  --text-faint: light-dark(#8b949e, #7d8590);
+  /* text-faint 需满足 WCAG AA（≥4.5:1）：浅色 #66707c 5.0:1、深色 #8b949e 5.6:1，同时保持比 text-soft 淡的层次 */
+  --text-faint: light-dark(#66707c, #8b949e);
   --border: light-dark(#d0d7de, #3d3f4a);
   --border-strong: light-dark(#afb8c1, #4f515c);
   --accent: light-dark(#0969da, #4493f8);

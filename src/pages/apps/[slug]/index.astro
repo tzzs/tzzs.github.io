@@ -3,6 +3,7 @@
 // 未知 slug 不在此生成（未出现在 getStaticPaths 中），由站点返回 404；
 // 已知应用但内容缺失时优雅降级为占位提示。
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import LinkIcon from '../../../components/LinkIcon.astro';
 import { apps, type App, type AppStatus } from '../../../data/apps';
@@ -70,12 +71,14 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 			<h1 class="flex items-center gap-4 text-3xl font-bold tracking-tight md:text-4xl">
 				{
 					app.icon && (
-						<img
+						<Image
 							class="h-12 w-12 shrink-0 rounded-xl"
 							src={app.icon}
 							alt={`${app.name} 图标`}
 							width={48}
 							height={48}
+							loading="eager"
+							decoding="async"
 						/>
 					)
 				}
@@ -94,8 +97,8 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 				/* 主 CTA：第一眼直达下载渠道（主链接绿色实底 + GitHub 白底次按钮），下载区保留完整列表 */
 				primaryLink && (
 					<div class="mt-7 flex flex-wrap items-center gap-3">
+						{/* 主 CTA：绿色实底（对比用），hover 反色 */}
 						<a
-							/* 主 CTA：绿色实底（对比用），hover 反色 */
 							class="btn-tertiary group px-4 py-2 text-sm"
 							href={primaryLink[1]}
 							target="_blank"
@@ -108,12 +111,12 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 							/* 主链接已是 GitHub 时不重复展示次按钮 */
 							githubUrl && primaryLink[0] !== 'github' && (
 								<a
-									/* 次 CTA：绿色实底（与主按钮同款，对比用） */
 									class="btn-tertiary group px-4 py-2 text-sm"
 									href={githubUrl}
 									target="_blank"
 									rel="noopener noreferrer"
 								>
+									{/* 次 CTA：绿色实底（与主按钮同款，对比用） */}
 									GitHub 仓库
 									<LinkIcon />
 								</a>

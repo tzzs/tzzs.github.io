@@ -5,6 +5,10 @@ import AppCard from '../../components/AppCard.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import { apps } from '../../data/apps';
 import { SITE_TITLE } from '../../consts';
+
+// 应用网格列数自适应：优先选能整除应用数的列数，保证每行排满、无悬空卡片（4 个 → 2×2，6 个 → 3×2）
+const cols = apps.length === 1 ? 1 : [3, 2].find((c) => apps.length % c === 0) ?? 3;
+const gridClass = cols === 3 ? 'md:grid-cols-3' : cols === 2 ? 'md:grid-cols-2' : '';
 ---
 
 <MainLayout
@@ -19,8 +23,8 @@ import { SITE_TITLE } from '../../consts';
 
 	{
 		apps.length > 0 ? (
-			<div class="grid gap-6 md:grid-cols-2">
-				{apps.map((app, i) => <AppCard app={app} featured={i === 0} />)}
+			<div class={`grid gap-6 ${gridClass}`}>
+				{apps.map((app) => <AppCard app={app} />)}
 			</div>
 		) : (
 			<p class="py-8 text-text-faint">暂无应用，敬请期待。</p>

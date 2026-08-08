@@ -1,15 +1,14 @@
 ---
 // 应用卡片：展示名称、描述、状态徽章、平台，链接到 /apps/[slug]/
 import type { App } from '../data/apps';
+import { Image } from 'astro:assets';
 
 interface Props {
 	/** src/data/apps.ts 中的应用元数据 */
 	app: App;
-	/** 大卡模式：跨两列，用于 3 个应用的非对称网格（1 大 + 2 小），奇数个应用时避免悬空 */
-	featured?: boolean;
 }
 
-const { app, featured = false } = Astro.props;
+const { app } = Astro.props;
 const href = `/apps/${app.slug}/`;
 const statusLabels: Record<App['status'], string> = {
 	development: '开发中',
@@ -20,21 +19,23 @@ const statusLabels: Record<App['status'], string> = {
 
 <a
 	href={href}
-	class={`group block rounded-[var(--radius-card)] border border-[var(--border-strong)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-green-strong hover:shadow-[var(--shadow)] ${featured ? 'md:col-span-2' : ''}`}
+	class="group block rounded-[var(--radius-card)] border border-[var(--border-strong)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-green-strong hover:shadow-[var(--shadow)]"
 >
 	<div class="flex items-center gap-2.5">
 		{
 			app.icon && (
-				<img
+				<Image
 					class="h-8 w-8 shrink-0 rounded-md"
 					src={app.icon}
 					alt={`${app.name} 图标`}
 					width={32}
 					height={32}
+					loading="lazy"
+					decoding="async"
 				/>
 			)
 		}
-		<h3 class={`min-w-0 flex-1 font-bold text-[var(--text)] ${featured ? 'text-xl' : 'text-lg'}`}>
+		<h3 class="min-w-0 flex-1 font-bold text-lg text-[var(--text)]">
 			{
 				/* 标题 hover 变品牌绿底黑字色块（与 Hero 徽章同款），色块只包住文字不撑满整行 */
 				<span class="inline-block rounded-md px-1.5 transition-colors duration-200 group-hover:bg-green group-hover:text-black">
@@ -44,7 +45,7 @@ const statusLabels: Record<App['status'], string> = {
 		</h3>
 		<span class={`badge badge-${app.status}`}>{statusLabels[app.status]}</span>
 	</div>
-	<p class={`mt-2 leading-relaxed text-[var(--text-soft)] ${featured ? 'text-base' : 'text-sm'}`}>{app.description}</p>
+	<p class="mt-2 text-sm leading-relaxed text-[var(--text-soft)]">{app.description}</p>
 	<div class="mt-3 flex flex-wrap gap-2">
 		{
 			app.platforms.map((platform) => (
