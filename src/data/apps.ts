@@ -10,6 +10,11 @@
  * 页面会自动生成，无需额外注册。
  */
 
+import type { ImageMetadata } from 'astro';
+import thriftSupportIcon from '../assets/apps/vsce-thrift-support/icon.png';
+import commentDocLensIcon from '../assets/apps/comment-doc-lens/icon.png';
+import periPilotIcon from '../assets/apps/peri-pilot/icon.png';
+
 /** 应用开发状态 */
 export type AppStatus = 'development' | 'beta' | 'released';
 
@@ -25,8 +30,8 @@ export interface App {
   status: AppStatus;
   /** 支持平台 */
   platforms: string[];
-  /** 应用图标路径（public 下相对路径，如 /images/apps/<slug>/icon.png） */
-  icon?: string;
+  /** 应用图标（Astro Image 元数据，经 Image 组件渲染以获得优化尺寸与格式） */
+  icon?: ImageMetadata;
   /** 下载/官网链接（如 marketplace / openVsx / github） */
   links?: Record<string, string>;
 }
@@ -39,7 +44,7 @@ export const apps: App[] = [
     description: 'Apache Thrift IDL 语言智能支持：语法高亮、格式化、诊断与代码导航',
     status: 'released',
     platforms: ['VS Code'],
-    icon: '/images/apps/vsce-thrift-support/icon.png',
+    icon: thriftSupportIcon,
     links: {
       marketplace: 'https://marketplace.visualstudio.com/items?itemName=tanzz.thrift-support',
       openVsx: 'https://open-vsx.org/extension/tanzz/thrift-support',
@@ -52,7 +57,7 @@ export const apps: App[] = [
     description: '在 VS Code 引用处以内联提示展示定义注释与符号文档',
     status: 'released',
     platforms: ['VS Code'],
-    icon: '/images/apps/comment-doc-lens/icon.png',
+    icon: commentDocLensIcon,
     links: {
       marketplace: 'https://marketplace.visualstudio.com/items?itemName=tanzz.comment-doc-lens',
       github: 'https://github.com/tzzs/comment-doc-lens',
@@ -64,7 +69,7 @@ export const apps: App[] = [
     description: 'Windows 托盘应用：通过 2.4G 接收器读取鼠标/键盘电量，提供低电量与充满电提醒',
     status: 'released',
     platforms: ['Windows'],
-    icon: '/images/apps/peri-pilot/icon.png',
+    icon: periPilotIcon,
     links: {
       github: 'https://github.com/tzzs/peri-pilot',
     },
