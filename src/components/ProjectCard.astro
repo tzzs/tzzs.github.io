@@ -46,11 +46,17 @@ const statusLabels: Record<Project['status'], string> = {
 				</span>
 			}
 		</h3>
-		<span class={`badge badge-${project.status}`}>{statusLabels[project.status]}</span>
+		<span class={`badge badge-${project.status}`} data-i18n-key={`status.${project.status}`}>
+			{statusLabels[project.status]}
+		</span>
 	</div>
 	<p class="mt-2 text-sm leading-relaxed text-[var(--text-soft)]">{project.description}</p>
 	<div class="mt-3 flex flex-wrap gap-2">
-		{showCategory && <span class="tag-pill">{CATEGORY_LABELS[project.category]}</span>}
+		{showCategory && (
+			<span class="tag-pill" data-i18n-key={`category.${project.category}`}>
+				{CATEGORY_LABELS[project.category]}
+			</span>
+		)}
 		{
 			project.platforms.map((platform) => (
 				<span class="tag-pill">{platform}</span>

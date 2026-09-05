@@ -93,11 +93,14 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 				{project.description}
 			</p>
 			<div class="mt-5 flex flex-wrap items-center gap-3">
-				<span class:list={['badge', `badge-${project.status}`]}>
+				<span
+					class:list={['badge', `badge-${project.status}`]}
+					data-i18n-key={`status.${project.status}`}
+				>
 					{statusLabels[project.status] ?? project.status}
 				</span>
 				<span class="text-sm text-text-faint">
-					{CATEGORY_LABELS[project.category]} · {project.platforms.join(' / ')}
+					<span data-i18n-key={`category.${project.category}`}>{CATEGORY_LABELS[project.category]}</span> · {project.platforms.join(' / ')}
 				</span>
 			</div>
 			{
@@ -111,7 +114,7 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							{labelFor(primaryLink[0])}
+							<span data-i18n-key={`link.${primaryLink[0]}`}>{labelFor(primaryLink[0])}</span>
 							<LinkIcon download={isDownloadUrl(primaryLink[0], primaryLink[1])} />
 						</a>
 						{
@@ -124,7 +127,7 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 									rel="noopener noreferrer"
 								>
 									{/* 次 CTA：绿色实底（与主按钮同款，对比用） */}
-									GitHub 仓库
+									<span data-i18n-key="link.github">GitHub 仓库</span>
 									<LinkIcon />
 								</a>
 							)
@@ -139,6 +142,7 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 			<h2
 				id="intro-heading"
 				class="mb-6 border-b border-border pb-3 text-2xl font-bold tracking-tight"
+				data-i18n-key="project.introHeading"
 			>
 				项目介绍
 			</h2>
@@ -149,7 +153,7 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 						<IntroContent />
 					</div>
 				) : (
-					<p class="text-text-faint">该项目的介绍即将上线，敬请期待。</p>
+					<p class="text-text-faint" data-i18n-key="project.introPlaceholder">该项目的介绍即将上线，敬请期待。</p>
 				)
 			}
 		</section>
@@ -159,6 +163,7 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 			<h2
 				id="links-heading"
 				class="mb-6 border-b border-border pb-3 text-2xl font-bold tracking-tight"
+				data-i18n-key="project.linksHeading"
 			>
 				获取方式
 			</h2>
@@ -174,14 +179,14 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									{labelFor(key)}
+									<span data-i18n-key={`link.${key}`}>{labelFor(key)}</span>
 									<LinkIcon download={isDownloadUrl(key, url)} />
 								</a>
 							</li>
 						))}
 					</ul>
 				) : (
-					<p class="text-text-faint">敬请期待</p>
+					<p class="text-text-faint" data-i18n-key="project.linksPlaceholder">敬请期待</p>
 				)
 			}
 		</section>
@@ -195,10 +200,13 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 						href={`/projects/${project.slug}/changelog/`}
 					>
 						<span class="min-w-0">
-							<span class="block font-semibold text-text transition-colors duration-200 group-hover:text-accent">
+							<span
+								class="block font-semibold text-text transition-colors duration-200 group-hover:text-accent"
+								data-i18n-key="project.changelogTitle"
+							>
 								更新日志
 							</span>
-							<span class="mt-0.5 block text-sm text-text-faint">版本记录与变更说明</span>
+							<span class="mt-0.5 block text-sm text-text-faint" data-i18n-key="project.changelogDesc">版本记录与变更说明</span>
 						</span>
 						<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green text-black transition-colors duration-200 group-hover:bg-black group-hover:text-green">
 							<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -211,10 +219,13 @@ const IntroContent = introEntry ? (await render(introEntry)).Content : undefined
 						href={`/projects/${project.slug}/privacy/`}
 					>
 						<span class="min-w-0">
-							<span class="block font-semibold text-text transition-colors duration-200 group-hover:text-accent">
+							<span
+								class="block font-semibold text-text transition-colors duration-200 group-hover:text-accent"
+								data-i18n-key="project.privacyTitle"
+							>
 								隐私政策
 							</span>
-							<span class="mt-0.5 block text-sm text-text-faint">数据收集与使用说明</span>
+							<span class="mt-0.5 block text-sm text-text-faint" data-i18n-key="project.privacyDesc">数据收集与使用说明</span>
 						</span>
 						<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green text-black transition-colors duration-200 group-hover:bg-black group-hover:text-green">
 							<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">

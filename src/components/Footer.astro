@@ -3,11 +3,11 @@
 import { SITE_TITLE, COPYRIGHT_HOLDER, SITE_URL, SITE_GITHUB } from '../consts';
 
 const navLinks = [
-	{ name: '首页', href: '/' },
-	{ name: '项目', href: '/projects/' },
-	{ name: '博客', href: '/blog/' },
-	{ name: '关于', href: '/about/' },
-	{ name: '联系', href: '/contact/' },
+	{ name: '首页', href: '/', i18nKey: 'nav.home' },
+	{ name: '项目', href: '/projects/', i18nKey: 'nav.projects' },
+	{ name: '博客', href: '/blog/', i18nKey: 'nav.blog' },
+	{ name: '关于', href: '/about/', i18nKey: 'nav.about' },
+	{ name: '联系', href: '/contact/', i18nKey: 'nav.contact' },
 ];
 
 const externalLinks = [
@@ -29,7 +29,11 @@ const externalLinks = [
 					{
 						navLinks.map((link) => (
 							<li>
-								<a class="text-sm text-gray underline underline-offset-4 hover:text-green" href={link.href}>
+								<a
+									class="text-sm text-gray underline underline-offset-4 hover:text-green"
+									href={link.href}
+									data-i18n-key={link.i18nKey}
+								>
 									{link.name}
 								</a>
 							</li>
@@ -59,7 +63,7 @@ const externalLinks = [
 
 			<div class="flex flex-col items-center justify-between gap-3 text-center text-sm text-gray md:flex-row">
 				<span>
-					© {new Date().getFullYear()} {COPYRIGHT_HOLDER} · 保留所有权利
+					© {new Date().getFullYear()} {COPYRIGHT_HOLDER} · <span data-i18n-key="footer.rights">保留所有权利</span>
 				</span>
 				<a class="underline underline-offset-4 hover:text-green" href={SITE_URL}>
 					{SITE_URL.replace('https://', '')}
