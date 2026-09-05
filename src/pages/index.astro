@@ -1,9 +1,9 @@
 ---
-// 门户首页（Positivus 落地页风格）：Hero + 应用展示 + 最近文章 + 关于片段
+// 门户首页（Positivus 落地页风格）：Hero + 项目展示 + 最近文章 + 关于片段
 import { getCollection } from 'astro:content';
 import MainLayout from '../layouts/MainLayout.astro';
-import AppCard from '../components/AppCard.astro';
-import { apps } from '../data/apps';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects } from '../data/projects';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 // 全部文章（仅非草稿，按发布时间降序）；recentPosts 取前 5 篇，postCount 用于关于区数据
@@ -13,8 +13,8 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const recentPosts = allPosts.slice(0, 5);
 const postCount = allPosts.length;
 
-// 应用网格列数自适应：优先选能整除应用数的列数，保证每行排满、无悬空卡片（4 个 → 2×2，6 个 → 3×2）
-const cols = apps.length === 1 ? 1 : [3, 2].find((c) => apps.length % c === 0) ?? 3;
+// 项目网格列数自适应：优先选能整除项目数的列数，保证每行排满、无悬空卡片（4 个 → 2×2，6 个 → 3×2）
+const cols = projects.length === 1 ? 1 : [3, 2].find((c) => projects.length % c === 0) ?? 3;
 const gridClass = cols === 3 ? 'md:grid-cols-3' : cols === 2 ? 'md:grid-cols-2' : '';
 
 // 关于区技术栈标签（浅色变体 pill，用于深色卡片上）
@@ -43,7 +43,7 @@ const formatDate = (d: Date) => {
 				TZZ 的独立开发者主页：应用开发与技术实践。
 			</p>
 			<div class="mt-9 flex flex-wrap gap-4">
-				<a class="btn-tertiary" href="/apps/">查看应用</a>
+				<a class="btn-tertiary" href="/projects/">查看项目</a>
 				<a class="btn-secondary" href="/blog/">阅读博客</a>
 			</div>
 		</div>
@@ -86,38 +86,38 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 		</div>
 	</section>
 
-	<!-- ===== 应用区 ===== -->
-	<section aria-labelledby="apps-heading" class="mt-16 sm:mt-24">
+	<!-- ===== 项目区 ===== -->
+	<section aria-labelledby="projects-heading" class="mt-16 sm:mt-24">
 		<div class="mb-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-10">
 			<h2
-				id="apps-heading"
+				id="projects-heading"
 				class="w-fit shrink-0 rounded-lg bg-green px-2.5 py-1.5 text-3xl font-medium text-black sm:text-4xl"
 			>
-				正在发布的应用
+				正在进行的项目
 			</h2>
 			<p class="text-text-soft sm:max-w-[560px]">
-				目前已发布 3 款应用，覆盖 VS Code 扩展与 Windows 桌面工具，更多正在开发中。
+				目前维护 {projects.length} 个项目，覆盖 VS Code 插件、桌面工具、Agent 工具与 Skills，更多正在开发中。
 			</p>
 		</div>
 		{
-			apps.length > 0 ? (
+			projects.length > 0 ? (
 				<div class={`grid gap-6 ${gridClass}`}>
-					{apps.map((app) => <AppCard app={app} />)}
+					{projects.map((project) => <ProjectCard project={project} showCategory />)}
 				</div>
 			) : (
 				<p class="rounded-2xl border border-dashed border-border px-6 py-12 text-center text-text-faint">
-					暂无应用，敬请期待。
+					暂无项目，敬请期待。
 				</p>
 			)
 		}
 		{
-			apps.length > 0 && (
+			projects.length > 0 && (
 				<div class="mt-10 text-center">
 					<a
 					class="group inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-2.5 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
-					href="/apps/"
+					href="/projects/"
 				>
-					查看全部应用
+					查看全部项目
 					<svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
 					</svg>
@@ -227,8 +227,8 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 						<dd class="mt-1 font-mono text-3xl font-bold text-green">{postCount}</dd>
 					</div>
 					<div>
-						<dt class="text-sm text-white/50">已发布应用</dt>
-						<dd class="mt-1 font-mono text-3xl font-bold text-green">{apps.length}</dd>
+						<dt class="text-sm text-white/50">项目</dt>
+						<dd class="mt-1 font-mono text-3xl font-bold text-green">{projects.length}</dd>
 					</div>
 				</dl>
 				<a class="btn-tertiary w-fit" href="/about/">了解更多 →</a>

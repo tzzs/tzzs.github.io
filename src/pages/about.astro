@@ -1,9 +1,9 @@
 ---
-// 关于页（Positivus 风格）：大标题「关于」+ 自我介绍 / 技术栈 / 正在开发的应用 / GitHub 主页
+// 关于页（Positivus 风格）：大标题「关于」+ 自我介绍 / 技术栈 / 我的项目 / GitHub 主页
 import MainLayout from '../layouts/MainLayout.astro';
-import AppCard from '../components/AppCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
 import { SITE_TITLE } from '../consts';
-import { apps } from '../data/apps';
+import { projects } from '../data/projects';
 
 const githubUrl = 'https://github.com/tzzs';
 const techStack = ['Java', 'C', 'Python', 'Go', 'Linux', '数据库'];
@@ -11,7 +11,7 @@ const techStack = ['Java', 'C', 'Python', 'Go', 'Linux', '数据库'];
 
 <MainLayout
 	title={`关于 - ${SITE_TITLE}`}
-	description="TZZ 的个人简介：技术方向、正在开发的应用与开源主页"
+	description="TZZ 的个人简介：技术方向、正在参与的项目与开源主页"
 >
 	<article class="py-12 md:py-16">
 		<header>
@@ -30,8 +30,8 @@ const techStack = ['Java', 'C', 'Python', 'Go', 'Linux', '数据库'];
 			</h2>
 			<div class="mt-6 max-w-3xl text-base leading-relaxed">
 				<p>
-					一名热爱技术的独立开发者。正在开发的产品可以在下方「正在开发的应用」中查看，
-					或前往 <a class="font-medium text-accent underline-offset-4 hover:underline" href="/apps/">应用列表页</a>。
+					一名热爱技术的独立开发者。正在做的项目可以在下方「我的项目」中查看，
+					或前往 <a class="font-medium text-accent underline-offset-4 hover:underline" href="/projects/">项目列表页</a>。
 				</p>
 			</div>
 		</section>
@@ -53,15 +53,15 @@ const techStack = ['Java', 'C', 'Python', 'Go', 'Linux', '数据库'];
 
 		<section class="mt-14">
 			<h2 class="text-2xl font-medium md:text-3xl">
-				<span class="rounded-xl bg-green px-2.5 py-1">正在开发</span>的应用
+				<span class="rounded-xl bg-green px-2.5 py-1">我的</span>项目
 			</h2>
 			<p class="mt-6 max-w-3xl text-base leading-relaxed text-[var(--text-soft)]">
-				以下是我开发的应用，欢迎关注
-				<a class="font-medium text-accent underline-offset-4 hover:underline" href="/apps/">应用列表页</a>
+				以下是我参与的项目，欢迎关注
+				<a class="font-medium text-accent underline-offset-4 hover:underline" href="/projects/">项目列表页</a>
 				获取最新进展：
 			</p>
 			<div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-				{apps.map((app) => <AppCard app={app} />)}
+				{projects.map((project) => <ProjectCard project={project} showCategory />)}
 			</div>
 		</section>
 

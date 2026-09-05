@@ -1,0 +1,53 @@
+---
+// 项目列表页：标题「项目」+ 按分类分组（应用 / VS Code 插件 / Agent 工具 / Skills），每组渲染为卡片网格
+import MainLayout from '../../layouts/MainLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { projects, CATEGORY_LABELS, CATEGORY_ORDER } from '../../data/projects';
+import { SITE_TITLE } from '../../consts';
+
+// 网格列数自适应：优先选能整除该分类项目数的列数，保证每行排满、无悬空卡片
+const gridClassFor = (count: number) => {
+	const cols = count === 1 ? 1 : [3, 2].find((c) => count % c === 0) ?? 3;
+	return cols === 3 ? 'md:grid-cols-3' : cols === 2 ? 'md:grid-cols-2' : '';
+};
+
+// 按 CATEGORY_ORDER 分组，空分类不渲染
+const groups = CATEGORY_ORDER.map((category) => ({
+	category,
+	items: projects.filter((project) => project.category === category),
+})).filter((group) => group.items.length > 0);
+---
+
+<MainLayout
+	title={`项目 - ${SITE_TITLE}`}
+	description="TZZ 的项目：VS Code 插件、桌面应用、Agent 工具与 Skill，覆盖开发效率与日常使用。"
+>
+	<PageHeader
+		title="项目"
+		badge="Projects"
+		description="这里展示我做的项目，涵盖应用、VS Code 插件、Agent 工具与 Skill，欢迎使用或持续关注进展。"
+	/>
+
+	{
+		groups.length > 0 ? (
+			<div class="flex flex-col gap-14">
+				{groups.map((group) => (
+					<section aria-labelledby={`category-${group.category}-heading`}>
+						<h2
+							id={`category-${group.category}-heading`}
+							class="mb-6 text-2xl font-bold tracking-tight"
+						>
+							{CATEGORY_LABELS[group.category]}
+						</h2>
+						<div class={`grid gap-6 ${gridClassFor(group.items.length)}`}>
+							{group.items.map((project) => <ProjectCard project={project} />)}
+						</div>
+					</section>
+				))}
+			</div>
+		) : (
+			<p class="py-8 text-text-faint">暂无项目，敬请期待。</p>
+		)
+	}
+</MainLayout>

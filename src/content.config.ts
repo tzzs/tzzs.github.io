@@ -25,9 +25,9 @@ const blog = defineCollection({
 	}),
 });
 
-const apps = defineCollection({
-	// Load Markdown files in the `src/content/apps/` directory.
-	loader: glob({ base: './src/content/apps', pattern: '**/*.md' }),
+const projects = defineCollection({
+	// Load Markdown files in the `src/content/projects/` directory.
+	loader: glob({ base: './src/content/projects', pattern: '**/*.md' }),
 	schema: z.object({
 		title: z.string(),
 		pubDate: z.coerce.date().optional(),
@@ -35,4 +35,4 @@ const apps = defineCollection({
 	}),
 });
 
-export const collections = { blog, apps };
+export const collections = { blog, projects };
