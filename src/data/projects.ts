@@ -31,8 +31,8 @@ export const CATEGORY_LABELS: Record<ProjectCategory, string> = {
   skill: 'Skills',
 };
 
-/** 列表页分组顺序、详情页分类文案的展示顺序 */
-export const CATEGORY_ORDER: ProjectCategory[] = ['app', 'extension', 'agent-tool', 'skill'];
+/** 列表页分组顺序：Agent 工具 / Skills 在前，VS Code 插件其次，应用最后 */
+export const CATEGORY_ORDER: ProjectCategory[] = ['agent-tool', 'skill', 'extension', 'app'];
 
 /** 项目元数据 */
 export interface Project {
