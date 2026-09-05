@@ -16,29 +16,29 @@ const techStack = ['Java', 'C', 'Python', 'Go', 'Linux', '数据库'];
 	<article class="py-12 md:py-16">
 		<header>
 			<h1 class="text-5xl font-medium leading-none md:text-7xl">
-				关于<span class="ml-3 inline-block rounded-2xl bg-green px-3 py-1">我</span>
+				<span data-i18n-key="about.titlePrefix">关于</span><span class="ml-3 inline-block rounded-2xl bg-green px-3 py-1" data-i18n-key="about.titleSuffix">我</span>
 			</h1>
 			<p class="mt-7 max-w-2xl text-lg leading-relaxed text-[var(--text-soft)]">
-				你好，我是 <strong class="font-bold text-[var(--text)]">TZZ</strong>，
-				独立开发者，平时做点开发工具，写写技术博客。
+				<span data-i18n-key="about.introPrefix">你好，我是</span> <strong class="font-bold text-[var(--text)]">TZZ</strong><span data-i18n-key="about.introSuffix">，
+				独立开发者，平时做点开发工具，写写技术博客。</span>
 			</p>
 		</header>
 
 		<section class="mt-14">
 			<h2 class="text-2xl font-medium md:text-3xl">
-				<span class="rounded-xl bg-green px-2.5 py-1">自我</span>介绍
+				<span class="rounded-xl bg-green px-2.5 py-1" data-i18n-key="about.selfIntroPrefix">自我</span><span data-i18n-key="about.selfIntroSuffix">介绍</span>
 			</h2>
 			<div class="mt-6 max-w-3xl text-base leading-relaxed">
 				<p>
-					一名热爱技术的独立开发者。正在做的项目可以在下方「我的项目」中查看，
-					或前往 <a class="font-medium text-accent underline-offset-4 hover:underline" href="/projects/">项目列表页</a>。
+					<span data-i18n-key="about.selfIntroBodyPrefix">一名热爱技术的独立开发者。正在做的项目可以在下方「我的项目」中查看，
+					或前往</span> <a class="font-medium text-accent underline-offset-4 hover:underline" href="/projects/" data-i18n-key="about.projectsListLink">项目列表页</a><span data-i18n-key="about.selfIntroBodySuffix">。</span>
 				</p>
 			</div>
 		</section>
 
 		<section class="mt-14">
 			<h2 class="text-2xl font-medium md:text-3xl">
-				<span class="rounded-xl bg-green px-2.5 py-1">技术</span>栈
+				<span class="rounded-xl bg-green px-2.5 py-1" data-i18n-key="about.techStackPrefix">技术</span><span data-i18n-key="about.techStackSuffix">栈</span>
 			</h2>
 			<ul class="tag-list mt-6">
 				{
@@ -53,12 +53,12 @@ const techStack = ['Java', 'C', 'Python', 'Go', 'Linux', '数据库'];
 
 		<section class="mt-14">
 			<h2 class="text-2xl font-medium md:text-3xl">
-				<span class="rounded-xl bg-green px-2.5 py-1">我的</span>项目
+				<span class="rounded-xl bg-green px-2.5 py-1" data-i18n-key="about.myProjectsPrefix">我的</span><span data-i18n-key="about.myProjectsSuffix">项目</span>
 			</h2>
 			<p class="mt-6 max-w-3xl text-base leading-relaxed text-[var(--text-soft)]">
-				以下是我参与的项目，欢迎关注
-				<a class="font-medium text-accent underline-offset-4 hover:underline" href="/projects/">项目列表页</a>
-				获取最新进展：
+				<span data-i18n-key="about.myProjectsBodyPrefix">以下是我参与的项目，欢迎关注</span>
+				<a class="font-medium text-accent underline-offset-4 hover:underline" href="/projects/" data-i18n-key="about.projectsListLink">项目列表页</a>
+				<span data-i18n-key="about.myProjectsBodySuffix">获取最新进展：</span>
 			</p>
 			<div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
 				{projects.map((project) => <ProjectCard project={project} showCategory />)}
@@ -67,13 +67,13 @@ const techStack = ['Java', 'C', 'Python', 'Go', 'Linux', '数据库'];
 
 		<section class="mt-14">
 			<h2 class="text-2xl font-medium md:text-3xl">
-				<span class="rounded-xl bg-green px-2.5 py-1">开源</span>主页
+				<span class="rounded-xl bg-green px-2.5 py-1" data-i18n-key="about.openSourcePrefix">开源</span><span data-i18n-key="about.openSourceSuffix">主页</span>
 			</h2>
 			<p class="mt-6 max-w-3xl text-base leading-relaxed text-[var(--text-soft)]">
-				我的开源项目托管在 GitHub：
+				<span data-i18n-key="about.openSourceBody">我的开源项目托管在 GitHub：</span>
 				<a class="font-medium text-accent underline-offset-4 hover:underline" href={githubUrl} rel="noopener noreferrer" target="_blank">{githubUrl}</a>
 			</p>
-			<a class="btn-secondary mt-7" href={githubUrl} rel="noopener noreferrer" target="_blank">
+			<a class="btn-secondary mt-7" href={githubUrl} rel="noopener noreferrer" target="_blank" data-i18n-key="about.visitGithub">
 				访问 GitHub 主页
 			</a>
 		</section>

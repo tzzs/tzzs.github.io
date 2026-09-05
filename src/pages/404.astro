@@ -13,15 +13,15 @@ import { SITE_TITLE } from '../consts';
 			404
 		</p>
 		<h1 class="mt-6 text-3xl font-medium md:text-4xl">
-			<span class="inline-block rounded-2xl bg-green px-4 py-1">页面不存在</span>
+			<span class="inline-block rounded-2xl bg-green px-4 py-1" data-i18n-key="404.title">页面不存在</span>
 		</h1>
-		<p class="mt-5 max-w-md leading-relaxed text-[var(--text-soft)]">
+		<p class="mt-5 max-w-md leading-relaxed text-[var(--text-soft)]" data-i18n-key="404.desc">
 			您访问的页面可能已被移除、改名，或地址输入有误。
 		</p>
 		<div class="mt-9 flex flex-wrap items-center justify-center gap-4">
-			<a class="btn-primary" href="/">返回首页</a>
-			<a class="btn-secondary" href="/projects/">浏览项目</a>
-			<a class="btn-secondary" href="/blog/">阅读博客</a>
+			<a class="btn-primary" href="/" data-i18n-key="404.ctaHome">返回首页</a>
+			<a class="btn-secondary" href="/projects/" data-i18n-key="404.ctaProjects">浏览项目</a>
+			<a class="btn-secondary" href="/blog/" data-i18n-key="home.ctaReadBlog">阅读博客</a>
 		</div>
 	</section>
 </MainLayout>

@@ -51,7 +51,11 @@ const dateText = pubDate
 
 		<header class="mb-8 border-b border-border pb-5">
 			<h1 class="text-3xl font-bold tracking-tight md:text-4xl">{pageTitle}</h1>
-			{dateText && <p class="mt-2 text-sm text-text-faint">最后更新：{dateText}</p>}
+			{dateText && (
+				<p class="mt-2 text-sm text-text-faint">
+					<span data-i18n-key="changelog.lastUpdatedPrefix">最后更新：</span>{dateText}
+				</p>
+			)}
 		</header>
 
 		{
@@ -61,7 +65,7 @@ const dateText = pubDate
 					<ChangelogContent />
 				</div>
 			) : (
-				<p class="text-text-faint">更新日志暂未发布，敬请期待。</p>
+				<p class="text-text-faint" data-i18n-key="changelog.emptyPlaceholder">更新日志暂未发布，敬请期待。</p>
 			)
 		}
 	</article>

@@ -1,13 +1,13 @@
 ---
-// 顶部导航（Positivus 风格）：Logo + 导航链接 + 移动端汉堡菜单
+// 顶部导航（Positivus 风格）：Logo + 导航链接 + 移动端汉堡菜单 + 主题/语言切换
 import { SITE_TITLE } from '../consts';
 
 const navItems = [
-	{ href: '/', label: '首页' },
-	{ href: '/projects/', label: '项目' },
-	{ href: '/blog/', label: '博客' },
-	{ href: '/about/', label: '关于' },
-	{ href: '/contact/', label: '联系' },
+	{ href: '/', label: '首页', i18nKey: 'nav.home' },
+	{ href: '/projects/', label: '项目', i18nKey: 'nav.projects' },
+	{ href: '/blog/', label: '博客', i18nKey: 'nav.blog' },
+	{ href: '/about/', label: '关于', i18nKey: 'nav.about' },
+	{ href: '/contact/', label: '联系', i18nKey: 'nav.contact' },
 ];
 
 const { pathname } = Astro.url;
@@ -37,6 +37,7 @@ const isActive = (href: string) => {
 					<li>
 						<a
 							href={item.href}
+							data-i18n-key={item.i18nKey}
 							class:list={[
 								'rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150',
 								isActive(item.href)
@@ -58,6 +59,8 @@ const isActive = (href: string) => {
 				type="button"
 				class="flex h-10 w-10 items-center justify-center rounded-full text-[var(--text-soft)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text)]"
 				aria-label="切换主题"
+				data-i18n-key="nav.themeToggle"
+				data-i18n-attr="aria-label"
 			>
 				<svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-5 w-5">
 					<circle cx="12" cy="12" r="4"></circle>
@@ -68,6 +71,16 @@ const isActive = (href: string) => {
 				</svg>
 			</button>
 
+			<!-- 语言切换按钮：显示"切换到的目标语言"，文案与 aria-label 由脚本按当前 locale 直接赋值（不走 data-i18n-key 字典） -->
+			<button
+				id="lang-toggle"
+				type="button"
+				class="flex h-10 min-w-10 items-center justify-center rounded-full px-2 text-xs font-semibold tracking-wide text-[var(--text-soft)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text)]"
+				aria-label="Switch to English"
+			>
+				EN
+			</button>
+
 			<!-- 移动端汉堡按钮 -->
 			<button
 				id="nav-toggle"
@@ -76,6 +89,8 @@ const isActive = (href: string) => {
 				aria-label="切换导航菜单"
 				aria-expanded="false"
 				aria-controls="nav-mobile"
+				data-i18n-key="nav.menuToggle"
+				data-i18n-attr="aria-label"
 			>
 				<svg id="nav-open-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-6 w-6">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -95,6 +110,7 @@ const isActive = (href: string) => {
 					<li>
 						<a
 							href={item.href}
+							data-i18n-key={item.i18nKey}
 							class:list={[
 								'block rounded-lg px-3 py-3 text-base font-medium',
 								isActive(item.href)
@@ -112,6 +128,8 @@ const isActive = (href: string) => {
 </header>
 
 <script>
+	import { STRINGS, DEFAULT_LOCALE, LOCALE_STORAGE_KEY, type Locale } from '../i18n/strings';
+
 	// 沉浸式导航：页面在顶部时透明融入内容，滚动后浮出底色 + 边框 + 模糊
 	// 底色/边框用 CSS 变量（--nav-bg / --nav-border），深色模式下自动跟随主题
 	const header = document.getElementById('site-header');
@@ -155,6 +173,47 @@ const isActive = (href: string) => {
 			root.setAttribute('data-theme', next);
 			localStorage.setItem('theme', next);
 			syncThemeIcon();
+		});
+	}
+
+	// 语言切换：[data-i18n-key] 标记的元素按当前 locale 替换文本（或 data-i18n-attr 指定的属性）；
+	// 字典（src/i18n/strings.ts）只存英文，中文取自元素首次渲染时的原文（懒缓存到 data-i18n-zh，切回中文时用它还原）。
+	// 找不到对应英文 key 时原样保留中文，不报错——允许页面逐步补充翻译覆盖范围。
+	const langToggle = document.getElementById('lang-toggle') as HTMLButtonElement | null;
+
+	const applyLocale = (locale: Locale) => {
+		document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
+		document.documentElement.dataset.lang = locale;
+
+		document.querySelectorAll<HTMLElement>('[data-i18n-key]').forEach((el) => {
+			const key = el.dataset.i18nKey;
+			if (!key) return;
+			const attr = el.dataset.i18nAttr;
+
+			if (el.dataset.i18nZh === undefined) {
+				el.dataset.i18nZh = attr ? (el.getAttribute(attr) ?? '') : (el.textContent ?? '');
+			}
+			const zhValue = el.dataset.i18nZh;
+			const value = locale === 'zh' ? zhValue : (STRINGS[key] ?? zhValue);
+
+			if (attr) el.setAttribute(attr, value);
+			else el.textContent = value;
+		});
+
+		if (langToggle) {
+			langToggle.textContent = locale === 'zh' ? 'EN' : '中文';
+			langToggle.setAttribute('aria-label', locale === 'zh' ? 'Switch to English' : '切换到中文');
+		}
+	};
+
+	const savedLocale = (localStorage.getItem(LOCALE_STORAGE_KEY) as Locale | null) ?? DEFAULT_LOCALE;
+	applyLocale(savedLocale);
+
+	if (langToggle) {
+		langToggle.addEventListener('click', () => {
+			const next: Locale = document.documentElement.dataset.lang === 'en' ? 'zh' : 'en';
+			localStorage.setItem(LOCALE_STORAGE_KEY, next);
+			applyLocale(next);
 		});
 	}
 

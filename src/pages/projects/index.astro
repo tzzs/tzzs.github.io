@@ -27,6 +27,7 @@ const groups = CATEGORY_ORDER.map((category) => ({
 		title="项目"
 		badge="Projects"
 		description="这里展示我做的项目，涵盖应用、VS Code 插件、Agent 工具与 Skill，欢迎使用或持续关注进展。"
+		descriptionKey="projectsPage.description"
 	/>
 
 	{
@@ -37,6 +38,7 @@ const groups = CATEGORY_ORDER.map((category) => ({
 						<h2
 							id={`category-${group.category}-heading`}
 							class="mb-6 text-2xl font-bold tracking-tight"
+							data-i18n-key={`category.${group.category}`}
 						>
 							{CATEGORY_LABELS[group.category]}
 						</h2>
@@ -47,7 +49,7 @@ const groups = CATEGORY_ORDER.map((category) => ({
 				))}
 			</div>
 		) : (
-			<p class="py-8 text-text-faint">暂无项目，敬请期待。</p>
+			<p class="py-8 text-text-faint" data-i18n-key="home.emptyProjects">暂无项目，敬请期待。</p>
 		)
 	}
 </MainLayout>
