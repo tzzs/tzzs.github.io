@@ -8,9 +8,15 @@ interface Props {
 	badge?: string;
 	/** 副标题描述，不传则不显示 */
 	description?: string;
+	/**
+	 * description 的 i18n 字典 key（src/i18n/strings.ts），传了才参与语言切换。
+	 * title 不提供对应 key：title 旁边常年跟着英文 badge，若 title 也翻译成英文会跟 badge 重复（"Projects Projects"），
+	 * 索性让 title 始终保持中文，由 badge 承担这个页头的英文识别。
+	 */
+	descriptionKey?: string;
 }
 
-const { title, badge, description } = Astro.props;
+const { title, badge, description, descriptionKey } = Astro.props;
 ---
 
 <section class="pb-10 pt-12 md:pt-16">
@@ -26,7 +32,7 @@ const { title, badge, description } = Astro.props;
 	</h1>
 	{
 		description && (
-			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft">
+			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft" data-i18n-key={descriptionKey}>
 				{description}
 			</p>
 		)

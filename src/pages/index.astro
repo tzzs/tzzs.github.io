@@ -34,17 +34,17 @@ const formatDate = (d: Date) => {
 	<section class="flex flex-col gap-12 py-12 sm:py-20 lg:flex-row lg:items-center lg:gap-16">
 		<div class="flex-1">
 			<p class="mb-6 w-fit rounded-lg bg-green px-3 py-1.5 text-sm font-medium text-black">
-				独立开发者
+				<span data-i18n-key="home.independentDeveloper">独立开发者</span>
 			</p>
 			<h1 class="text-5xl font-medium leading-[1.05] sm:text-6xl xl:text-7xl">
 				TZZ'S <span class="font-outline-sm text-transparent">BLOG</span>
 			</h1>
-			<p class="mt-6 max-w-xl text-lg leading-relaxed text-text-soft lg:text-xl">
+			<p class="mt-6 max-w-xl text-lg leading-relaxed text-text-soft lg:text-xl" data-i18n-key="home.heroTagline">
 				TZZ 的独立开发者主页：应用开发与技术实践。
 			</p>
 			<div class="mt-9 flex flex-wrap gap-4">
-				<a class="btn-tertiary" href="/projects/">查看项目</a>
-				<a class="btn-secondary" href="/blog/">阅读博客</a>
+				<a class="btn-tertiary" href="/projects/" data-i18n-key="home.ctaViewProjects">查看项目</a>
+				<a class="btn-secondary" href="/blog/" data-i18n-key="home.ctaReadBlog">阅读博客</a>
 			</div>
 		</div>
 		<div class="hidden flex-1 justify-center lg:flex">
@@ -66,7 +66,7 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 				</div>
 				<div class="terminal-line">
 					<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">role</span></p>
-					<p class="mt-1 text-white/90">独立开发者</p>
+					<p class="mt-1 text-white/90" data-i18n-key="home.independentDeveloper">独立开发者</p>
 				</div>
 				<div class="terminal-line">
 					<p><span class="text-green">➜</span> <span class="text-white/80">~</span> <span class="text-white/80">stack</span></p>
@@ -92,11 +92,14 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 			<h2
 				id="projects-heading"
 				class="w-fit shrink-0 rounded-lg bg-green px-2.5 py-1.5 text-3xl font-medium text-black sm:text-4xl"
+				data-i18n-key="home.projectsHeading"
 			>
 				正在进行的项目
 			</h2>
 			<p class="text-text-soft sm:max-w-[560px]">
-				目前维护 {projects.length} 个项目，覆盖 VS Code 插件、桌面工具、Agent 工具与 Skills，更多正在开发中。
+				<span data-i18n-key="home.projectsDescPrefix">目前维护</span>
+				{' '}{projects.length}{' '}
+				<span data-i18n-key="home.projectsDescSuffix">个项目，覆盖 VS Code 插件、桌面工具、Agent 工具与 Skills，更多正在开发中。</span>
 			</p>
 		</div>
 		{
@@ -105,7 +108,7 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 					{projects.map((project) => <ProjectCard project={project} showCategory />)}
 				</div>
 			) : (
-				<p class="rounded-2xl border border-dashed border-border px-6 py-12 text-center text-text-faint">
+				<p class="rounded-2xl border border-dashed border-border px-6 py-12 text-center text-text-faint" data-i18n-key="home.emptyProjects">
 					暂无项目，敬请期待。
 				</p>
 			)
@@ -116,6 +119,7 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 					<a
 					class="group inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-2.5 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
 					href="/projects/"
+					data-i18n-key="home.viewAllProjects"
 				>
 					查看全部项目
 					<svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -133,10 +137,11 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 			<h2
 				id="blog-heading"
 				class="w-fit shrink-0 rounded-lg bg-green px-2.5 py-1.5 text-3xl font-medium text-black sm:text-4xl"
+				data-i18n-key="home.blogHeading"
 			>
 				最近文章
 			</h2>
-			<p class="text-text-soft sm:max-w-[560px]">
+			<p class="text-text-soft sm:max-w-[560px]" data-i18n-key="home.blogDesc">
 				记录编程路上的思考与经验：踩坑记录、设计与工程实践。
 			</p>
 		</div>
@@ -177,7 +182,7 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 					</div>
 				</div>
 			) : (
-				<p class="rounded-2xl border border-dashed border-border px-6 py-12 text-center text-text-faint">
+				<p class="rounded-2xl border border-dashed border-border px-6 py-12 text-center text-text-faint" data-i18n-key="home.emptyBlog">
 					还没有文章，敬请期待。
 				</p>
 			)
@@ -188,6 +193,7 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 					<a
 					class="group inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-6 py-2.5 text-sm font-medium text-[var(--text-soft)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
 					href="/blog/"
+					data-i18n-key="home.viewAllPosts"
 				>
 					查看全部文章
 					<svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -206,8 +212,8 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 			class="flex flex-col gap-10 rounded-[2rem] bg-black p-8 text-white sm:p-12 lg:flex-row lg:items-start lg:justify-between"
 		>
 			<div class="max-w-2xl">
-				<h2 id="about-heading" class="text-3xl font-bold sm:text-4xl">你好，我是 TZZ</h2>
-				<p class="mt-4 leading-relaxed text-white/70">
+				<h2 id="about-heading" class="text-3xl font-bold sm:text-4xl" data-i18n-key="home.aboutHeading">你好，我是 TZZ</h2>
+				<p class="mt-4 leading-relaxed text-white/70" data-i18n-key="home.aboutDesc">
 					独立开发者，专注 VS Code 扩展与 Windows 桌面工具，也在博客里记录技术踩坑与工程实践。
 				</p>
 				<ul class="mt-6 flex flex-wrap gap-2" aria-label="技术栈">
@@ -223,15 +229,15 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 			<div class="flex shrink-0 flex-col gap-8 lg:items-end">
 				<dl class="flex gap-12 lg:flex-col lg:gap-4">
 					<div>
-						<dt class="text-sm text-white/50">博客文章</dt>
+						<dt class="text-sm text-white/50" data-i18n-key="home.statBlogPosts">博客文章</dt>
 						<dd class="mt-1 font-mono text-3xl font-bold text-green">{postCount}</dd>
 					</div>
 					<div>
-						<dt class="text-sm text-white/50">项目</dt>
+						<dt class="text-sm text-white/50" data-i18n-key="home.statProjects">项目</dt>
 						<dd class="mt-1 font-mono text-3xl font-bold text-green">{projects.length}</dd>
 					</div>
 				</dl>
-				<a class="btn-tertiary w-fit" href="/about/">了解更多 →</a>
+				<a class="btn-tertiary w-fit" href="/about/" data-i18n-key="home.learnMore">了解更多 →</a>
 			</div>
 		</div>
 	</section>
