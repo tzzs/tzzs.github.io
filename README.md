@@ -1,6 +1,6 @@
 # TZZ'S BLOG
 
-个人开发者主页：应用展示 + 技术博客。
+个人开发者主页：项目展示 + 技术博客。
 
 基于 **Astro + TypeScript + Content Collections** 构建，部署于 **GitHub Pages**（GitHub Actions 自动构建发布）。
 
@@ -26,9 +26,9 @@ npm run preview    # 预览构建产物
 src/
 ├── content/
 │   ├── blog/          # 博客文章（Markdown，front matter 见下）
-│   └── apps/<slug>/   # 应用详情内容（index.md / changelog.md / privacy.md）
+│   └── projects/<slug>/ # 项目详情内容（index.md / changelog.md / privacy.md）
 ├── data/
-│   └── apps.ts        # 应用元数据（驱动 /apps 页面）
+│   └── projects.ts    # 项目元数据（驱动 /projects 页面）
 ├── pages/             # 页面路由
 ├── layouts/           # 布局（可随主题更换）
 ├── components/        # 组件（可随主题更换）
@@ -60,12 +60,12 @@ categories: [教程]
 - `draft: true` 标记草稿（不会发布）
 - 文件名即 URL slug：`/blog/文件名/`
 
-### 新增应用
+### 新增项目
 
-1. 在 `src/data/apps.ts` 的 `apps` 数组中追加一条记录（slug/name/description/status/platforms/links）
-2. 在 `src/content/apps/<slug>/` 下创建 `index.md`（产品介绍）、`changelog.md`（更新日志）、`privacy.md`（隐私政策）
+1. 在 `src/data/projects.ts` 的 `projects` 数组中追加一条记录（slug/name/description/status/category/platforms/links）
+2. 在 `src/content/projects/<slug>/` 下创建 `index.md`（项目介绍）；`changelog.md`（更新日志）、`privacy.md`（隐私政策）仅 `app`、`extension` 分类需要，`agent-tool`、`skill` 分类以 GitHub 仓库为准，不用创建
 
-页面 `/apps/<slug>/` 自动生成。
+页面 `/projects/<slug>/` 自动生成。
 
 ## 部署
 

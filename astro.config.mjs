@@ -7,6 +7,13 @@ import remarkTocMarker from './src/plugins/remark-toc-marker.mjs';
 import rehypeImageAttrs from './src/plugins/rehype-image-attrs.mjs';
 export default defineConfig({
   site: 'https://tzzs.github.io',
+  // 「应用」tab 泛化为「项目」后，旧 /apps/* 路径重定向到 /projects/*（静态构建下 Astro 自动生成 meta refresh 页面）
+  redirects: {
+    '/apps': '/projects',
+    '/apps/[slug]': '/projects/[slug]',
+    '/apps/[slug]/changelog': '/projects/[slug]/changelog',
+    '/apps/[slug]/privacy': '/projects/[slug]/privacy',
+  },
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

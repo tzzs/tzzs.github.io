@@ -6,7 +6,7 @@ order: 1
 
 Comment Doc Lens 是一个 VS Code 扩展，**在引用处以内联提示（inlay hint）展示定义注释与符号文档**。
 
-![Comment Doc Lens 在 VS Code 中展示内联符号文档的预览图](/images/apps/comment-doc-lens/social-preview.png)
+![Comment Doc Lens 在 VS Code 中展示内联符号文档的预览图](/images/projects/comment-doc-lens/social-preview.png)
 
 ## 为什么需要它
 
@@ -31,7 +31,7 @@ Comment Doc Lens 把有用的定义文档放回你正在阅读的代码旁边。
 
 | 开启前 | 开启后 |
 | --- | --- |
-| ![开启前的 VS Code 编辑器](/images/apps/comment-doc-lens/demo-before.png) | ![开启后在引用行尾展示内联文档提示](/images/apps/comment-doc-lens/demo-after.png) |
+| ![开启前的 VS Code 编辑器](/images/projects/comment-doc-lens/demo-before.png) | ![开启后在引用行尾展示内联文档提示](/images/projects/comment-doc-lens/demo-after.png) |
 
 ## 语言支持
 

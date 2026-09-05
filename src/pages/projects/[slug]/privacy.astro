@@ -1,27 +1,30 @@
 ---
-// 应用隐私政策页：渲染 src/content/apps/<slug>/privacy.md
-// 未知 slug 不在此生成（getStaticPaths 仅来自 apps 数组），返回 404；
-// 已知应用但 privacy.md 缺失时优雅降级为占位提示。
+// 项目隐私政策页：渲染 src/content/projects/<slug>/privacy.md
+// 仅 app（应用）、extension（VS Code 插件）分类生成（getStaticPaths 按 category 过滤）；
+// 未知 slug 或 agent-tool/skill 分类不在此生成，返回 404；
+// 已知项目但 privacy.md 缺失时优雅降级为占位提示。
 import { getCollection, render } from 'astro:content';
 import MainLayout from '../../../layouts/MainLayout.astro';
-import { apps, type App } from '../../../data/apps';
+import { projects, type Project } from '../../../data/projects';
 import { SITE_TITLE } from '../../../consts';
 
 export async function getStaticPaths() {
-	return apps.map((app) => ({
-		params: { slug: app.slug },
-		props: { app },
-	}));
+	return projects
+		.filter((project) => project.category === 'app' || project.category === 'extension')
+		.map((project) => ({
+			params: { slug: project.slug },
+			props: { project },
+		}));
 }
 
 interface Props {
-	app: App;
+	project: Project;
 }
 
-const { app } = Astro.props;
+const { project } = Astro.props;
 
-const entry = (await getCollection('apps')).find(
-	(entry) => entry.id === `${app.slug}/privacy`,
+const entry = (await getCollection('projects')).find(
+	(entry) => entry.id === `${project.slug}/privacy`,
 );
 const PrivacyContent = entry ? (await render(entry)).Content : undefined;
 const pageTitle = entry?.data.title ?? '隐私政策';
@@ -32,17 +35,17 @@ const dateText = pubDate
 ---
 
 <MainLayout
-	title={`${pageTitle} - ${app.name} - ${SITE_TITLE}`}
-	description={`${app.name} 的隐私政策`}
+	title={`${pageTitle} - ${project.name} - ${SITE_TITLE}`}
+	description={`${project.name} 的隐私政策`}
 >
 	<article>
-		<!-- 面包屑：返回应用详情页 -->
+		<!-- 面包屑：返回项目详情页 -->
 		<nav class="mb-6" aria-label="面包屑">
 			<a
 				class="text-sm font-medium text-text-soft transition-colors duration-150 hover:text-accent"
-				href={`/apps/${app.slug}/`}
+				href={`/projects/${project.slug}/`}
 			>
-				&larr; {app.name}
+				&larr; {project.name}
 			</a>
 		</nav>
 

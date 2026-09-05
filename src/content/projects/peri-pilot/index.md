@@ -22,4 +22,4 @@ order: 1
 
 ## 数据隐私
 
-应用数据仅保存在本机 `%LocalAppData%\PeriPilot`，不创建账户、不包含遥测或云同步，也不会向任何服务器上传数据。详见[隐私政策](/apps/peri-pilot/privacy/)。
+应用数据仅保存在本机 `%LocalAppData%\PeriPilot`，不创建账户、不包含遥测或云同步，也不会向任何服务器上传数据。详见[隐私政策](/projects/peri-pilot/privacy/)。

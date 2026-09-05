@@ -6,7 +6,7 @@ order: 1
 
 Thrift Support 是一个面向 **Apache Thrift IDL** 的 VS Code 语言智能扩展，覆盖语法高亮、格式化、诊断、导航、补全、重命名/重构，并提供 CI 可用的 CLI 与性能门禁。
 
-![Thrift 诊断与格式化预览](/images/apps/vsce-thrift-support/format-diagnostics.png)
+![Thrift 诊断与格式化预览](/images/projects/vsce-thrift-support/format-diagnostics.png)
 
 ## 功能特性
 
