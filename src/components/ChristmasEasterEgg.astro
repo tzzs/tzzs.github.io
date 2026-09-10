@@ -1,0 +1,349 @@
+---
+// 圣诞彩蛋：全屏动画覆盖层（飘雪 + 旋转粒子圣诞树 + 光效星星 + Merry Christmas 文案）
+// 挂载点：src/layouts/MainLayout.astro（挂载一次，全站生效）
+// 触发方式：
+//   1) 手动：Navbar.astro 监听顶部 Logo 连续点击 5 次，dispatch CHRISTMAS_OPEN_EVENT
+//   2) 自动：本组件在页面 load 后判断日期窗口 + 每会话一次 + 不打扰 prefers-reduced-motion
+// 关闭：遮罩内任意点击（含关闭按钮）/ Esc 键；打开期间锁定 body 滚动
+---
+
+<div
+	id="christmas-overlay"
+	class="fixed inset-0 z-[100] hidden items-center justify-center overflow-hidden bg-[linear-gradient(to_bottom,#090d1c,#1a1f35,#000000)]"
+	role="dialog"
+	aria-modal="true"
+	aria-label="Merry Christmas"
+>
+	<canvas id="christmas-canvas" class="absolute inset-0"></canvas>
+
+	<button
+		id="christmas-close"
+		type="button"
+		class="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition-colors duration-150 hover:bg-white/10 hover:text-white"
+		aria-label="关闭"
+	>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+		</svg>
+	</button>
+
+	<p
+		id="christmas-hint"
+		class="pointer-events-none absolute top-5 left-1/2 z-10 -translate-x-1/2 text-sm text-white/70 opacity-0 transition-opacity duration-700"
+	>
+		点击任意处或按 Esc 关闭
+	</p>
+
+	<div class="pointer-events-none absolute bottom-[12%] z-10 text-center">
+		<div class="christmas-main-text text-4xl font-bold text-white sm:text-5xl">Merry Christmas</div>
+		<div class="mt-2.5 text-[1.2rem] tracking-[2px] text-white/80">
+			✨ <span id="christmas-year"></span>.12.25 ✨
+		</div>
+	</div>
+</div>
+
+<style>
+	.christmas-main-text {
+		text-shadow: 0 0 15px #ff3838, 0 0 30px #e5ff00;
+		animation: christmas-title-glow 3s infinite alternate ease-in-out;
+	}
+	@keyframes christmas-title-glow {
+		0% { text-shadow: 0 0 15px #ff3838, 0 0 30px #e5ff00; transform: scale(1); }
+		100% { text-shadow: 0 0 30px #ff3838, 0 0 60px #e5ff00; transform: scale(1.03); }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.christmas-main-text { animation: none; }
+	}
+</style>
+
+<script>
+	import {
+		CHRISTMAS_OPEN_EVENT,
+		CHRISTMAS_SESSION_KEY,
+		CHRISTMAS_AUTO_OPEN_DELAY_MS,
+		CHRISTMAS_CLOSE_GRACE_MS,
+		isWithinChristmasWindow,
+	} from '../lib/christmas';
+
+	const overlay = document.getElementById('christmas-overlay') as HTMLDivElement;
+	const canvas = document.getElementById('christmas-canvas') as HTMLCanvasElement;
+	const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+	const closeBtn = document.getElementById('christmas-close') as HTMLButtonElement;
+	const hintEl = document.getElementById('christmas-hint') as HTMLParagraphElement;
+
+	let width = 0;
+	let height = 0;
+	let rafId: number | null = null;
+	let hintTimer: ReturnType<typeof setTimeout> | undefined;
+	let treeParticles: TreeParticle[] = [];
+	let snowParticles: Snowflake[] = [];
+	let lastFocused: HTMLElement | null = null;
+	let openedAt = 0;
+
+	function prefersReducedMotion(): boolean {
+		return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	}
+
+	function resize(): void {
+		width = canvas.width = window.innerWidth;
+		height = canvas.height = window.innerHeight;
+	}
+
+	class Snowflake {
+		x!: number;
+		y!: number;
+		speed!: number;
+		size!: number;
+		drift!: number;
+		opacity!: number;
+
+		constructor() {
+			this.reset(true);
+		}
+
+		reset(initial: boolean): void {
+			this.x = Math.random() * width;
+			this.y = initial ? Math.random() * height : -10;
+			this.speed = 0.5 + Math.random() * 2;
+			this.size = 0.5 + Math.random() * 2;
+			this.drift = (Math.random() - 0.5) * 0.5;
+			this.opacity = 0.3 + Math.random() * 0.7;
+		}
+
+		update(): void {
+			this.y += this.speed;
+			this.x += this.drift;
+			if (this.y > height) this.reset(false);
+		}
+
+		draw(): void {
+			ctx.beginPath();
+			ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+			ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+			ctx.fill();
+		}
+	}
+
+	class TreeParticle {
+		angle!: number;
+		radiusScale!: number;
+		y!: number;
+		speed!: number;
+		type!: string;
+		color!: string;
+		size!: number;
+		glow!: number;
+		blinkOffset!: number;
+		x2d!: number;
+		y2d!: number;
+		alpha!: number;
+
+		constructor() {
+			this.reset();
+			this.y = Math.random() * height * 0.8 + height * 0.2;
+		}
+
+		reset(): void {
+			this.angle = Math.random() * Math.PI * 2;
+			this.radiusScale = 0.8 + Math.random() * 0.4;
+			this.y = height + 50;
+			this.speed = 1.2 + Math.random() * 1.8;
+			const typeRand = Math.random();
+			if (typeRand > 0.93) {
+				this.type = 'ornament_red';
+				this.color = `hsl(${340 + Math.random() * 30}, 100%, 55%)`;
+				this.size = 3.5;
+				this.glow = 20;
+			} else if (typeRand > 0.86) {
+				this.type = 'ornament_gold';
+				this.color = `hsl(${40 + Math.random() * 15}, 100%, 65%)`;
+				this.size = 3;
+				this.glow = 15;
+			} else if (typeRand > 0.82) {
+				this.type = 'ornament_blue';
+				this.color = `hsl(${200 + Math.random() * 30}, 100%, 70%)`;
+				this.size = 2.5;
+				this.glow = 10;
+			} else {
+				this.type = 'leaf';
+				const hue = 100 + Math.random() * 70;
+				const saturation = 50 + Math.random() * 50;
+				const lightness = 30 + Math.random() * 30;
+				this.color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+				this.size = 1.3;
+				this.glow = 0;
+			}
+			this.blinkOffset = Math.random() * Math.PI * 2;
+		}
+
+		update(time: number): void {
+			this.y -= this.speed;
+			this.angle += 0.025;
+			const treeBaseY = height - 100;
+			const treeHeight = height * 0.75;
+			const progress = (treeBaseY - this.y) / treeHeight;
+			const currentRadius = (1 - progress) * (width > 800 ? 320 : width * 0.35);
+			if (progress > 1.05 || currentRadius < 0) {
+				this.reset();
+				return;
+			}
+			this.x2d = width / 2 + Math.cos(this.angle) * currentRadius * this.radiusScale;
+			this.y2d = this.y - Math.sin(progress * Math.PI * 12 + time * 2) * 4;
+			if (this.type.startsWith('ornament')) {
+				this.alpha = 0.6 + Math.sin(time * 3 + this.blinkOffset) * 0.4;
+			} else {
+				this.alpha = 1;
+			}
+		}
+
+		draw(): void {
+			if (this.y2d < 0 || this.y2d > height) return;
+			ctx.save();
+			ctx.globalAlpha = this.alpha;
+			ctx.fillStyle = this.color;
+			if (this.glow > 0) {
+				ctx.shadowBlur = this.glow;
+				ctx.shadowColor = this.color;
+			}
+			ctx.beginPath();
+			ctx.arc(this.x2d, this.y2d, this.size, 0, Math.PI * 2);
+			ctx.fill();
+			ctx.restore();
+		}
+	}
+
+	function drawStar(time: number): void {
+		const cx = width / 2;
+		const cy = height - height * 0.75 - 130;
+		ctx.save();
+		ctx.translate(cx, cy);
+		const scale = 1 + Math.sin(time * 4) * 0.1;
+		ctx.scale(scale, scale);
+		ctx.rotate(time * 0.4);
+		ctx.beginPath();
+		const gradient = ctx.createRadialGradient(0, 0, 5, 0, 0, 30);
+		gradient.addColorStop(0, '#fff');
+		gradient.addColorStop(0.4, '#ffeb3b');
+		gradient.addColorStop(1, '#ffc107');
+		ctx.fillStyle = gradient;
+		ctx.shadowBlur = 40;
+		ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
+		for (let i = 0; i < 5; i++) {
+			ctx.lineTo(Math.cos(((18 + i * 72) / 180) * Math.PI) * 25, -Math.sin(((18 + i * 72) / 180) * Math.PI) * 25);
+			ctx.lineTo(Math.cos(((54 + i * 72) / 180) * Math.PI) * 10, -Math.sin(((54 + i * 72) / 180) * Math.PI) * 10);
+		}
+		ctx.closePath();
+		ctx.fill();
+		ctx.restore();
+	}
+
+	function initParticles(): void {
+		treeParticles = [];
+		snowParticles = [];
+		for (let i = 0; i < 1500; i++) treeParticles.push(new TreeParticle());
+		for (let i = 0; i < 250; i++) snowParticles.push(new Snowflake());
+	}
+
+	function renderFrame(time: number): void {
+		ctx.fillStyle = 'rgba(9, 13, 28, 0.25)';
+		ctx.fillRect(0, 0, width, height);
+		snowParticles.forEach((s) => {
+			s.update();
+			s.draw();
+		});
+		treeParticles.sort((a, b) => b.y2d - a.y2d);
+		treeParticles.forEach((p) => {
+			p.update(time);
+			p.draw();
+		});
+		drawStar(time);
+	}
+
+	function animate(): void {
+		renderFrame(Date.now() * 0.001);
+		rafId = requestAnimationFrame(animate);
+	}
+
+	function onKeydown(e: KeyboardEvent): void {
+		if (e.key === 'Escape') closeOverlay();
+	}
+
+	function openOverlay(): void {
+		if (!overlay.classList.contains('hidden')) return; // 已打开
+		openedAt = Date.now();
+		sessionStorage.setItem(CHRISTMAS_SESSION_KEY, '1');
+		lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+		resize();
+		initParticles();
+
+		overlay.classList.remove('hidden');
+		overlay.classList.add('flex');
+		document.body.classList.add('overflow-hidden');
+
+		const yearEl = document.getElementById('christmas-year');
+		if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+		window.addEventListener('resize', resize);
+		document.addEventListener('keydown', onKeydown);
+
+		if (prefersReducedMotion()) {
+			renderFrame(0); // 减弱动效：只画一帧静态画面，不启动 rAF 循环
+		} else {
+			animate();
+		}
+
+		// 提示文字打开时淡入，几秒后自动淡出——只解决"第一次进来不知道怎么关"，
+		// 不长期占屏幕；右上角×按钮和点击任意处关闭本身不依赖这条提示，随时都能用
+		hintEl.classList.remove('opacity-0');
+		hintTimer = setTimeout(() => hintEl.classList.add('opacity-0'), 3500);
+
+		closeBtn.focus();
+	}
+
+	function closeOverlay(): void {
+		if (overlay.classList.contains('hidden')) return; // 已关闭
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
+		}
+		if (hintTimer !== undefined) clearTimeout(hintTimer);
+		hintEl.classList.add('opacity-0'); // 复位，确保下次打开会重新淡入
+		overlay.classList.add('hidden');
+		overlay.classList.remove('flex');
+		document.body.classList.remove('overflow-hidden');
+		window.removeEventListener('resize', resize);
+		document.removeEventListener('keydown', onKeydown);
+		treeParticles = [];
+		snowParticles = [];
+		lastFocused?.focus();
+	}
+
+	// 关闭按钮独立处理并 stopPropagation：不依赖冒泡到 overlay 的通用点击关闭逻辑，
+	// 这样才能不受下面的"打开保护期"影响，任何时候点×都能立即关闭
+	closeBtn.addEventListener('click', (e) => {
+		e.stopPropagation();
+		closeOverlay();
+	});
+
+	// 遮罩内其余点击（含 canvas 空白处）都关闭，但打开后 CHRISTMAS_CLOSE_GRACE_MS 内不响应：
+	// 连点 Logo 触发时遮罩会盖住 Logo 原来的位置，手速快多点的那一下会落在遮罩上，
+	// 没有保护期的话会被当成"点击关闭"，导致刚连点打开就被自己关掉
+	overlay.addEventListener('click', () => {
+		if (Date.now() - openedAt < CHRISTMAS_CLOSE_GRACE_MS) return;
+		closeOverlay();
+	});
+	window.addEventListener(CHRISTMAS_OPEN_EVENT, openOverlay);
+
+	// 自动触发：季节窗口 + 每会话一次 + 不打扰 prefers-reduced-motion；延迟到 load 之后再判断/开场
+	function maybeAutoOpen(): void {
+		if (prefersReducedMotion()) return;
+		if (sessionStorage.getItem(CHRISTMAS_SESSION_KEY)) return;
+		if (!isWithinChristmasWindow(new Date())) return;
+		openOverlay();
+	}
+
+	window.addEventListener('load', () => {
+		setTimeout(maybeAutoOpen, CHRISTMAS_AUTO_OPEN_DELAY_MS);
+	});
+</script>

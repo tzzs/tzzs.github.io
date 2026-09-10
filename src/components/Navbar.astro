@@ -25,7 +25,7 @@ const isActive = (href: string) => {
 >
 	<nav class="mx-auto flex w-full max-w-[1240px] items-center justify-between px-5 py-4">
 		<!-- 可访问名称需包含可见文字（SITE_TITLE），满足 Lighthouse label-content-name 审计 -->
-		<a href="/" class="flex items-center gap-2" aria-label={`${SITE_TITLE} · 返回首页`}>
+		<a href="/" id="site-logo" class="flex items-center gap-2" aria-label={`${SITE_TITLE} · 返回首页`}>
 			<span class="inline-block h-8 w-8 rounded-lg bg-green" aria-hidden="true"></span>
 			<span class="text-xl font-bold tracking-tight">{SITE_TITLE}</span>
 		</a>
@@ -129,6 +129,12 @@ const isActive = (href: string) => {
 
 <script>
 	import { STRINGS, DEFAULT_LOCALE, LOCALE_STORAGE_KEY, type Locale } from '../i18n/strings';
+	import {
+		CHRISTMAS_OPEN_EVENT,
+		CHRISTMAS_CLICK_THRESHOLD,
+		CHRISTMAS_CLICK_WINDOW_MS,
+		CHRISTMAS_NAV_DEBOUNCE_MS,
+	} from '../lib/christmas';
 
 	// 沉浸式导航：页面在顶部时透明融入内容，滚动后浮出底色 + 边框 + 模糊
 	// 底色/边框用 CSS 变量（--nav-bg / --nav-border），深色模式下自动跟随主题
@@ -239,6 +245,37 @@ const isActive = (href: string) => {
 				closeIcon.classList.add('hidden');
 				toggle.setAttribute('aria-expanded', 'false');
 			});
+		});
+	}
+
+	// 圣诞彩蛋：连续点击 Logo 5 次（1.5s 滚动窗口内）打开全屏彩蛋，替代跳转首页。
+	// 站点是纯 MPA（无客户端路由），<a href="/"> 默认点击即整页跳转，计数器活不过第一次点击，
+	// 因此无条件拦截左键单击，未达阈值时用去抖延迟模拟"正常单击"跳转（唯一代价：单击 Logo 到
+	// 真正跳转之间约 400ms 延迟）。保留 Ctrl/Cmd/Shift/Alt+点击的浏览器原生行为，不拦截不计数。
+	const logoLink = document.getElementById('site-logo') as HTMLAnchorElement | null;
+	if (logoLink) {
+		let clickTimestamps: number[] = [];
+		let navTimer: ReturnType<typeof setTimeout> | undefined;
+
+		logoLink.addEventListener('click', (e) => {
+			if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+			e.preventDefault();
+
+			const now = Date.now();
+			clickTimestamps.push(now);
+			clickTimestamps = clickTimestamps.filter((t) => now - t <= CHRISTMAS_CLICK_WINDOW_MS);
+
+			if (navTimer !== undefined) clearTimeout(navTimer);
+
+			if (clickTimestamps.length >= CHRISTMAS_CLICK_THRESHOLD) {
+				clickTimestamps = [];
+				window.dispatchEvent(new CustomEvent(CHRISTMAS_OPEN_EVENT));
+				return;
+			}
+
+			navTimer = setTimeout(() => {
+				window.location.href = logoLink.href;
+			}, CHRISTMAS_NAV_DEBOUNCE_MS);
 		});
 	}
 </script>
