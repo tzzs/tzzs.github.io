@@ -15,6 +15,13 @@ export const CHRISTMAS_CLICK_WINDOW_MS = 1500;
 /** 手动触发：未达到点击阈值时，延迟多久后当作普通单击真正跳转首页 */
 export const CHRISTMAS_NAV_DEBOUNCE_MS = 400;
 
+/**
+ * 打开后的"保护期"（毫秒）：遮罩铺满全屏后会盖住 Logo 原来的位置，连点触发时如果手速快、
+ * 多点了一下，这一下会落在遮罩上而不是 Logo 上——保护期内遮罩自身的"点击关闭"不响应，
+ * 避免刚打开就被这类连带点击关掉；右上角×按钮和 Esc 键不受此限制，始终可以立即关闭
+ */
+export const CHRISTMAS_CLOSE_GRACE_MS = 500;
+
 /** 自动触发：页面 load 后延迟多久再判断是否自动弹出（避免抢占首屏渲染） */
 export const CHRISTMAS_AUTO_OPEN_DELAY_MS = 1200;
 
