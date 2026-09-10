@@ -102,6 +102,7 @@ export const STRINGS: Record<string, string> = {
 	'status.released': 'Released',
 
 	// 项目列表页
+	'projectsPage.title': 'Projects',
 	'projectsPage.description':
 		'Projects I have built, spanning apps, VS Code extensions, Agent tools and Skills — feel free to use them or follow along.',
 
