@@ -16,6 +16,7 @@ import type { ImageMetadata } from 'astro';
 import thriftSupportIcon from '../assets/projects/vsce-thrift-support/icon.png';
 import commentDocLensIcon from '../assets/projects/comment-doc-lens/icon.png';
 import periPilotIcon from '../assets/projects/peri-pilot/icon.png';
+import remotePulseIcon from '../assets/projects/remote-pulse/icon.png';
 
 /** 项目开发状态 */
 export type ProjectStatus = 'development' | 'beta' | 'released';
@@ -81,6 +82,20 @@ export const projects: Project[] = [
     links: {
       marketplace: 'https://marketplace.visualstudio.com/items?itemName=tanzz.comment-doc-lens',
       github: 'https://github.com/tzzs/comment-doc-lens',
+    },
+  },
+  {
+    slug: 'remote-pulse',
+    name: 'Remote Pulse',
+    description: '在状态栏静默追踪 Remote-SSH 远程主机的 CPU/内存/磁盘/网络/GPU/Docker 状态',
+    status: 'released',
+    category: 'extension',
+    platforms: ['VS Code'],
+    icon: remotePulseIcon,
+    links: {
+      marketplace: 'https://marketplace.visualstudio.com/items?itemName=tanzz.remote-pulse',
+      openVsx: 'https://open-vsx.org/extension/tanzz/remote-pulse',
+      github: 'https://github.com/tzzs/remote-pulse',
     },
   },
   {
