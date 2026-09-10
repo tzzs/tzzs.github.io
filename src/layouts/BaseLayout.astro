@@ -13,9 +13,9 @@ interface Props {
 	image?: string;
 }
 
-const { title, description = SITE_TITLE, image } = Astro.props;
+const { title, description = SITE_TITLE, image = '/images/logo.png' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = image ? new URL(image, Astro.site) : undefined;
+const ogImage = new URL(image, Astro.site);
 
 // 全站结构化数据：WebSite + Person（描述站点本身，与当前页面无关，固定用站点级常量而非 description prop）
 const schemaGraph = {
@@ -73,13 +73,13 @@ const schemaGraph = {
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-{ogImage && <meta property="og:image" content={ogImage} />}
+<meta property="og:image" content={ogImage} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-{ogImage && <meta name="twitter:image" content={ogImage} />}
+<meta name="twitter:image" content={ogImage} />
 
 <!-- 结构化数据：WebSite + Person（全站每页固定输出，非统计脚本，不受下方 PROD 门槛限制） -->
 <script type="application/ld+json" is:inline set:html={JSON.stringify(schemaGraph)} />
