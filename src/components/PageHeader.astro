@@ -8,26 +8,31 @@ interface Props {
 	badge?: string;
 	/** 副标题描述，不传则不显示 */
 	description?: string;
-	/**
-	 * description 的 i18n 字典 key（src/i18n/strings.ts），传了才参与语言切换。
-	 * title 不提供对应 key：title 旁边常年跟着英文 badge，若 title 也翻译成英文会跟 badge 重复（"Projects Projects"），
-	 * 索性让 title 始终保持中文，由 badge 承担这个页头的英文识别。
-	 */
+	/** description 的 i18n 字典 key（src/i18n/strings.ts），传了才参与语言切换 */
 	descriptionKey?: string;
+	/**
+	 * title 的 i18n 字典 key，传了才参与语言切换。
+	 * badge 通常就是 title 的英文译文（如「项目」+ Projects），若两者同时翻译/展示会重复成
+	 * "Projects Projects"，所以传了 titleKey 时英文模式下会一并隐藏 badge，由 title 自己承担
+	 * 这个页头的英文识别（隐藏规则见 global.css 的 `[data-i18n-hide-en]`）。
+	 */
+	titleKey?: string;
 }
 
-const { title, badge, description, descriptionKey } = Astro.props;
+const { title, badge, description, descriptionKey, titleKey } = Astro.props;
+const badgeClass =
+	'ml-3 inline-block rounded-xl bg-green px-4 py-1 text-2xl font-semibold align-middle md:text-3xl';
 ---
 
 <section class="pb-10 pt-12 md:pt-16">
 	<h1 class="text-4xl font-bold tracking-tight md:text-5xl">
-		{title}
+		<span data-i18n-key={titleKey}>{title}</span>
 		{
-			badge && (
-				<span class="ml-3 inline-block rounded-xl bg-green px-4 py-1 text-2xl font-semibold align-middle md:text-3xl">
-					{badge}
-				</span>
-			)
+			badge && (titleKey ? (
+				<span class={badgeClass} data-i18n-hide-en>{badge}</span>
+			) : (
+				<span class={badgeClass}>{badge}</span>
+			))
 		}
 	</h1>
 	{
