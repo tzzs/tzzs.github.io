@@ -53,7 +53,7 @@ const dateText = pubDate
 			<h1 class="text-3xl font-bold tracking-tight md:text-4xl">{pageTitle}</h1>
 			{dateText && (
 				<p class="mt-2 text-sm text-text-faint">
-					<span data-i18n-key="changelog.lastUpdatedPrefix">最后更新：</span>{dateText}
+					<span data-i18n-key="changelog.lastUpdatedPrefix">最后更新：</span><time datetime={pubDate!.toISOString()} data-i18n-date>{dateText}</time>
 				</p>
 			)}
 		</header>

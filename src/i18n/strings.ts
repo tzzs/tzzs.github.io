@@ -26,6 +26,30 @@ export const STRINGS: Record<string, string> = {
 
 	// 博客列表页（PageHeader 大标题；与 nav.blog 分开维护，两处用途不同，只是英文译文恰好相同）
 	'blog.title': 'Blog',
+	'blog.descPrefix': "TZZ's technical blog —",
+	'blog.descSuffix': 'posts, documenting debugging war stories and engineering practice.',
+
+	// 博客「文章时间轴」横幅（/blog/ 页内醒目入口）
+	'blog.timelineBannerTitle': 'Article Timeline',
+	'blog.timelineBannerDesc': 'Browse all posts along a timeline',
+	'blog.timelineBannerCta': 'View Timeline',
+
+	// 时间轴页（/blog/timeline/）：大标题 + 描述 + 「返回博客」横幅
+	// 注：页内的标签/分类筛选侧栏与月份分组暂未接入翻译，属于更大的独立任务
+	'blog.timelineTitle': 'Timeline',
+	'blog.timelineDescPrefix': 'A total of',
+	'blog.timelineDescSuffix': 'posts, browse them along a timeline.',
+	'blog.backBannerTitle': 'Back to Blog',
+	'blog.backBannerDesc': 'Browse the full post list',
+	'blog.backBannerCta': 'Go to Blog',
+
+	// 全部标签页（/blog/tags/）：大标题 + 描述；标签本身是内容标签，不翻译
+	'blog.tagsTitle': 'Tags',
+	'blog.tagsDescPrefix': 'A total of',
+	'blog.tagsDescSuffix': 'tags, sorted by post count.',
+
+	// 文章卡片（/blog/ 列表与首页最近文章共用组件 PostCard.astro）
+	'postCard.readMore': 'Read more →',
 
 	// 首页
 	'home.heroTagline': "TZZ's independent developer homepage: app development and technical practice.",

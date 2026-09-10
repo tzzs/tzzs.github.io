@@ -19,7 +19,7 @@ const dateText = pubDate.toLocaleDateString('zh-CN', {
 ---
 
 <article class="rounded-[var(--radius-card)] border border-[var(--border)] bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)]">
-	<time class="text-sm text-[var(--text-faint)]" datetime={pubDate.toISOString()}>{dateText}</time>
+	<time class="text-sm text-[var(--text-faint)]" datetime={pubDate.toISOString()} data-i18n-date>{dateText}</time>
 	<h2 class="mt-2 text-xl font-bold text-[var(--text)]">
 		<a class="transition-colors duration-150 hover:text-[var(--accent)]" href={href}>{title}</a>
 	</h2>
@@ -36,5 +36,5 @@ const dateText = pubDate.toLocaleDateString('zh-CN', {
 			</div>
 		)
 	}
-	<a class="mt-3 inline-block text-sm font-medium text-[var(--accent)] hover:underline" href={href}>阅读全文 →</a>
+	<a class="mt-3 inline-block text-sm font-medium text-[var(--accent)] hover:underline" href={href} data-i18n-key="postCard.readMore">阅读全文 →</a>
 </article>

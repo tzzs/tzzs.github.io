@@ -18,8 +18,15 @@ const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 <MainLayout title={`全部标签 | ${SITE_TITLE}`} description="博客全部标签索引">
 	<PageHeader
 		title="全部标签"
+		titleKey="blog.tagsTitle"
 		badge="Tags"
-		description={`共 ${sortedTags.length} 个标签，按文章数排序。`}
+		descriptionCount={{
+			prefix: '共',
+			prefixKey: 'blog.tagsDescPrefix',
+			count: sortedTags.length,
+			suffix: '个标签，按文章数排序。',
+			suffixKey: 'blog.tagsDescSuffix',
+		}}
 	/>
 
 	{

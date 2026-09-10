@@ -18,7 +18,13 @@ const { page } = Astro.props;
 	title="博客"
 	titleKey="blog.title"
 	badge="Blog"
-	description={`TZZ 的技术博客：共 ${page.total} 篇文章，记录编程踩坑与技术分享。`}
+	descriptionCount={{
+		prefix: 'TZZ 的技术博客：共',
+		prefixKey: 'blog.descPrefix',
+		count: page.total,
+		suffix: '篇文章，记录编程踩坑与技术分享。',
+		suffixKey: 'blog.descSuffix',
+	}}
 />
 
 <!-- 时间轴入口：醒目横幅，第一眼可见 -->
@@ -36,14 +42,14 @@ const { page } = Astro.props;
 			</svg>
 		</span>
 		<span class="min-w-0">
-			<span class="block font-semibold">文章时间轴</span>
-			<span class="block truncate text-sm text-white/70">按时间轴浏览全部文章</span>
+			<span class="block font-semibold" data-i18n-key="blog.timelineBannerTitle">文章时间轴</span>
+			<span class="block truncate text-sm text-white/70" data-i18n-key="blog.timelineBannerDesc">按时间轴浏览全部文章</span>
 		</span>
 	</span>
 	<span
 		class="flex shrink-0 items-center gap-1 rounded-full bg-green px-5 py-2 text-sm font-medium text-black transition-colors duration-200 group-hover:bg-white"
 	>
-		进入时间轴
+		<span data-i18n-key="blog.timelineBannerCta">进入时间轴</span>
 		<svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
 			<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
 		</svg>

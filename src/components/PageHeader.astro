@@ -11,6 +11,18 @@ interface Props {
 	/** description 的 i18n 字典 key（src/i18n/strings.ts），传了才参与语言切换 */
 	descriptionKey?: string;
 	/**
+	 * description 里嵌入了运行时数字（如「共 N 篇文章」）时用这个代替 description/descriptionKey：
+	 * 数字本身不翻译，只翻译前后缀文字，渲染结构与 src/pages/index.astro 的
+	 * projectsDescPrefix/Suffix 一致。
+	 */
+	descriptionCount?: {
+		prefix: string;
+		prefixKey: string;
+		count: number;
+		suffix: string;
+		suffixKey: string;
+	};
+	/**
 	 * title 的 i18n 字典 key，传了才参与语言切换。
 	 * badge 通常就是 title 的英文译文（如「项目」+ Projects），若两者同时翻译/展示会重复成
 	 * "Projects Projects"，所以传了 titleKey 时英文模式下会一并隐藏 badge，由 title 自己承担
@@ -19,7 +31,7 @@ interface Props {
 	titleKey?: string;
 }
 
-const { title, badge, description, descriptionKey, titleKey } = Astro.props;
+const { title, badge, description, descriptionKey, descriptionCount, titleKey } = Astro.props;
 const badgeClass =
 	'ml-3 inline-block rounded-xl bg-green px-4 py-1 text-2xl font-semibold align-middle md:text-3xl';
 ---
@@ -36,10 +48,18 @@ const badgeClass =
 		}
 	</h1>
 	{
-		description && (
-			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft" data-i18n-key={descriptionKey}>
-				{description}
+		descriptionCount ? (
+			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft">
+				<span data-i18n-key={descriptionCount.prefixKey}>{descriptionCount.prefix}</span>
+				{' '}{descriptionCount.count}{' '}
+				<span data-i18n-key={descriptionCount.suffixKey}>{descriptionCount.suffix}</span>
 			</p>
+		) : (
+			description && (
+				<p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft" data-i18n-key={descriptionKey}>
+					{description}
+				</p>
+			)
 		)
 	}
 </section>

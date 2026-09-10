@@ -185,6 +185,8 @@ const isActive = (href: string) => {
 	// 语言切换：[data-i18n-key] 标记的元素按当前 locale 替换文本（或 data-i18n-attr 指定的属性）；
 	// 字典（src/i18n/strings.ts）只存英文，中文取自元素首次渲染时的原文（懒缓存到 data-i18n-zh，切回中文时用它还原）。
 	// 找不到对应英文 key 时原样保留中文，不报错——允许页面逐步补充翻译覆盖范围。
+	// 日期是另一套独立机制（见下方 [data-i18n-date] 处理）：数量不固定、无法枚举进字典，
+	// 直接用 Intl 按当前 locale 重新格式化，不走这里的文本缓存/替换逻辑。
 	const langToggle = document.getElementById('lang-toggle') as HTMLButtonElement | null;
 
 	const applyLocale = (locale: Locale) => {
@@ -204,6 +206,18 @@ const isActive = (href: string) => {
 
 			if (attr) el.setAttribute(attr, value);
 			else el.textContent = value;
+		});
+
+		// 日期不走字典：[data-i18n-date] 元素按其 datetime 属性（ISO 字符串）用当前 locale 重新格式化，
+		// data-i18n-date-short 表示不显示年份（时间轴页按月份分组，年份已在上层展示）
+		document.querySelectorAll<HTMLElement>('[data-i18n-date]').forEach((el) => {
+			const iso = el.getAttribute('datetime');
+			if (!iso) return;
+			const date = new Date(iso);
+			const options: Intl.DateTimeFormatOptions = el.hasAttribute('data-i18n-date-short')
+				? { month: 'long', day: 'numeric' }
+				: { year: 'numeric', month: 'long', day: 'numeric' };
+			el.textContent = date.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', options);
 		});
 
 		if (langToggle) {

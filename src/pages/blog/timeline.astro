@@ -45,8 +45,15 @@ const monthNames = [
 <MainLayout title={`时间轴 | ${SITE_TITLE}`} description="博客文章时间轴，按时间浏览">
 	<PageHeader
 		title="时间轴"
+		titleKey="blog.timelineTitle"
 		badge="Timeline"
-		description={`共 ${posts.length} 篇文章，按时间轴浏览。`}
+		descriptionCount={{
+			prefix: '共',
+			prefixKey: 'blog.timelineDescPrefix',
+			count: posts.length,
+			suffix: '篇文章，按时间轴浏览。',
+			suffixKey: 'blog.timelineDescSuffix',
+		}}
 	/>
 
 	<!-- 返回博客：与博客页「进入时间轴」横幅对称的醒目入口 -->
@@ -64,8 +71,8 @@ const monthNames = [
 				</svg>
 			</span>
 			<span class="min-w-0">
-				<span class="block font-semibold">返回博客</span>
-				<span class="block truncate text-sm text-white/70">浏览全部文章列表</span>
+				<span class="block font-semibold" data-i18n-key="blog.backBannerTitle">返回博客</span>
+				<span class="block truncate text-sm text-white/70" data-i18n-key="blog.backBannerDesc">浏览全部文章列表</span>
 			</span>
 		</span>
 		<span
@@ -74,7 +81,7 @@ const monthNames = [
 			<svg class="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m0 0l6-6m-6 6l6 6" />
 			</svg>
-			前往博客
+			<span data-i18n-key="blog.backBannerCta">前往博客</span>
 		</span>
 	</a>
 
@@ -190,6 +197,8 @@ const monthNames = [
 													<time
 														class="timeline-post-date"
 														datetime={post.data.pubDate.toISOString()}
+														data-i18n-date
+														data-i18n-date-short
 													>
 														{dateText(post.data.pubDate)}
 													</time>
