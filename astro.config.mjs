@@ -14,7 +14,13 @@ export default defineConfig({
     '/apps/[slug]/changelog': '/projects/[slug]/changelog',
     '/apps/[slug]/privacy': '/projects/[slug]/privacy',
   },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // 排除旧站 Hexo 时间路径的 meta refresh 跳转页（[...path].astro 生成），
+      // sitemap 只收录真实内容页，跳转页不应作为可收录 URL 提交给搜索引擎
+      filter: (page) => !/\/\d{4}\/\d{2}\/\d{2}\//.test(page),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

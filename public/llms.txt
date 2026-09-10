@@ -1,0 +1,24 @@
+# TZZ'S BLOG
+
+> TZZ 的独立开发者主页：分享产品开发与技术实践，记录工程路上的踩坑与思考，欢迎查看项目与博客文章。
+
+## 核心页面
+
+- [首页](https://tzzs.github.io/): Hero、正在进行的项目与最近文章预览
+- [项目](https://tzzs.github.io/projects/): VS Code 插件、桌面应用、Agent 工具与 Skill
+- [博客](https://tzzs.github.io/blog/): 技术博客，编程踩坑记录与技术分享
+- [关于](https://tzzs.github.io/about/): 开发者简介与技术栈
+- [联系](https://tzzs.github.io/contact/): GitHub Issues 与开源主页
+
+## 项目
+
+- [Thrift Support](https://tzzs.github.io/projects/thrift-support/): Apache Thrift IDL 语言智能支持——语法高亮、格式化、诊断与代码导航（VS Code 插件）
+- [Comment Doc Lens](https://tzzs.github.io/projects/comment-doc-lens/): 在 VS Code 引用处以内联提示展示定义注释与符号文档（VS Code 插件）
+- [外设助手 PeriPilot](https://tzzs.github.io/projects/peri-pilot/): Windows 托盘应用，读取鼠标/键盘电量并提供低电量与充满电提醒
+- [AgentX](https://tzzs.github.io/projects/agentx/): 本地 API 适配器，让 Claude Code / Codex 灵活切换 OpenCode、DeepSeek、OpenRouter 等多个 LLM 提供商
+- [StorOps](https://tzzs.github.io/projects/storops/): 帮助 AI 编码代理安全诊断、清理与迁移本地磁盘空间的 Claude Agent Skill / 跨平台 CLI
+
+## 其他
+
+- [RSS 订阅](https://tzzs.github.io/rss.xml)
+- [站点地图](https://tzzs.github.io/sitemap-index.xml)
