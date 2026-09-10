@@ -7,7 +7,7 @@ export const CHRISTMAS_OPEN_EVENT = 'christmas:open';
 export const CHRISTMAS_SESSION_KEY = 'christmas-shown';
 
 /** 手动触发：连续点击 Logo 达到该次数即视为彩蛋触发 */
-export const CHRISTMAS_CLICK_THRESHOLD = 5;
+export const CHRISTMAS_CLICK_THRESHOLD = 3;
 
 /** 手动触发：点击计数的滚动时间窗口（毫秒） */
 export const CHRISTMAS_CLICK_WINDOW_MS = 1500;
