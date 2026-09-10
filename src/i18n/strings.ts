@@ -112,6 +112,8 @@ export const STRINGS: Record<string, string> = {
 		'Intelligent language support for Apache Thrift IDL: syntax highlighting, formatting, diagnostics and code navigation.',
 	'project.comment-doc-lens.description':
 		'Shows definition comments and symbol docs as inline hints at reference sites in VS Code.',
+	'project.remote-pulse.description':
+		'Quietly tracks a Remote-SSH host\'s CPU/memory/disk/network/GPU/Docker status right in the status bar.',
 	'project.peri-pilot.name': 'PeriPilot',
 	'project.peri-pilot.description':
 		'Windows tray app that reads mouse/keyboard battery levels via a 2.4G receiver, with low-battery and fully-charged alerts.',
