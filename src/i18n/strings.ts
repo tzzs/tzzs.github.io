@@ -24,6 +24,9 @@ export const STRINGS: Record<string, string> = {
 	'nav.menuToggle': 'Toggle navigation menu',
 	'footer.rights': 'All rights reserved',
 
+	// 博客列表页（PageHeader 大标题；与 nav.blog 分开维护，两处用途不同，只是英文译文恰好相同）
+	'blog.title': 'Blog',
+
 	// 首页
 	'home.heroTagline': "TZZ's independent developer homepage: app development and technical practice.",
 	'home.independentDeveloper': 'Independent Developer',
@@ -101,6 +104,20 @@ export const STRINGS: Record<string, string> = {
 	// 项目列表页
 	'projectsPage.description':
 		'Projects I have built, spanning apps, VS Code extensions, Agent tools and Skills — feel free to use them or follow along.',
+
+	// 项目名称 / 简介（按 src/data/projects.ts 的 slug 建 key；名称本身已是英文的项目不需要 name 条目，
+	// 找不到 key 时脚本会原样保留中文，效果等同未翻译）
+	'project.thrift-support.description':
+		'Intelligent language support for Apache Thrift IDL: syntax highlighting, formatting, diagnostics and code navigation.',
+	'project.comment-doc-lens.description':
+		'Shows definition comments and symbol docs as inline hints at reference sites in VS Code.',
+	'project.peri-pilot.name': 'PeriPilot',
+	'project.peri-pilot.description':
+		'Windows tray app that reads mouse/keyboard battery levels via a 2.4G receiver, with low-battery and fully-charged alerts.',
+	'project.agentx.description':
+		'A local API adapter that lets Claude Code / Codex switch flexibly between LLM providers such as OpenCode, DeepSeek and OpenRouter.',
+	'project.storops.description':
+		'A Claude Agent Skill / cross-platform CLI that helps AI coding agents safely diagnose, clean up and migrate local disk space.',
 
 	// 项目详情页
 	'project.introHeading': 'Project Overview',

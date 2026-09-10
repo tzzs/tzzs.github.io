@@ -45,7 +45,7 @@ const dateText = pubDate
 				class="text-sm font-medium text-text-soft transition-colors duration-150 hover:text-accent"
 				href={`/projects/${project.slug}/`}
 			>
-				&larr; {project.name}
+				&larr; <span data-i18n-key={`project.${project.slug}.name`}>{project.name}</span>
 			</a>
 		</nav>
 
