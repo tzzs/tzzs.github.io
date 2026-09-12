@@ -1,0 +1,84 @@
+---
+// 关于页英文版：/en/about/，与 src/pages/about.astro 结构完全一致，标题沿用"前缀纯文本 +
+// 高亮最后一词"的既有写法（h1 高亮后半段，h2 高亮前半段，与 about.astro 保持逐段对应）
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import MainLayout from '../../layouts/MainLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { SITE_TITLE } from '../../consts';
+import { projects } from '../../data/projects';
+import { resolveLocale, t } from '../../i18n/strings';
+
+const locale = resolveLocale(Astro.currentLocale);
+const githubUrl = 'https://github.com/tzzs';
+const techStack = ['Java', 'C', 'Python', 'Go', 'Linux', 'Databases'];
+const projectsHref = getRelativeLocaleUrl(locale, 'projects');
+---
+
+<MainLayout
+	title={`About - ${SITE_TITLE}`}
+	description="TZZ's personal profile: technical focus, current projects and open-source homepage"
+>
+	<article class="py-12 md:py-16">
+		<header>
+			<h1 class="text-5xl font-medium leading-none md:text-7xl">
+				<span>{t(locale, 'about.titlePrefix', '关于')}</span><span class="ml-3 inline-block rounded-2xl bg-green px-3 py-1">{t(locale, 'about.titleSuffix', '我')}</span>
+			</h1>
+			<p class="mt-7 max-w-2xl text-lg leading-relaxed text-[var(--text-soft)]">
+				{t(locale, 'about.introPrefix', '你好，我是')} <strong class="font-bold text-[var(--text)]">TZZ</strong>{t(locale, 'about.introSuffix', '，独立开发者，平时做点开发工具，写写技术博客。')}
+			</p>
+		</header>
+
+		<section class="mt-14">
+			<h2 class="text-2xl font-medium md:text-3xl">
+				<span class="rounded-xl bg-green px-2.5 py-1">{t(locale, 'about.selfIntroPrefix', '自我')}</span>{t(locale, 'about.selfIntroSuffix', '介绍')}
+			</h2>
+			<div class="mt-6 max-w-3xl text-base leading-relaxed">
+				<p>
+					{t(locale, 'about.selfIntroBodyPrefix', '一名热爱技术的独立开发者。正在做的项目可以在下方「我的项目」中查看，或前往')} <a class="font-medium text-accent underline-offset-4 hover:underline" href={projectsHref}>{t(locale, 'about.projectsListLink', '项目列表页')}</a>{t(locale, 'about.selfIntroBodySuffix', '。')}
+				</p>
+			</div>
+		</section>
+
+		<section class="mt-14">
+			<h2 class="text-2xl font-medium md:text-3xl">
+				<span class="rounded-xl bg-green px-2.5 py-1">{t(locale, 'about.techStackPrefix', '技术')}</span>{t(locale, 'about.techStackSuffix', '栈')}
+			</h2>
+			<ul class="tag-list mt-6">
+				{
+					techStack.map((tech) => (
+						<li>
+							<span class="tag-pill px-3.5 py-1.5 text-sm">{tech}</span>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section class="mt-14">
+			<h2 class="text-2xl font-medium md:text-3xl">
+				<span class="rounded-xl bg-green px-2.5 py-1">{t(locale, 'about.myProjectsPrefix', '我的')}</span>{t(locale, 'about.myProjectsSuffix', '项目')}
+			</h2>
+			<p class="mt-6 max-w-3xl text-base leading-relaxed text-[var(--text-soft)]">
+				{t(locale, 'about.myProjectsBodyPrefix', '以下是我参与的项目，欢迎关注')}
+				<a class="font-medium text-accent underline-offset-4 hover:underline" href={projectsHref}>{t(locale, 'about.projectsListLink', '项目列表页')}</a>
+				{t(locale, 'about.myProjectsBodySuffix', '获取最新进展：')}
+			</p>
+			<div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+				{projects.map((project) => <ProjectCard project={project} showCategory />)}
+			</div>
+		</section>
+
+		<section class="mt-14">
+			<h2 class="text-2xl font-medium md:text-3xl">
+				<span class="rounded-xl bg-green px-2.5 py-1">{t(locale, 'about.openSourcePrefix', '开源')}</span>{t(locale, 'about.openSourceSuffix', '主页')}
+			</h2>
+			<p class="mt-6 max-w-3xl text-base leading-relaxed text-[var(--text-soft)]">
+				{t(locale, 'about.openSourceBody', '我的开源项目托管在 GitHub：')}
+				<a class="font-medium text-accent underline-offset-4 hover:underline" href={githubUrl} rel="noopener noreferrer" target="_blank">{githubUrl}</a>
+			</p>
+			<a class="btn-secondary mt-7" href={githubUrl} rel="noopener noreferrer" target="_blank">
+				{t(locale, 'about.visitGithub', '访问 GitHub 主页')}
+			</a>
+		</section>
+	</article>
+</MainLayout>

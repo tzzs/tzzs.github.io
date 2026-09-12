@@ -25,7 +25,8 @@ const { tag, posts } = Astro.props;
 
 <MainLayout title={`标签：${tag} | ${SITE_TITLE}`} description={`标签「${tag}」下的全部文章`}>
 	<PageHeader
-		title={`标签：${tag}`}
+		titlePrefix="标签："
+		titleHighlight={tag}
 		description={`共 ${posts.length} 篇文章。`}
 	/>
 

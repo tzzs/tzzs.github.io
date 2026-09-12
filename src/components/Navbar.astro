@@ -1,22 +1,48 @@
 ---
 // 顶部导航（Positivus 风格）：Logo + 导航链接 + 移动端汉堡菜单 + 主题/语言切换
+// 语言切换是原生 i18n 路由下的真实跳转链接（见 astro.config.mjs 的 i18n 配置），
+// 不再是客户端换字典——每个 <a> 的文案/href 在这里就已经按当前 locale 解析好。
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { resolveLocale, t } from '../i18n/strings';
 import { SITE_TITLE } from '../consts';
 
+interface Props {
+	/** 没有传时（范围外的中文专属页面）语言切换按钮不显示，见 MainLayout.astro 的同名 prop 说明 */
+	hasEnglishVersion?: boolean;
+}
+const { hasEnglishVersion = false } = Astro.props;
+
+const locale = resolveLocale(Astro.currentLocale);
+const otherLocale = locale === 'zh' ? 'en' : 'zh';
+
 const navItems = [
-	{ href: '/', label: '首页', i18nKey: 'nav.home' },
-	{ href: '/projects/', label: '项目', i18nKey: 'nav.projects' },
-	{ href: '/blog/', label: '博客', i18nKey: 'nav.blog' },
-	{ href: '/about/', label: '关于', i18nKey: 'nav.about' },
-	{ href: '/contact/', label: '联系', i18nKey: 'nav.contact' },
-];
+	{ path: '', zh: '首页', en: 'Home' },
+	{ path: 'projects', zh: '项目', en: 'Projects' },
+	{ path: 'blog', zh: '博客', en: 'Blog' },
+	{ path: 'about', zh: '关于', en: 'About' },
+	{ path: 'contact', zh: '联系', en: 'Contact' },
+].map((item) => ({
+	href: getRelativeLocaleUrl(locale, item.path),
+	label: locale === 'zh' ? item.zh : item.en,
+}));
 
 const { pathname } = Astro.url;
+const homeHref = getRelativeLocaleUrl(locale, '');
+const timelineHref = getRelativeLocaleUrl(locale, 'blog/timeline');
 const isActive = (href: string) => {
-	if (href === '/') return pathname === '/';
+	if (href === homeHref) return pathname === homeHref;
 	// 时间轴不占导航位（从博客页横幅进入），其页面不高亮任何 tab
-	if (pathname.startsWith('/blog/timeline/')) return false;
+	if (pathname.startsWith(timelineHref)) return false;
 	return pathname.startsWith(href);
 };
+
+// 语言切换：同一路径换一个语言。prefixDefaultLocale:false 下中文无前缀、英文带 /en 前缀，
+// 互相转换只需要加/去掉这一个固定前缀。
+const barePath = pathname.replace(/^\/en(\/|$)/, '/').replace(/^\/|\/$/g, '');
+const toggleHref = getRelativeLocaleUrl(otherLocale, barePath);
+const showToggle = locale === 'en' || hasEnglishVersion;
+const toggleLabel = locale === 'zh' ? 'EN' : '中文';
+const toggleAriaLabel = locale === 'zh' ? 'Switch to English' : '切换到中文';
 ---
 
 <header
@@ -25,7 +51,7 @@ const isActive = (href: string) => {
 >
 	<nav class="mx-auto flex w-full max-w-[1240px] items-center justify-between px-5 py-4">
 		<!-- 可访问名称需包含可见文字（SITE_TITLE），满足 Lighthouse label-content-name 审计 -->
-		<a href="/" id="site-logo" class="flex items-center gap-2" aria-label={`${SITE_TITLE} · 返回首页`}>
+		<a href={homeHref} id="site-logo" class="flex items-center gap-2" aria-label={`${SITE_TITLE} · ${t(locale, 'nav.home', '返回首页')}`}>
 			<span class="inline-block h-8 w-8 rounded-lg bg-green" aria-hidden="true"></span>
 			<span class="text-xl font-bold tracking-tight">{SITE_TITLE}</span>
 		</a>
@@ -37,7 +63,6 @@ const isActive = (href: string) => {
 					<li>
 						<a
 							href={item.href}
-							data-i18n-key={item.i18nKey}
 							class:list={[
 								'rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150',
 								isActive(item.href)
@@ -58,9 +83,7 @@ const isActive = (href: string) => {
 				id="theme-toggle"
 				type="button"
 				class="flex h-10 w-10 items-center justify-center rounded-full text-[var(--text-soft)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text)]"
-				aria-label="切换主题"
-				data-i18n-key="nav.themeToggle"
-				data-i18n-attr="aria-label"
+				aria-label={t(locale, 'nav.themeToggle', '切换主题')}
 			>
 				<svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="hidden h-5 w-5">
 					<circle cx="12" cy="12" r="4"></circle>
@@ -71,26 +94,30 @@ const isActive = (href: string) => {
 				</svg>
 			</button>
 
-			<!-- 语言切换按钮：显示"切换到的目标语言"，文案与 aria-label 由脚本按当前 locale 直接赋值（不走 data-i18n-key 字典） -->
-			<button
-				id="lang-toggle"
-				type="button"
-				class="flex h-10 min-w-10 items-center justify-center rounded-full px-2 text-xs font-semibold tracking-wide text-[var(--text-soft)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text)]"
-				aria-label="Switch to English"
-			>
-				EN
-			</button>
+			<!-- 语言切换：真实跳转链接（对应 URL 在原生 i18n 路由下已经是构建好的静态页面），
+			     没有英文版的页面（hasEnglishVersion 为 false 且当前不在 /en/ 下）直接不渲染这个入口 -->
+			{
+				showToggle && (
+					<a
+						id="lang-toggle"
+						href={toggleHref}
+						hreflang={otherLocale}
+						aria-label={toggleAriaLabel}
+						class="flex h-10 min-w-10 items-center justify-center rounded-full px-2 text-xs font-semibold tracking-wide text-[var(--text-soft)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text)]"
+					>
+						{toggleLabel}
+					</a>
+				)
+			}
 
 			<!-- 移动端汉堡按钮 -->
 			<button
 				id="nav-toggle"
 				type="button"
 				class="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--text)] md:hidden"
-				aria-label="切换导航菜单"
+				aria-label={t(locale, 'nav.menuToggle', '切换导航菜单')}
 				aria-expanded="false"
 				aria-controls="nav-mobile"
-				data-i18n-key="nav.menuToggle"
-				data-i18n-attr="aria-label"
 			>
 				<svg id="nav-open-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-6 w-6">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -110,7 +137,6 @@ const isActive = (href: string) => {
 					<li>
 						<a
 							href={item.href}
-							data-i18n-key={item.i18nKey}
 							class:list={[
 								'block rounded-lg px-3 py-3 text-base font-medium',
 								isActive(item.href)
@@ -128,7 +154,6 @@ const isActive = (href: string) => {
 </header>
 
 <script>
-	import { STRINGS, DEFAULT_LOCALE, LOCALE_STORAGE_KEY, type Locale } from '../i18n/strings';
 	import {
 		CHRISTMAS_OPEN_EVENT,
 		CHRISTMAS_CLICK_THRESHOLD,
@@ -182,47 +207,6 @@ const isActive = (href: string) => {
 		});
 	}
 
-	// 语言切换：[data-i18n-key] 标记的元素按当前 locale 替换文本（或 data-i18n-attr 指定的属性）；
-	// 字典（src/i18n/strings.ts）只存英文，中文取自元素首次渲染时的原文（懒缓存到 data-i18n-zh，切回中文时用它还原）。
-	// 找不到对应英文 key 时原样保留中文，不报错——允许页面逐步补充翻译覆盖范围。
-	const langToggle = document.getElementById('lang-toggle') as HTMLButtonElement | null;
-
-	const applyLocale = (locale: Locale) => {
-		document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
-		document.documentElement.dataset.lang = locale;
-
-		document.querySelectorAll<HTMLElement>('[data-i18n-key]').forEach((el) => {
-			const key = el.dataset.i18nKey;
-			if (!key) return;
-			const attr = el.dataset.i18nAttr;
-
-			if (el.dataset.i18nZh === undefined) {
-				el.dataset.i18nZh = attr ? (el.getAttribute(attr) ?? '') : (el.textContent ?? '');
-			}
-			const zhValue = el.dataset.i18nZh;
-			const value = locale === 'zh' ? zhValue : (STRINGS[key] ?? zhValue);
-
-			if (attr) el.setAttribute(attr, value);
-			else el.textContent = value;
-		});
-
-		if (langToggle) {
-			langToggle.textContent = locale === 'zh' ? 'EN' : '中文';
-			langToggle.setAttribute('aria-label', locale === 'zh' ? 'Switch to English' : '切换到中文');
-		}
-	};
-
-	const savedLocale = (localStorage.getItem(LOCALE_STORAGE_KEY) as Locale | null) ?? DEFAULT_LOCALE;
-	applyLocale(savedLocale);
-
-	if (langToggle) {
-		langToggle.addEventListener('click', () => {
-			const next: Locale = document.documentElement.dataset.lang === 'en' ? 'zh' : 'en';
-			localStorage.setItem(LOCALE_STORAGE_KEY, next);
-			applyLocale(next);
-		});
-	}
-
 	// 移动端汉堡菜单切换（纯原生实现）
 	const toggle = document.getElementById('nav-toggle') as HTMLButtonElement;
 	const mobile = document.getElementById('nav-mobile') as HTMLDivElement;
@@ -249,9 +233,10 @@ const isActive = (href: string) => {
 	}
 
 	// 圣诞彩蛋：连续点击 Logo 5 次（1.5s 滚动窗口内）打开全屏彩蛋，替代跳转首页。
-	// 站点是纯 MPA（无客户端路由），<a href="/"> 默认点击即整页跳转，计数器活不过第一次点击，
+	// 站点是纯 MPA（无客户端路由），<a href> 默认点击即整页跳转，计数器活不过第一次点击，
 	// 因此无条件拦截左键单击，未达阈值时用去抖延迟模拟"正常单击"跳转（唯一代价：单击 Logo 到
 	// 真正跳转之间约 400ms 延迟）。保留 Ctrl/Cmd/Shift/Alt+点击的浏览器原生行为，不拦截不计数。
+	// logoLink.href 会随渲染时的 locale 指向 / 或 /en/，这里不需要关心，读的是运行时属性值。
 	const logoLink = document.getElementById('site-logo') as HTMLAnchorElement | null;
 	if (logoLink) {
 		let clickTimestamps: number[] = [];

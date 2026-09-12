@@ -1,6 +1,8 @@
 ---
 // 文章卡片：展示标题、日期、描述、标签，链接到 /blog/[slug]/
+// 文章详情页不在双语范围内（正文本身是不翻译的中文长文），href 两种语言下都保持不带前缀
 import type { CollectionEntry } from 'astro:content';
+import { resolveLocale, t } from '../i18n/strings';
 import TagList from './TagList.astro';
 
 interface Props {
@@ -11,7 +13,8 @@ interface Props {
 const { post } = Astro.props;
 const { title, description, pubDate, tags = [] } = post.data;
 const href = `/blog/${post.id}/`;
-const dateText = pubDate.toLocaleDateString('zh-CN', {
+const locale = resolveLocale(Astro.currentLocale);
+const dateText = pubDate.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', {
 	year: 'numeric',
 	month: 'long',
 	day: 'numeric',
@@ -36,5 +39,5 @@ const dateText = pubDate.toLocaleDateString('zh-CN', {
 			</div>
 		)
 	}
-	<a class="mt-3 inline-block text-sm font-medium text-[var(--accent)] hover:underline" href={href}>阅读全文 →</a>
+	<a class="mt-3 inline-block text-sm font-medium text-[var(--accent)] hover:underline" href={href}>{t(locale, 'postCard.readMore', '阅读全文 →')}</a>
 </article>

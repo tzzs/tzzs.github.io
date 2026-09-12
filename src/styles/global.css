@@ -511,14 +511,6 @@ body {
   display: none;
 }
 
-/* ===== 语言切换：英文模式下隐藏的元素 =====
-   用于 PageHeader 的英文徽章——title 自身已翻译成英文时，徽章文字与其重复，见
-   Navbar.astro 的 applyLocale（写入 <html data-lang>）与 PageHeader.astro 的 data-i18n-hide-en。
-   同 .filter-chip-hidden，必须在 @layer 之外才能覆盖 Tailwind 的 inline-block 等 utility。 */
-html[data-lang='en'] [data-i18n-hide-en] {
-  display: none;
-}
-
 /* ===== 折叠容器 ===== */
 .collapsible-wrapper {
   max-height: 10rem;

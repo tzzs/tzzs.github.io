@@ -1,17 +1,31 @@
 /**
- * 界面级中英文切换 —— 英文译文字典
+ * 界面级中英文切换 —— 英文译文字典（构建期查表，配合 Astro 原生 i18n 路由使用）
  *
- * 中文文案就是各组件/页面里已经写好的字面文本，这里只维护英文译文。
+ * 中文文案就是各组件/页面调用处已经写好的字面文本，这里只维护英文译文。
  * key 命名按「区域.用途」分组，非强制规范，纯为方便查找。
- * 使用方式见 `src/components/Navbar.astro` 的 `applyLocale`：
- *   - `data-i18n-key="xxx"` 标记文本节点可翻译，客户端按当前 locale 替换 textContent
- *   - `data-i18n-attr="aria-label"` 表示这个 key 翻译的是属性值而不是文本
- * zh 模式下什么都不用做（保留元素原文），en 模式下查不到的 key 原样跳过，不报错。
+ * 使用方式见下方 `t()`：中文页面直接传入原文，英文页面传入原文 + key，
+ * 查不到对应 key 时原样回退为中文——效果等同未翻译，不会报错。
+ *
+ * 双语范围仅覆盖外壳页 + 项目详情页（首页/关于/联系/项目列表&详情/博客列表&分页/全部标签/时间轴），
+ * 博客正文、更新日志、隐私政策、标签页/分类页的动态标题（内容本身是不翻译的中文长文或用户自定义词条）
+ * 不在范围内，对应页面没有 `src/pages/en/` 版本，也不接入这里的翻译逻辑。
  */
 
 export type Locale = 'zh' | 'en';
 export const DEFAULT_LOCALE: Locale = 'zh';
-export const LOCALE_STORAGE_KEY = 'lang';
+
+/** 把 Astro.currentLocale（string | undefined）收窄成站内实际使用的 Locale 联合类型 */
+export function resolveLocale(currentLocale: string | undefined): Locale {
+	return currentLocale === 'en' ? 'en' : DEFAULT_LOCALE;
+}
+
+/**
+ * 构建期翻译查表：中文直接返回调用处传入的原文；英文查字典，查不到就退回原文
+ *（等价于旧客户端方案里「找不到 key 就保留中文」的行为）。
+ */
+export function t(locale: Locale, key: string, zhText: string): string {
+	return locale === DEFAULT_LOCALE ? zhText : (STRINGS[key] ?? zhText);
+}
 
 export const STRINGS: Record<string, string> = {
 	// 导航栏 / 页脚（共用同一套 key）
@@ -24,8 +38,41 @@ export const STRINGS: Record<string, string> = {
 	'nav.menuToggle': 'Toggle navigation menu',
 	'footer.rights': 'All rights reserved',
 
+	// 分页组件（Pagination.astro，博客列表 /blog/、/blog/page/N/ 共用）
+	'pagination.prev': 'Previous',
+	'pagination.next': 'Next',
+	'pagination.nav': 'Pagination',
+	'pagination.jumpLabel': 'Go to page',
+	'pagination.jumpSubmit': 'Go',
+	'pagination.jumpAriaLabel': 'Jump to page',
+
 	// 博客列表页（PageHeader 大标题；与 nav.blog 分开维护，两处用途不同，只是英文译文恰好相同）
 	'blog.title': 'Blog',
+	'blog.descPrefix': "TZZ's technical blog —",
+	'blog.descSuffix': 'posts, documenting debugging war stories and engineering practice.',
+
+	// 博客「文章时间轴」横幅（/blog/ 页内醒目入口）
+	'blog.timelineBannerTitle': 'Article Timeline',
+	'blog.timelineBannerDesc': 'Browse all posts along a timeline',
+	'blog.timelineBannerCta': 'View Timeline',
+
+	// 时间轴页（/blog/timeline/）：大标题 + 描述 + 「返回博客」横幅
+	// 注：页内的标签/分类筛选侧栏与月份分组不在双语范围内，是更大的独立任务
+	'blog.timelineTitle': 'Timeline',
+	'blog.timelineDescPrefix': 'A total of',
+	'blog.timelineDescSuffix': 'posts, browse them along a timeline.',
+	'blog.backBannerTitle': 'Back to Blog',
+	'blog.backBannerDesc': 'Browse the full post list',
+	'blog.backBannerCta': 'Go to Blog',
+
+	// 全部标签页（/blog/tags/）：大标题 + 描述；标签本身是内容标签，不翻译
+	'blog.tagsTitle': 'Tags',
+	'blog.tagsDescPrefix': 'A total of',
+	'blog.tagsDescSuffix': 'tags, sorted by post count.',
+	'blog.tagsEmpty': 'No tags yet.',
+
+	// 文章卡片（PostCard.astro，/blog/ 列表与首页最近文章共用组件）
+	'postCard.readMore': 'Read more →',
 
 	// 首页
 	'home.heroTagline': "TZZ's independent developer homepage: app development and technical practice.",

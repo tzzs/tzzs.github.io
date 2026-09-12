@@ -1,14 +1,22 @@
 ---
 // 页脚（Positivus 风格）：深色背景 + 站点链接 + 社交/源码链接 + 版权
+// 5 个站内导航链接全部在双语范围内，不需要 hasEnglishVersion 判断（对比 Navbar.astro）
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { resolveLocale, t } from '../i18n/strings';
 import { SITE_TITLE, COPYRIGHT_HOLDER, SITE_URL, SITE_GITHUB } from '../consts';
 
+const locale = resolveLocale(Astro.currentLocale);
+
 const navLinks = [
-	{ name: '首页', href: '/', i18nKey: 'nav.home' },
-	{ name: '项目', href: '/projects/', i18nKey: 'nav.projects' },
-	{ name: '博客', href: '/blog/', i18nKey: 'nav.blog' },
-	{ name: '关于', href: '/about/', i18nKey: 'nav.about' },
-	{ name: '联系', href: '/contact/', i18nKey: 'nav.contact' },
-];
+	{ path: '', zh: '首页', en: 'Home' },
+	{ path: 'projects', zh: '项目', en: 'Projects' },
+	{ path: 'blog', zh: '博客', en: 'Blog' },
+	{ path: 'about', zh: '关于', en: 'About' },
+	{ path: 'contact', zh: '联系', en: 'Contact' },
+].map((item) => ({
+	href: getRelativeLocaleUrl(locale, item.path),
+	name: locale === 'zh' ? item.zh : item.en,
+}));
 
 const externalLinks = [
 	{ name: 'GitHub', href: SITE_GITHUB },
@@ -20,7 +28,7 @@ const externalLinks = [
 	<div class="mx-auto w-full max-w-[1240px]">
 		<div class="rounded-t-[45px] bg-dark px-[15px] py-8 text-gray lg:px-[60px]">
 			<div class="flex flex-col items-center justify-between gap-6 lg:flex-row">
-				<a href="/" class="flex items-center gap-2">
+				<a href={getRelativeLocaleUrl(locale, '')} class="flex items-center gap-2">
 					<span class="inline-block h-8 w-8 rounded-lg bg-green" aria-hidden="true"></span>
 					<span class="text-xl font-bold tracking-tight text-white">{SITE_TITLE}</span>
 				</a>
@@ -32,7 +40,6 @@ const externalLinks = [
 								<a
 									class="text-sm text-gray underline underline-offset-4 hover:text-green"
 									href={link.href}
-									data-i18n-key={link.i18nKey}
 								>
 									{link.name}
 								</a>
@@ -63,7 +70,7 @@ const externalLinks = [
 
 			<div class="flex flex-col items-center justify-between gap-3 text-center text-sm text-gray md:flex-row">
 				<span>
-					© {new Date().getFullYear()} {COPYRIGHT_HOLDER} · <span data-i18n-key="footer.rights">保留所有权利</span>
+					© {new Date().getFullYear()} {COPYRIGHT_HOLDER} · {t(locale, 'footer.rights', '保留所有权利')}
 				</span>
 				<a class="underline underline-offset-4 hover:text-green" href={SITE_URL}>
 					{SITE_URL.replace('https://', '')}

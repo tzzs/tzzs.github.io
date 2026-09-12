@@ -28,7 +28,8 @@ const { category, posts } = Astro.props;
 	description={`分类「${category}」下的全部文章`}
 >
 	<PageHeader
-		title={`分类：${category}`}
+		titlePrefix="分类："
+		titleHighlight={category}
 		description={`共 ${posts.length} 篇文章。`}
 	/>
 

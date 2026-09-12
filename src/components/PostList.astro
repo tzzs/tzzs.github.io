@@ -1,29 +1,35 @@
 ---
-// 博客列表内容（分页第 1 页 /blog/ 与后续 /blog/page/N/ 共用）
+// 博客列表内容（分页第 1 页 /blog/ 与后续 /blog/page/N/ 共用，中英文两个语言的页面都会用到）
 import type { Page } from 'astro';
 import type { CollectionEntry } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import PostCard from './PostCard.astro';
 import Pagination from './Pagination.astro';
 import PageHeader from './PageHeader.astro';
 import { pageUrl } from '../lib/paginate';
+import { resolveLocale, t } from '../i18n/strings';
 
 interface Props {
 	page: Page<CollectionEntry<'blog'>>;
 }
 
 const { page } = Astro.props;
+const locale = resolveLocale(Astro.currentLocale);
+const timelineHref = getRelativeLocaleUrl(locale, 'blog/timeline');
 ---
 
 <PageHeader
-	title="博客"
-	titleKey="blog.title"
-	badge="Blog"
-	description={`TZZ 的技术博客：共 ${page.total} 篇文章，记录编程踩坑与技术分享。`}
+	titleHighlight={t(locale, 'blog.title', '博客')}
+	descriptionCount={{
+		prefix: t(locale, 'blog.descPrefix', 'TZZ 的技术博客：共'),
+		count: page.total,
+		suffix: t(locale, 'blog.descSuffix', '篇文章，记录编程踩坑与技术分享。'),
+	}}
 />
 
 <!-- 时间轴入口：醒目横幅，第一眼可见 -->
 <a
-	href="/blog/timeline/"
+	href={timelineHref}
 	class="group mb-10 flex flex-wrap items-center justify-between gap-4 rounded-[1.5rem] bg-dark px-6 py-5 text-white no-underline transition-transform duration-200 hover:-translate-y-0.5 sm:px-8"
 >
 	<span class="flex items-center gap-3">
@@ -36,14 +42,14 @@ const { page } = Astro.props;
 			</svg>
 		</span>
 		<span class="min-w-0">
-			<span class="block font-semibold">文章时间轴</span>
-			<span class="block truncate text-sm text-white/70">按时间轴浏览全部文章</span>
+			<span class="block font-semibold">{t(locale, 'blog.timelineBannerTitle', '文章时间轴')}</span>
+			<span class="block truncate text-sm text-white/70">{t(locale, 'blog.timelineBannerDesc', '按时间轴浏览全部文章')}</span>
 		</span>
 	</span>
 	<span
 		class="flex shrink-0 items-center gap-1 rounded-full bg-green px-5 py-2 text-sm font-medium text-black transition-colors duration-200 group-hover:bg-white"
 	>
-		进入时间轴
+		{t(locale, 'blog.timelineBannerCta', '进入时间轴')}
 		<svg class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
 			<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
 		</svg>
@@ -54,4 +60,4 @@ const { page } = Astro.props;
 	{page.data.map((post) => <PostCard post={post} />)}
 </div>
 
-<Pagination page={page.currentPage} total={page.lastPage} url={pageUrl} />
+<Pagination page={page.currentPage} total={page.lastPage} url={(n) => pageUrl(n, locale)} />
