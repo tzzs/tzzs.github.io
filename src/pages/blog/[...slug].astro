@@ -37,6 +37,7 @@ const prevPost =
 
 const dateText = (d: Date) =>
 	d.toLocaleDateString('zh-CN', {
+		timeZone: 'UTC',
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric',

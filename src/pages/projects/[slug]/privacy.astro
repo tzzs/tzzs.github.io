@@ -30,7 +30,7 @@ const PrivacyContent = entry ? (await render(entry)).Content : undefined;
 const pageTitle = entry?.data.title ?? '隐私政策';
 const pubDate = entry?.data.pubDate;
 const dateText = pubDate
-	? pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
+	? pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })
 	: undefined;
 ---
 

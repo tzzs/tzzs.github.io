@@ -14,7 +14,10 @@ const { post } = Astro.props;
 const { title, description, pubDate, tags = [] } = post.data;
 const href = `/blog/${post.id}/`;
 const locale = resolveLocale(Astro.currentLocale);
+// pubDate 是纯日期字符串（z.coerce.date() 解析为 UTC 午夜），固定按 UTC 格式化，
+// 避免构建机时区把日期偏移一天（负偏移时区会推到前一天）
 const dateText = pubDate.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', {
+	timeZone: 'UTC',
 	year: 'numeric',
 	month: 'long',
 	day: 'numeric',

@@ -9,9 +9,10 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 );
 
 const byYear = new Map<number, Map<number, typeof posts>>();
-for (const post of posts) {
-	const year = post.data.pubDate.getFullYear();
-	const month = post.data.pubDate.getMonth();
+	// pubDate 解析为 UTC 午夜，年月分组固定按 UTC 取值，与日期展示的 timeZone: 'UTC' 保持一致
+	for (const post of posts) {
+		const year = post.data.pubDate.getUTCFullYear();
+		const month = post.data.pubDate.getUTCMonth();
 	if (!byYear.has(year)) byYear.set(year, new Map());
 	const monthMap = byYear.get(year)!;
 	if (!monthMap.has(month)) monthMap.set(month, []);
@@ -25,7 +26,7 @@ const allCategories = [
 ].sort();
 
 const dateText = (d: Date) =>
-	d.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' });
+	d.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', timeZone: 'UTC' });
 const monthNames = [
 	'1月',
 	'2月',
@@ -171,7 +172,7 @@ const monthNames = [
 								<span
 									class="timeline-year-count rounded-full bg-[var(--bg-soft)] px-2.5 py-0.5 text-xs font-normal text-[var(--text-faint)]"
 								>
-									{posts.filter((p) => p.data.pubDate.getFullYear() === year).length} 篇
+									{posts.filter((p) => p.data.pubDate.getUTCFullYear() === year).length} 篇
 								</span>
 							</h2>
 						</div>
