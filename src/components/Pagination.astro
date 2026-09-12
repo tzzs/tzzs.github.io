@@ -1,18 +1,23 @@
 ---
 // 分页组件：上一页 / 页码列表（可点击跳转）/ 跳页输入框 / 下一页
 // 配合手写分页逻辑 src/lib/paginate.ts 使用
+import { resolveLocale, t } from '../i18n/strings';
+
 interface Props {
 	/** 当前页码（从 1 开始） */
 	page: number;
 	/** 总页数 */
 	total: number;
-	/** 生成第 n 页 URL 的函数（如 (n) => n === 1 ? '/blog/' : `/blog/page/${n}/`） */
+	/** 生成第 n 页 URL 的函数（如 (n) => pageUrl(n, locale)） */
 	url: (page: number) => string;
 }
 
 const { page, total, url } = Astro.props;
+const locale = resolveLocale(Astro.currentLocale);
 const prevUrl = page > 1 ? url(page - 1) : null;
 const nextUrl = page < total ? url(page + 1) : null;
+const prevLabel = `← ${t(locale, 'pagination.prev', '上一页')}`;
+const nextLabel = `${t(locale, 'pagination.next', '下一页')} →`;
 
 // 全部页码的 URL（跳页输入框用，define:vars 注入前端脚本）
 const pageUrls = Array.from({ length: total }, (_, i) => url(i + 1));
@@ -40,11 +45,11 @@ if (total <= 7) {
 
 {
 	total > 1 && (
-		<nav class="pagination" aria-label="分页导航">
+		<nav class="pagination" aria-label={t(locale, 'pagination.nav', '分页导航')}>
 			{
 				prevUrl
-					? <a href={prevUrl}>← 上一页</a>
-					: <span class="pagination-disabled">← 上一页</span>
+					? <a href={prevUrl}>{prevLabel}</a>
+					: <span class="pagination-disabled">{prevLabel}</span>
 			}
 			<div class="pagination-center">
 				<ul class="pagination-pages">
@@ -62,17 +67,17 @@ if (total <= 7) {
 						)
 					}
 				</ul>
-				<form class="pagination-jump" aria-label="跳转到指定页">
-					<label for="page-jump">跳至</label>
+				<form class="pagination-jump" aria-label={t(locale, 'pagination.jumpAriaLabel', '跳转到指定页')}>
+					<label for="page-jump">{t(locale, 'pagination.jumpLabel', '跳至')}</label>
 					<input id="page-jump" type="number" min="1" max={total} inputmode="numeric" />
-					<span>页</span>
-					<button type="submit">跳转</button>
+					{locale === 'zh' && <span>页</span>}
+					<button type="submit">{t(locale, 'pagination.jumpSubmit', '跳转')}</button>
 				</form>
 			</div>
 			{
 				nextUrl
-					? <a href={nextUrl}>下一页 →</a>
-					: <span class="pagination-disabled">下一页 →</span>
+					? <a href={nextUrl}>{nextLabel}</a>
+					: <span class="pagination-disabled">{nextLabel}</span>
 			}
 		</nav>
 	)

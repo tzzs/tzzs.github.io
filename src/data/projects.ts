@@ -134,3 +134,11 @@ export const projects: Project[] = [
     },
   },
 ];
+
+/** projects/[slug]/index.astro 中英文两个文件共用的 getStaticPaths，避免各写一份跑偏 */
+export function getProjectStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}

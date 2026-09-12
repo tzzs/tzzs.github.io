@@ -1,0 +1,19 @@
+---
+// 博客列表第 1 页英文版（/en/blog/）。第 2+ 页见 en/blog/page/[...page].astro
+import MainLayout from '../../../layouts/MainLayout.astro';
+import PostList from '../../../components/PostList.astro';
+import { SITE_TITLE } from '../../../consts';
+import { getBlogPosts, buildPageData } from '../../../lib/paginate';
+import { resolveLocale } from '../../../i18n/strings';
+
+const locale = resolveLocale(Astro.currentLocale);
+const posts = await getBlogPosts();
+const page = buildPageData(posts, 1, locale);
+---
+
+<MainLayout
+	title={`Blog | ${SITE_TITLE}`}
+	description="TZZ's technical blog: debugging notes and engineering practice"
+>
+	<PostList page={page} />
+</MainLayout>

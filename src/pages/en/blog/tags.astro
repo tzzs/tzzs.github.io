@@ -1,10 +1,12 @@
 ---
-// 全部标签索引页：标签云（按文章数降序）
+// 全部标签页英文版（/en/blog/tags/）：标签本身是内容标签，不翻译，只有标题/描述走 t()
 import { getCollection } from 'astro:content';
-import MainLayout from '../../layouts/MainLayout.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import { SITE_TITLE } from '../../consts';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import { SITE_TITLE } from '../../../consts';
+import { resolveLocale, t } from '../../../i18n/strings';
 
+const locale = resolveLocale(Astro.currentLocale);
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const tagCounts = new Map<string, number>();
 for (const post of posts) {
@@ -15,13 +17,13 @@ for (const post of posts) {
 const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
-<MainLayout title={`标签 | ${SITE_TITLE}`} description="博客全部标签索引" hasEnglishVersion>
+<MainLayout title={`Tags | ${SITE_TITLE}`} description="Index of all blog tags">
 	<PageHeader
-		titleHighlight="标签"
+		titleHighlight={t(locale, 'blog.tagsTitle', '标签')}
 		descriptionCount={{
-			prefix: '共',
+			prefix: t(locale, 'blog.tagsDescPrefix', '共'),
 			count: sortedTags.length,
-			suffix: '个标签，按文章数排序。',
+			suffix: t(locale, 'blog.tagsDescSuffix', '个标签，按文章数排序。'),
 		}}
 	/>
 
@@ -41,7 +43,7 @@ const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 				}
 			</div>
 		) : (
-			<p class="text-[var(--text-faint)]">暂无标签。</p>
+			<p class="text-[var(--text-faint)]">{t(locale, 'blog.tagsEmpty', '暂无标签。')}</p>
 		)
 	}
 </MainLayout>

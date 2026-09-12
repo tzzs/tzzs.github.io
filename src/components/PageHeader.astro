@@ -1,45 +1,39 @@
 ---
-// 内页统一页头（以项目列表页为样板）：大标题 + 英文徽章 + 描述
+// 内页统一页头（以项目列表页为样板）：大标题（前缀纯文本 + 高亮最后一词）+ 描述
 // 顶部间距 pt-12 md:pt-16 与标题字号 text-4xl md:text-5xl 与 /projects/ 保持一致
+// 高亮框样式对齐 about.astro / contact.astro 的 <h1> 标题写法（同一套"最后一词高亮"规则，
+// 两种语言都遵循，不需要再额外隐藏什么）——调用方负责把中/英文都解析好再传进来。
 interface Props {
-	/** 中文大标题 */
-	title: string;
-	/** 英文徽章文字（如 Blog / Archive），不传则不显示 */
-	badge?: string;
+	/** 高亮词前面的纯文本部分，单词标题（Projects/Blog/Timeline/标签）不传 */
+	titlePrefix?: string;
+	/** 高亮的那一部分，永远是标题的最后一段；单词标题时就是整个标题 */
+	titleHighlight: string;
 	/** 副标题描述，不传则不显示 */
 	description?: string;
-	/** description 的 i18n 字典 key（src/i18n/strings.ts），传了才参与语言切换 */
-	descriptionKey?: string;
-	/**
-	 * title 的 i18n 字典 key，传了才参与语言切换。
-	 * badge 通常就是 title 的英文译文（如「项目」+ Projects），若两者同时翻译/展示会重复成
-	 * "Projects Projects"，所以传了 titleKey 时英文模式下会一并隐藏 badge，由 title 自己承担
-	 * 这个页头的英文识别（隐藏规则见 global.css 的 `[data-i18n-hide-en]`）。
-	 */
-	titleKey?: string;
+	/** description 里嵌入了运行时数字（如「共 N 篇文章」）时用这个代替 description：数字本身不翻译 */
+	descriptionCount?: {
+		prefix: string;
+		count: number;
+		suffix: string;
+	};
 }
 
-const { title, badge, description, descriptionKey, titleKey } = Astro.props;
-const badgeClass =
-	'ml-3 inline-block rounded-xl bg-green px-4 py-1 text-2xl font-semibold align-middle md:text-3xl';
+const { titlePrefix, titleHighlight, description, descriptionCount } = Astro.props;
+const highlightClass = 'inline-block rounded-2xl bg-green px-3 py-1';
 ---
 
 <section class="pb-10 pt-12 md:pt-16">
 	<h1 class="text-4xl font-bold tracking-tight md:text-5xl">
-		<span data-i18n-key={titleKey}>{title}</span>
-		{
-			badge && (titleKey ? (
-				<span class={badgeClass} data-i18n-hide-en>{badge}</span>
-			) : (
-				<span class={badgeClass}>{badge}</span>
-			))
-		}
+		{titlePrefix && <span>{titlePrefix}</span>}
+		<span class:list={[highlightClass, titlePrefix && 'ml-3']}>{titleHighlight}</span>
 	</h1>
 	{
-		description && (
-			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft" data-i18n-key={descriptionKey}>
-				{description}
+		descriptionCount ? (
+			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft">
+				{descriptionCount.prefix} {descriptionCount.count} {descriptionCount.suffix}
 			</p>
+		) : (
+			description && <p class="mt-4 max-w-2xl text-lg leading-relaxed text-text-soft">{description}</p>
 		)
 	}
 </section>

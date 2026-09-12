@@ -6,14 +6,11 @@ import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import LinkIcon from '../../../components/LinkIcon.astro';
-import { projects, CATEGORY_LABELS, type Project, type ProjectStatus } from '../../../data/projects';
+import { CATEGORY_LABELS, getProjectStaticPaths, type Project, type ProjectStatus } from '../../../data/projects';
 import { SITE_TITLE } from '../../../consts';
 
 export async function getStaticPaths() {
-	return projects.map((project) => ({
-		params: { slug: project.slug },
-		props: { project },
-	}));
+	return getProjectStaticPaths();
 }
 
 interface Props {
@@ -69,7 +66,7 @@ const introEntry = (await getCollection('projects')).find(
 const IntroContent = introEntry ? (await render(introEntry)).Content : undefined;
 ---
 
-<MainLayout title={`${project.name} - ${SITE_TITLE}`} description={project.description}>
+<MainLayout title={`${project.name} - ${SITE_TITLE}`} description={project.description} hasEnglishVersion>
 	<article>
 		<!-- Hero：图标 + 名称 + 描述 + 状态徽章 + 分类/平台 + 获取入口（底部收紧，衔接项目介绍） -->
 		<header class="pt-10 pb-6 md:pt-12 md:pb-8">

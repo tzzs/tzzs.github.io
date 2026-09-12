@@ -5,18 +5,11 @@ import type { CollectionEntry } from 'astro:content';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import PostList from '../../../components/PostList.astro';
 import { SITE_TITLE } from '../../../consts';
-import { getBlogPosts, buildPageData, PAGE_SIZE } from '../../../lib/paginate';
+import { getBlogPageStaticPaths } from '../../../lib/paginate';
 
 type Props = { page: Page<CollectionEntry<'blog'>> };
 
-export const getStaticPaths = (async () => {
-	const posts = await getBlogPosts();
-	const lastPage = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
-	return Array.from({ length: lastPage - 1 }, (_, i) => ({
-		params: { page: String(i + 2) },
-		props: { page: buildPageData(posts, i + 2) },
-	}));
-}) satisfies GetStaticPaths;
+export const getStaticPaths = (() => getBlogPageStaticPaths('zh')) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
 ---
@@ -24,6 +17,7 @@ const { page } = Astro.props;
 <MainLayout
 	title={`博客 第 ${page.currentPage} 页 | ${SITE_TITLE}`}
 	description="TZZ 的技术博客：编程踩坑记录与技术分享"
+	hasEnglishVersion
 >
 	<PostList page={page} />
 </MainLayout>
