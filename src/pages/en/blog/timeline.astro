@@ -31,7 +31,10 @@ const allCategories = [
 ].sort();
 
 const dateText = (d: Date) =>
-	d.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' });
+	d.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', {
+		month: 'long',
+		day: 'numeric',
+	});
 const monthNames = [
 	'1月',
 	'2月',
