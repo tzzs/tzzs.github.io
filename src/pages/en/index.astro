@@ -44,7 +44,7 @@ const aboutHref = getRelativeLocaleUrl(locale, 'about');
 				{t(locale, 'home.independentDeveloper', '独立开发者')}
 			</p>
 			<h1 class="text-5xl font-medium leading-[1.05] sm:text-6xl xl:text-7xl">
-				TZZ'S <span class="font-outline-sm text-transparent">BLOG</span>
+				TZZ'S <span class="font-outline-sm text-transparent">STUDIO</span>
 			</h1>
 			<p class="mt-6 max-w-xl text-lg leading-relaxed text-text-soft lg:text-xl">
 				{t(locale, 'home.heroTagline', 'TZZ 的独立开发者主页：应用开发与技术实践。')}
@@ -210,37 +210,38 @@ class="w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-
 	</section>
 
 	<!-- ===== 关于开发者 ===== -->
+	<!-- 结构与 zh/index.astro 一致：文案块与「数据 + CTA」条共用一条 flex-wrap 行 -->
 	<section aria-labelledby="about-heading" class="mt-16 sm:mt-24">
-		<div
-			class="flex flex-col gap-10 rounded-[2rem] bg-black p-8 text-white sm:p-12 lg:flex-row lg:items-start lg:justify-between"
-		>
-			<div class="max-w-2xl">
-				<h2 id="about-heading" class="text-3xl font-bold sm:text-4xl">{t(locale, 'home.aboutHeading', '你好，我是 TZZ')}</h2>
-				<p class="mt-4 leading-relaxed text-white/70">
-					{t(locale, 'home.aboutDesc', '独立开发者，专注 VS Code 扩展与 Windows 桌面工具，也在博客里记录技术踩坑与工程实践。')}
-				</p>
-				<ul class="mt-6 flex flex-wrap gap-2" aria-label="Tech Stack">
-					{
-						techStack.map((tech) => (
-							<li class="rounded-full border border-white/20 px-2.5 py-0.5 text-xs text-white/70">
-								{tech}
-							</li>
-						))
-					}
-				</ul>
-			</div>
-			<div class="flex shrink-0 flex-col gap-8 lg:items-end">
-				<dl class="flex gap-12 lg:flex-col lg:gap-4">
-					<div>
-						<dt class="text-sm text-white/50">{t(locale, 'home.statBlogPosts', '博客文章')}</dt>
-						<dd class="mt-1 font-mono text-3xl font-bold text-green">{postCount}</dd>
-					</div>
-					<div>
-						<dt class="text-sm text-white/50">{t(locale, 'home.statProjects', '项目')}</dt>
-						<dd class="mt-1 font-mono text-3xl font-bold text-green">{projects.length}</dd>
-					</div>
-				</dl>
-				<a class="btn-tertiary w-fit" href={aboutHref}>{t(locale, 'home.learnMore', '了解更多 →')}</a>
+		<div class="rounded-[2rem] bg-black p-8 text-white sm:p-12">
+			<div class="flex flex-wrap items-center justify-between gap-x-10 gap-y-8">
+				<div class="max-w-2xl min-w-[18rem] flex-1">
+					<h2 id="about-heading" class="text-3xl font-bold sm:text-4xl">{t(locale, 'home.aboutHeading', '你好，我是 TZZ')}</h2>
+					<p class="mt-4 leading-relaxed text-white/70">
+						{t(locale, 'home.aboutDesc', '独立开发者，专注 VS Code 扩展与 Windows 桌面工具，也在博客里记录技术踩坑与工程实践。')}
+					</p>
+					<ul class="mt-6 flex flex-wrap gap-2" aria-label="Tech Stack">
+						{
+							techStack.map((tech) => (
+								<li class="rounded-full border border-white/20 px-2.5 py-0.5 text-xs text-white/70">
+									{tech}
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<div class="flex flex-wrap items-center gap-x-8 gap-y-4 sm:gap-x-12">
+					<dl class="flex gap-8 sm:gap-12">
+						<div>
+							<dt class="text-sm text-white/50">{t(locale, 'home.statBlogPosts', '博客文章')}</dt>
+							<dd class="mt-1 font-mono text-3xl font-bold text-green">{postCount}</dd>
+						</div>
+						<div>
+							<dt class="text-sm text-white/50">{t(locale, 'home.statProjects', '项目')}</dt>
+							<dd class="mt-1 font-mono text-3xl font-bold text-green">{projects.length}</dd>
+						</div>
+					</dl>
+					<a class="btn-tertiary" href={aboutHref}>{t(locale, 'home.learnMore', '了解更多 →')}</a>
+				</div>
 			</div>
 		</div>
 	</section>

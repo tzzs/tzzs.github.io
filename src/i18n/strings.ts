@@ -6,7 +6,7 @@
  * 使用方式见下方 `t()`：中文页面直接传入原文，英文页面传入原文 + key，
  * 查不到对应 key 时原样回退为中文——效果等同未翻译，不会报错。
  *
- * 双语范围仅覆盖外壳页 + 项目详情页（首页/关于/联系/项目列表&详情/博客列表&分页/全部标签/时间轴），
+ * 双语范围仅覆盖外壳页 + 项目详情页（首页/关于（含联系方式）/项目列表&详情/博客列表&分页/全部标签/时间轴），
  * 博客正文、更新日志、隐私政策、标签页/分类页的动态标题（内容本身是不翻译的中文长文或用户自定义词条）
  * 不在范围内，对应页面没有 `src/pages/en/` 版本，也不接入这里的翻译逻辑。
  */
@@ -33,7 +33,6 @@ export const STRINGS: Record<string, string> = {
 	'nav.projects': 'Projects',
 	'nav.blog': 'Blog',
 	'nav.about': 'About',
-	'nav.contact': 'Contact',
 	'nav.themeToggle': 'Switch theme',
 	'nav.menuToggle': 'Toggle navigation menu',
 	'footer.rights': 'All rights reserved',
@@ -115,20 +114,18 @@ export const STRINGS: Record<string, string> = {
 	'about.myProjectsBodyPrefix': "Here are the projects I'm working on — follow the ",
 	'about.myProjectsBodySuffix': ' for the latest progress:',
 	'about.projectsListLink': 'projects page',
-	'about.openSourcePrefix': 'Open ',
-	'about.openSourceSuffix': 'Source',
-	'about.openSourceBody': 'My open-source projects are hosted on GitHub: ',
 	'about.visitGithub': 'Visit GitHub Profile',
 
-	// 联系页
-	'contact.titlePrefix': 'Contact ',
-	'contact.titleSuffix': 'Me',
+	// 关于页「联系方式」区块（原独立联系页 /contact/ 并入关于页后沿用 contact.* key；
+	// 区块标题同样是「色块前缀 + 纯文本后缀」两段结构，与上方 about.* 标题一致）
+	'contact.sectionPrefix': 'Contact ',
+	'contact.sectionSuffix': 'Info',
 	'contact.intro': 'Feel free to reach out with any questions, suggestions, or collaboration ideas.',
 	'contact.issuesBodyPrefix': 'Found a bug on this site or in one of my projects, or have a feature request? Feel free to open an ',
 	'contact.issuesLinkText': 'issue on the repo',
 	'contact.issuesBodySuffix': " and I'll follow up as soon as I can.",
 	'contact.openSourceTitle': 'Open Source Profile',
-	'contact.openSourceBodyPrefix': 'My open-source projects and code repositories: ',
+	'contact.openSourceBodyPrefix': 'My open-source projects and code repositories are all hosted on GitHub: ',
 	'contact.noteTitle': 'Note',
 	'contact.noteBody':
 		'Replies usually take 1-3 business days; please describe reproduction steps and environment when reporting issues to help me look into it faster.',
