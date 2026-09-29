@@ -2,6 +2,7 @@
 // 顶部导航（Positivus 风格）：Logo + 导航链接 + 移动端汉堡菜单 + 主题/语言切换
 // 语言切换是原生 i18n 路由下的真实跳转链接（见 astro.config.mjs 的 i18n 配置），
 // 不再是客户端换字典——每个 <a> 的文案/href 在这里就已经按当前 locale 解析好。
+// 「联系」已并入关于页，这里不再单列入口。
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { resolveLocale, t } from '../i18n/strings';
 import { SITE_TITLE } from '../consts';
@@ -20,7 +21,6 @@ const navItems = [
 	{ path: 'projects', zh: '项目', en: 'Projects' },
 	{ path: 'blog', zh: '博客', en: 'Blog' },
 	{ path: 'about', zh: '关于', en: 'About' },
-	{ path: 'contact', zh: '联系', en: 'Contact' },
 ].map((item) => ({
 	href: getRelativeLocaleUrl(locale, item.path),
 	label: locale === 'zh' ? item.zh : item.en,

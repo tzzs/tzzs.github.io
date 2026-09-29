@@ -1,6 +1,6 @@
 ---
 // 页脚（Positivus 风格）：深色背景 + 站点链接 + 社交/源码链接 + 版权
-// 5 个站内导航链接全部在双语范围内，不需要 hasEnglishVersion 判断（对比 Navbar.astro）
+// 4 个站内导航链接全部在双语范围内，不需要 hasEnglishVersion 判断（对比 Navbar.astro）
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { resolveLocale, t } from '../i18n/strings';
 import { SITE_TITLE, COPYRIGHT_HOLDER, SITE_URL, SITE_GITHUB } from '../consts';
@@ -12,7 +12,6 @@ const navLinks = [
 	{ path: 'projects', zh: '项目', en: 'Projects' },
 	{ path: 'blog', zh: '博客', en: 'Blog' },
 	{ path: 'about', zh: '关于', en: 'About' },
-	{ path: 'contact', zh: '联系', en: 'Contact' },
 ].map((item) => ({
 	href: getRelativeLocaleUrl(locale, item.path),
 	name: locale === 'zh' ? item.zh : item.en,
