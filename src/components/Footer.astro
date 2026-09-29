@@ -23,10 +23,12 @@ const externalLinks = [
 ];
 ---
 
-<footer class="px-5 pt-8 sm:px-5">
+<footer class="px-5 pt-6 sm:px-5">
 	<div class="mx-auto w-full max-w-[1240px]">
-		<div class="rounded-t-[45px] bg-dark px-[15px] py-8 text-gray lg:px-[60px]">
-			<div class="flex flex-col items-center justify-between gap-6 lg:flex-row">
+		<div class="rounded-t-[45px] bg-dark px-[15px] py-6 text-gray lg:px-[60px]">
+			<!-- 三组内容在 md(768px) 起排成一行：所需宽度约 567px，md 下可用约 698px；
+			     低于 md 才竖排，避免平板/分屏宽度下无谓地折成三行 -->
+			<div class="flex flex-col items-center justify-between gap-5 md:flex-row">
 				<a href={getRelativeLocaleUrl(locale, '')} class="flex items-center gap-2">
 					<span class="inline-block h-8 w-8 rounded-lg bg-green" aria-hidden="true"></span>
 					<span class="text-xl font-bold tracking-tight text-white">{SITE_TITLE}</span>
@@ -65,7 +67,7 @@ const externalLinks = [
 				</ul>
 			</div>
 
-			<div class="mt-6 mb-4 h-px bg-gray"></div>
+			<div class="mt-5 mb-3 h-px bg-gray"></div>
 
 			<div class="flex flex-col items-center justify-between gap-3 text-center text-sm text-gray md:flex-row">
 				<span>
