@@ -1,14 +1,13 @@
-# TZZ'S BLOG
+# TZZ'S STUDIO
 
-> TZZ 的独立开发者主页：分享产品开发与技术实践，记录工程路上的踩坑与思考，欢迎查看项目与博客文章。
+> TZZ 的独立开发者工作室：分享产品开发与技术实践，记录工程路上的踩坑与思考，欢迎查看项目与博客文章。
 
 ## 核心页面
 
 - [首页](https://tzzs.github.io/): Hero、正在进行的项目与最近文章预览
 - [项目](https://tzzs.github.io/projects/): VS Code 插件、桌面应用、Agent 工具与 Skill
 - [博客](https://tzzs.github.io/blog/): 技术博客，编程踩坑记录与技术分享
-- [关于](https://tzzs.github.io/about/): 开发者简介与技术栈
-- [联系](https://tzzs.github.io/contact/): GitHub Issues 与开源主页
+- [关于](https://tzzs.github.io/about/): 开发者简介、技术栈、项目一览与联系方式（GitHub Issues）
 
 ## 项目
 

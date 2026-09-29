@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-TZZ'S BLOG：个人开发者门户（首页 = Hero + 项目展示 + 博客预览），基于 **Astro 7 + TypeScript Strict + Content Collections**，部署于 GitHub Pages（GitHub Actions 自动构建）。全站代码注释、提交信息、内容均为中文。
+TZZ'S STUDIO：个人开发者门户（首页 = Hero + 项目展示 + 博客预览，关于页 = 简介 + 技术栈 + 项目 + 联系方式），基于 **Astro 7 + TypeScript Strict + Content Collections**，部署于 GitHub Pages（GitHub Actions 自动构建）。全站代码注释、提交信息、内容均为中文。
 
 **Node.js ≥ 24**（`package.json` engines 与部署 workflow 均要求）。
 

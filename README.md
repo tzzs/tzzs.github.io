@@ -1,6 +1,6 @@
-# TZZ'S BLOG
+# TZZ'S STUDIO
 
-个人开发者主页：项目展示 + 技术博客。
+个人开发者工作室：项目展示 + 技术博客（关于页含联系方式）。
 
 基于 **Astro + TypeScript + Content Collections** 构建，部署于 **GitHub Pages**（GitHub Actions 自动构建发布）。
 
