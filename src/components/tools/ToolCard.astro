@@ -1,0 +1,33 @@
+---
+/**
+ * 工具列表页卡片。
+ * 复用 global.css 里已有的 .app-card / .tag-pill 样式，不新造一套视觉语言。
+ */
+import { t, type Locale } from '../../i18n/strings';
+import { toolHref, type Tool } from '../../data/tools';
+
+interface Props {
+	tool: Tool;
+	locale: Locale;
+}
+
+const { tool, locale } = Astro.props;
+const href = toolHref(locale, tool.slug);
+---
+
+<a class="app-card" href={href}>
+	<div class="flex flex-wrap items-center justify-between gap-3">
+		<h3 class="app-card-title">{t(locale, `tool.${tool.slug}.name`, tool.name)}</h3>
+		<ul class="tag-list" aria-label={t(locale, 'tool.formatsAria', '支持的文件格式')}>
+			{
+				tool.formats.map((format) => (
+					<li>
+						<span class="tag-pill">{format}</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+	<p class="app-card-desc">{t(locale, `tool.${tool.slug}.description`, tool.description)}</p>
+	<span class="mt-3 inline-block text-sm font-medium text-[var(--accent)]">{t(locale, 'tool.openCta', '打开工具 →')}</span>
+</a>

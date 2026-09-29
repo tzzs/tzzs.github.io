@@ -1,0 +1,34 @@
+---
+// 工具列表页（中文）：/tools/
+import MainLayout from '../../layouts/MainLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ToolCard from '../../components/tools/ToolCard.astro';
+import { tools } from '../../data/tools';
+import { resolveLocale } from '../../i18n/strings';
+import { SITE_TITLE } from '../../consts';
+
+const locale = resolveLocale(Astro.currentLocale);
+---
+
+<MainLayout
+	title={`工具 - ${SITE_TITLE}`}
+	description="TZZ 的在线小工具：轨迹预览等实用工具，全部在浏览器本地运行，不上传任何数据。"
+	hasEnglishVersion
+>
+	<PageHeader
+		titleHighlight="工具"
+		description="我做的在线小工具。全部在浏览器本地跑完，数据不出这台设备。"
+	/>
+
+	{
+		tools.length > 0 ? (
+			<div class="grid gap-6 pb-12 md:grid-cols-2">
+				{tools.map((tool) => (
+					<ToolCard tool={tool} locale={locale} />
+				))}
+			</div>
+		) : (
+			<p class="py-8 text-text-faint">还没有工具，敬请期待。</p>
+		)
+	}
+</MainLayout>

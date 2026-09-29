@@ -1,0 +1,20 @@
+---
+// 轨迹预览页（中文）：/tools/track-viewer/
+// 页面只做薄壳：布局 + 组件。解析层与 UI 全在 TrackViewer.astro 里，
+// 英文版 src/pages/en/tools/track-viewer.astro 复用同一个组件、只换 locale。
+//
+// leaflet 的 CSS 在这一页静态引入：它约 14 KB，且只被工具页用到；
+// 真正大的 leaflet JS 与 FIT SDK 仍是解析成功后才动态 import（设计稿 §8.3）。
+import 'leaflet/dist/leaflet.css';
+import MainLayout from '../../layouts/MainLayout.astro';
+import TrackViewer from '../../components/tools/TrackViewer.astro';
+import { SITE_TITLE } from '../../consts';
+---
+
+<MainLayout
+	title={`轨迹预览 - ${SITE_TITLE}`}
+	description="在线预览 GPX / FIT 轨迹文件：地图轨迹、海拔与配速剖面、分段时间表与心率区间，全部在浏览器本地解析，文件不会上传。"
+	hasEnglishVersion
+>
+	<TrackViewer locale="zh" />
+</MainLayout>

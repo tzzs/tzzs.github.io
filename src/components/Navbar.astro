@@ -19,6 +19,7 @@ const otherLocale = locale === 'zh' ? 'en' : 'zh';
 const navItems = [
 	{ path: '', zh: '首页', en: 'Home' },
 	{ path: 'projects', zh: '项目', en: 'Projects' },
+	{ path: 'tools', zh: '工具', en: 'Tools' },
 	{ path: 'blog', zh: '博客', en: 'Blog' },
 	{ path: 'about', zh: '关于', en: 'About' },
 ].map((item) => ({
@@ -56,15 +57,17 @@ const toggleAriaLabel = locale === 'zh' ? 'Switch to English' : '切换到中文
 			<span class="text-xl font-bold tracking-tight">{SITE_TITLE}</span>
 		</a>
 
-		<!-- 桌面端导航（ml-auto 推向右，与旧布局一致） -->
-		<ul class="hidden items-center gap-8 md:ml-auto md:flex">
+		<!-- 桌面端导航（ml-auto 推向右，与旧布局一致）。
+		     间距与内边距在 lg 以下收紧一档：6 个中文项在 768–900px 之间装不下，
+		     而这个 flex 容器既不换行也不收缩，多出来的宽度会把右侧按钮组整个推出视口。 -->
+		<ul class="hidden items-center gap-4 md:ml-auto md:flex lg:gap-8">
 			{
 				navItems.map((item) => (
 					<li>
 						<a
 							href={item.href}
 							class:list={[
-								'rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150',
+								'rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors duration-150 lg:px-4',
 								isActive(item.href)
 									? 'bg-[var(--text)] text-[var(--bg)]'
 									: 'text-[var(--text)] hover:bg-[var(--bg-hover)]',
@@ -77,7 +80,8 @@ const toggleAriaLabel = locale === 'zh' ? 'Switch to English' : '切换到中文
 			}
 		</ul>
 
-		<div class="ml-6 flex items-center gap-3">
+		<!-- shrink-0：主题 / 语言 / 汉堡这组按钮必须永远可见，不能被导航项挤出去 -->
+		<div class="ml-6 flex shrink-0 items-center gap-3">
 			<!-- 主题切换按钮：深色模式显示太阳（点击回浅色），浅色模式显示月亮；无边框，hover 圆形浅底 -->
 			<button
 				id="theme-toggle"

@@ -15,10 +15,12 @@ npm install          # 安装依赖（Node ≥ 24）
 npm run dev          # 本地开发 http://localhost:4321
 npm run build        # 构建到 dist/
 npm run preview      # 预览构建产物
-npx astro check      # 类型检查（@astrojs/check，无 npm script 包装）
+npm test             # 单元测试（vitest run，只收 src/lib/track/**/*.test.ts）
+npm run test:watch   # 单元测试 watch 模式
+npm run check        # 类型检查（@astrojs/check）
 ```
 
-无测试与 linter；代码质量的验证手段是 `astro check` + 构建通过。
+`src/lib/track/`（GPX/FIT 轨迹解析层）有 vitest 单测，其余部分没有测试与 linter；全站代码质量的兜底手段仍是 `astro check` + 构建通过。新增测试放在被测模块旁边，命名 `*.test.ts`；需要 `DOMParser` 的测试（如 `gpx.test.ts`）在文件顶部用 `// @vitest-environment happy-dom` 单独声明环境，其余跑 Node。
 
 ## 架构
 
@@ -50,6 +52,13 @@ npx astro check      # 类型检查（@astrojs/check，无 npm script 包装）
 - **目录（TOC）**：正文中的 `[TOC]` 标记由自定义插件 `src/plugins/remark-toc-marker.mjs` 替换为 h1–h3 目录列表（class `article-toc`，样式在 `global.css`）。原因：remark-toc v8+ 不再处理 `[TOC]` 段落标记。
 - **数学公式**：`remark-math` + `rehype-katex`（astro.config.mjs），katex 样式已引入 global.css。
 - **RSS**：`src/pages/rss.xml.js` 生成 atom.xml。
+
+### 工具模块（数据驱动，页面自动生成）
+
+- **元数据**：`src/data/tools.ts` 的 `tools` 数组（slug/name/description/formats），驱动 `/tools/` 列表页；工具名与简介的英文译文按 `tool.<slug>.name` / `tool.<slug>.description` 建 key。
+- **页面**：每个工具是 `src/pages/tools/<slug>.astro`（薄壳）+ `src/components/tools/<Name>.astro`（全部 UI 与逻辑），英文版在 `src/pages/en/tools/<slug>.astro` 复用同一组件、只换 `locale`。
+- **轨迹预览**（`/tools/track-viewer/`）：解析与统计全在 `src/lib/track/`（纯函数、不碰 DOM、不发请求，因此与主题层无关，换主题时保留）；`@garmin/fitsdk` 与 `leaflet` **只能在解析成功后动态 `import`**——静态引入会把它们拉进入口 chunk，破坏"其它页面 JS 零增长"这条约束（构建产物已按此校验过）。
+- 设计决策与实测结论记录在 `docs/superpowers/specs/2026-09-30-track-viewer-tool-page-design.md`。
 
 ### 旧站 URL 重定向（关键机制）
 

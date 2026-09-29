@@ -1,0 +1,15 @@
+---
+// 轨迹预览页英文版：/en/tools/track-viewer/。
+// 与中文版是同一个组件，只换 locale —— 解析层与 UI 逻辑零重复（设计稿 §8）。
+import 'leaflet/dist/leaflet.css';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import TrackViewer from '../../../components/tools/TrackViewer.astro';
+import { SITE_TITLE } from '../../../consts';
+---
+
+<MainLayout
+	title={`Track Viewer - ${SITE_TITLE}`}
+	description="Preview a GPX or FIT activity file online: track map, elevation and pace profile, per-unit splits and heart-rate zones. Parsed entirely in your browser — nothing is uploaded."
+>
+	<TrackViewer locale="en" />
+</MainLayout>

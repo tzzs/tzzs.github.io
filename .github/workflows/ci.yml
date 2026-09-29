@@ -1,0 +1,25 @@
+name: CI
+
+# deploy.yml 只在 push main 时构建，PR 上没有任何检查。这个 workflow 补上单测与类型检查，
+# 让 stats/splits 这类「静默算错」的故障在合并前就被拦下（它们不会让页面坏掉，只会让数字不对）。
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      # 构建也跑一遍：类型检查抓不到模板与路由层面的错误
+      - run: npm run build
