@@ -6,12 +6,6 @@ import PageHeader from '../../components/PageHeader.astro';
 import { projects, CATEGORY_LABELS, CATEGORY_ORDER } from '../../data/projects';
 import { SITE_TITLE } from '../../consts';
 
-// 网格列数自适应：优先选能整除该分类项目数的列数，保证每行排满、无悬空卡片
-const gridClassFor = (count: number) => {
-	const cols = count === 1 ? 1 : [3, 2].find((c) => count % c === 0) ?? 3;
-	return cols === 3 ? 'md:grid-cols-3' : cols === 2 ? 'md:grid-cols-2' : '';
-};
-
 // 按 CATEGORY_ORDER 分组，空分类不渲染
 const groups = CATEGORY_ORDER.map((category) => ({
 	category,
@@ -41,8 +35,12 @@ const groups = CATEGORY_ORDER.map((category) => ({
 						>
 							{CATEGORY_LABELS[group.category]}
 						</h2>
-						<div class={`grid gap-6 ${gridClassFor(group.items.length)}`}>
-							{group.items.map((project) => <ProjectCard project={project} />)}
+						<div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+							{
+								group.items.map((project, index) => (
+									<ProjectCard project={project} featured={index === 0} />
+								))
+							}
 						</div>
 					</section>
 				))}

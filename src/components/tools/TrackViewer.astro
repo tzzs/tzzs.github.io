@@ -1,0 +1,1623 @@
+---
+/**
+ * 轨迹预览工具的 UI 层。六个区块（上传 / 统计 / 地图 / 剖面 / 心率 / 分段）共用一个 <script>，
+ * 不拆成独立组件：它们共享同一份 DOM 引用与同一套 points 下标主键，拆开只会变成 props 转发链。
+ *
+ * 深色模式适配有四条各自的路径，集中在文件末尾的 <style is:global>：
+ *  1. OSM 瓦片是浅色栅格图，只能对整层做 filter 反色（不换瓦片源，避免再依赖一个第三方服务）；
+ *  2. Leaflet 自带的缩放按钮与 attribution 是白底 DOM 元素，需要逐条覆盖；
+ *  3. 轨迹线 / 标记的颜色必须走 CSS class 而不是 Leaflet 的 color 选项——它把颜色写成 SVG
+ *     presentation attribute，而 presentation attribute 里 var() 无效，只有 CSS 规则里的 stroke 才认变量；
+ *  4. 组件自建的 SVG 与心率条直接引用 var(--text) 等变量，天然跟随主题。
+ *
+ * 文案按站里的双语约定：中文是字面文本，英文走 src/i18n/strings.ts 的查表。需要交给客户端
+ * 脚本的文案集中在 data-tv="strings" 的 JSON 里，不用 define:vars 一条条插值。
+ */
+import { t, type Locale } from '../../i18n/strings';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const tr = (key: string, zhText: string) => t(locale, key, zhText);
+
+/** 统计面板的字段清单：data 属性名 + 标签。缺值时整项隐藏（设计稿 §6.1） */
+const statItems = [
+	{ field: 'distance', label: tr('track.stat.distance', '总距离') },
+	{ field: 'duration', label: tr('track.stat.duration', '总时长') },
+	{ field: 'avgPace', label: tr('track.stat.avgPace', '平均配速') },
+	{ field: 'ascent', label: tr('track.stat.ascent', '总爬升') },
+	{ field: 'descent', label: tr('track.stat.descent', '总下降') },
+	{ field: 'bestPace', label: tr('track.stat.bestPace', '最快分段') },
+	{ field: 'worstPace', label: tr('track.stat.worstPace', '最慢分段') },
+	{ field: 'avgHr', label: tr('track.stat.avgHr', '平均心率') },
+	{ field: 'maxHr', label: tr('track.stat.maxHr', '最大心率') },
+	{ field: 'avgCadence', label: tr('track.stat.avgCadence', '平均步频') },
+	{ field: 'maxCadence', label: tr('track.stat.maxCadence', '最大步频') },
+	{ field: 'avgPower', label: tr('track.stat.avgPower', '平均功率') },
+];
+
+/** 客户端脚本用到的文案：错误码、提示模板、轴标签 */
+const clientStrings = {
+	locale,
+	defaultUnit: locale === 'zh' ? 'metric' : 'imperial',
+	parsing: tr('track.status.parsing', '正在解析…'),
+	multipleFiles: tr('track.status.multiple', '已只读取第一个文件，其余 %d 个被忽略'),
+	errors: {
+		notAFile: tr('track.error.notAFile', '拖进来的不是文件，请拖入单个 .gpx 或 .fit 文件'),
+		tooLarge: tr('track.error.tooLarge', '文件超过 50 MB 上限：这页只在浏览器本地解析，太大会让页面卡死'),
+		unknownFormat: tr('track.error.unknownFormat', '无法识别的文件格式，只支持 GPX（XML）与 Garmin FIT'),
+		noTrackPoints: tr('track.error.noTrackPoints', '文件里没有轨迹点'),
+		waypointsOnly: tr('track.error.waypointsOnly', '这个 GPX 只含航点（waypoint），没有轨迹线或路线'),
+		emptyPoints: tr('track.error.emptyPoints', '解析后一个有效点都没有'),
+		decodeFailed: tr('track.error.decodeFailed', '文件解码失败，可能已损坏或使用了不支持的格式版本'),
+		renderFailed: tr('track.error.renderFailed', '这个文件在页面渲染时出错了。文件本身可能没有问题，是本站的 bug，欢迎在关于页的联系方式里反馈。'),
+	},
+	warnings: {
+		nonMonotonicTime: tr('track.warn.nonMonotonicTime', '部分时间点早于前一个点（设备时钟跳变），相关时段时长按 0 处理。'),
+		pointSkippedNoCoord: tr('track.warn.pointSkippedNoCoord', '%d 个点缺少坐标，已跳过，距离可能偏小。'),
+		eleAnomalyDropped: tr('track.warn.eleAnomalyDropped', '%d 个高程值跳变过大，按 GPS 漂移丢弃。'),
+	},
+	splitGranularity: tr('track.splitGranularity', '活动过长，分段粒度已放大为每 %s。'),
+	hrCoverageNote: tr('track.hrCoverage', '心率数据覆盖 %s 的时长。'),
+	hrBasis: tr('track.hrBasis', '区间以文件内观测到的最大心率 %s 为基准；间歇训练里该值偏低，各区会整体偏高。'),
+	hrBelowZ1: tr('track.hrBelowZ1', '另有 %s 低于最大心率的 50%，未计入区间。'),
+	tileFailed: tr('track.map.tileFailed', '底图瓦片加载失败，轨迹线仍然可见。'),
+	mapChunkFailed: tr('track.map.chunkFailed', '地图脚本没能加载，通常是网络问题；轨迹线以外的视图都正常，刷新页面即可重试。'),
+	tileRetry: tr('track.map.tileRetry', '重试加载底图'),
+	legendEle: tr('track.profile.legendEle', '海拔（左轴 · 米）'),
+	legendPace: tr('track.profile.legendPace', '配速（右轴 · 每单位距离用时，越靠上越快）'),
+	mapFit: tr('track.map.fit', '缩放到完整轨迹'),
+	mapFullscreen: tr('track.map.fullscreen', '全屏'),
+	mapExitFullscreen: tr('track.map.exitFullscreen', '退出全屏'),
+	mapFullscreenFailed: tr('track.map.fullscreenFailed', '全屏不可用，浏览器拒绝了这次请求（%s）。按 Esc 或用系统的全屏键也不影响地图正常使用。'),
+	noEle: tr('track.profile.noEle', '该文件不含海拔数据'),
+	tip: {
+		distance: tr('track.tip.distance', '里程'),
+		ele: tr('track.tip.ele', '海拔'),
+		hr: tr('track.tip.hr', '心率'),
+	},
+	sportLabels: {
+		hiking: tr('track.sport.hiking', '徒步'),
+		running: tr('track.sport.running', '跑步'),
+		walking: tr('track.sport.walking', '步行'),
+		cycling: tr('track.sport.cycling', '骑行'),
+		biking: tr('track.sport.biking', '骑行'),
+		swimming: tr('track.sport.swimming', '游泳'),
+		cardio_training: tr('track.sport.cardio', '有氧训练'),
+		strength_training: tr('track.sport.strength', '力量训练'),
+		yoga: tr('track.sport.yoga', '瑜伽'),
+	},
+	cadenceUnit: tr('track.unit.cadence', '步/分'),
+};
+---
+
+<div class="py-10 md:py-14" data-tv-root>
+	<script type="application/json" data-tv="strings" set:html={JSON.stringify(clientStrings)} />
+
+	<h1 class="text-4xl font-medium md:text-5xl">
+		<span>{tr('track.titlePrefix', '轨迹')}</span><span class="ml-3 inline-block rounded-2xl bg-green px-3 py-1">{tr('track.titleSuffix', '预览')}</span>
+	</h1>
+	<p class="mt-5 max-w-2xl text-base leading-relaxed text-[var(--text-soft)]">
+		{tr('track.intro', '把运动手表或运动 App 导出的 GPX / FIT 文件拖进来，轨迹地图、海拔剖面、分段表与心率区间都会在本地生成。')}
+	</p>
+	<!-- 隐私声明紧贴上传区：访客最关心的就是「我的文件要去哪儿」，藏进关于页等于没写 -->
+	<p class="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--text-faint)]">
+		<strong class="font-semibold text-[var(--text)]">{tr('track.privacyLead', '文件不会上传')}</strong>{tr('track.privacyNote', '——解析全程在你的浏览器里完成，没有任何请求带着文件内容离开这台设备。')}
+	</p>
+
+	<input id="tv-file" type="file" accept=".gpx,.fit" class="sr-only track-file-input" data-tv="file" />
+	<label for="tv-file" class="track-drop mt-7" data-tv="drop">
+		<span class="track-drop-title">{tr('track.dropTitle', '拖入 .gpx / .fit 文件，或点击选择')}</span>
+		<span class="track-drop-sub">{tr('track.dropSub', '支持 GPX 1.0 / 1.1 与 Garmin FIT（含 Strava 导出件）')}</span>
+	</label>
+
+	<p class="track-status mt-3 text-sm" role="status" aria-live="polite" data-tv="status"></p>
+	<div class="track-error mt-3" role="alert" data-tv="error" hidden></div>
+
+	<section class="track-results mt-9" data-tv="results" hidden>
+		<header class="track-head">
+			<div>
+				<h2 class="track-name" data-tv="name"></h2>
+				<p class="track-meta" data-tv="meta"></p>
+			</div>
+			<div class="track-units" role="group" aria-label={tr('track.unitGroupAria', '距离单位')}>
+				<button type="button" class="filter-chip" data-tv="unit-metric">{tr('track.unit.metric', '公里')}</button>
+				<button type="button" class="filter-chip" data-tv="unit-imperial">{tr('track.unit.imperial', '英里')}</button>
+			</div>
+		</header>
+
+		<p class="track-warnings" data-tv="warnings"></p>
+
+		<dl class="track-stats" data-tv="stats">
+			{
+				statItems.map((item) => (
+					<div class="track-stat" data-tv={`stat-${item.field}`} hidden>
+						<dt>{item.label}</dt>
+						<dd>{'—'}</dd>
+					</div>
+				))
+			}
+		</dl>
+
+		<section class="track-block" data-tv="block-map" hidden>
+			<h3 class="track-heading">{tr('track.mapHeading', '轨迹地图')}</h3>
+			<!-- 控件叠在地图内部右上角。全屏目标是外层 wrap 而不是地图本身——
+			     否则一进全屏，这些按钮就被留在屏幕外，只剩 Esc 能退出来 -->
+			<div class="track-map-wrap" data-tv="map-wrap">
+				<div class="track-map" data-tv="map" role="img" aria-label={tr('track.mapAria', '轨迹地图：折线为行进路线，圆点为起点与终点')}></div>
+				<div class="track-map-controls" data-tv="map-controls">
+					<div class="track-basemap" role="group" aria-label={tr('track.map.basemapAria', '底图类型')}>
+						<button type="button" class="track-ctl" data-tv="base-standard">{tr('track.map.basemapStandard', '标准')}</button>
+						<button type="button" class="track-ctl" data-tv="base-topo">{tr('track.map.basemapTopo', '地形')}</button>
+					</div>
+					<button type="button" class="track-ctl" data-tv="map-fullscreen" hidden>{tr('track.map.fullscreen', '全屏')}</button>
+				</div>
+			</div>
+			<p class="track-note" data-tv="map-note" hidden>
+				<span data-tv="map-note-text"></span>
+				<button type="button" class="track-pill" data-tv="map-retry">{tr('track.map.tileRetry', '重试加载底图')}</button>
+			</p>
+		</section>
+
+		<section class="track-block" data-tv="block-profile" hidden>
+			<h3 class="track-heading">
+				{tr('track.profileHeading', '海拔与配速')}
+				<span class="track-legend" data-tv="profile-legend"></span>
+			</h3>
+			<div class="track-profile" data-tv="profile">
+				<div class="track-tooltip" data-tv="tooltip" hidden></div>
+			</div>
+		</section>
+
+		<section class="track-block" data-tv="block-hr" hidden>
+			<h3 class="track-heading">{tr('track.hrHeading', '心率区间')}</h3>
+			<div class="track-hr" data-tv="hr"></div>
+			<p class="track-note" data-tv="hr-note"></p>
+		</section>
+
+		<section class="track-block" data-tv="block-splits" hidden>
+			<h3 class="track-heading">{tr('track.splitsHeading', '分段时间')}</h3>
+			<div class="track-table-wrap">
+				<table class="track-table">
+					<caption class="sr-only">{tr('track.splitsCaption', '按固定距离拆分的分段耗时与配速')}</caption>
+					<thead>
+						<tr>
+							<th scope="col">{tr('track.splitCol.index', '分段')}</th>
+							<th scope="col">{tr('track.splitCol.duration', '耗时')}</th>
+							<th scope="col">{tr('track.splitCol.pace', '配速')}</th>
+							<th scope="col">{tr('track.splitCol.ascent', '爬升')}</th>
+							<th scope="col">{tr('track.splitCol.hr', '平均心率')}</th>
+						</tr>
+					</thead>
+					<tbody data-tv="splits-body"></tbody>
+				</table>
+			</div>
+			<p class="track-note" data-tv="splits-note" hidden></p>
+		</section>
+	</section>
+</div>
+
+<script>
+	import {
+		computeHrZones,
+		computeSplits,
+		computeStats,
+		hasCoordinates,
+		parseTrack,
+		percentile,
+		resampleForRender,
+		rollingPace,
+		TrackParseError,
+		trackFormat as F,
+	} from '../../lib/track';
+	import type { Activity, Split, Unit } from '../../lib/track';
+	import type { ComputedActivity } from '../../lib/track/stats';
+
+	type Strings = {
+		locale: 'zh' | 'en';
+		defaultUnit: Unit;
+		parsing: string;
+		multipleFiles: string;
+		errors: Record<string, string>;
+		warnings: Record<string, string>;
+		splitGranularity: string;
+		hrCoverageNote: string;
+		hrBasis: string;
+		hrBelowZ1: string;
+		tileFailed: string;
+		tileRetry: string;
+		mapChunkFailed: string;
+		legendEle: string;
+		legendPace: string;
+		noEle: string;
+		mapFit: string;
+		mapFullscreen: string;
+		mapExitFullscreen: string;
+		mapFullscreenFailed: string;
+		tip: { distance: string; ele: string; hr: string };
+		sportLabels: Record<string, string>;
+		cadenceUnit: string;
+	};
+
+	const root = document.querySelector<HTMLElement>('[data-tv-root]');
+	if (!root) throw new Error('TrackViewer: 找不到根元素');
+
+	/** 内部结构缺失属于开发期错误，直接抛出，不在产品代码里到处兜底 */
+	function q<T extends HTMLElement>(key: string): T {
+		const el = root!.querySelector<HTMLElement>(`[data-tv="${key}"]`);
+		if (!el) throw new Error(`TrackViewer: 找不到 [data-tv="${key}"]`);
+		return el as T;
+	}
+
+	const S = JSON.parse(q<HTMLScriptElement>('strings').textContent || '{}') as Strings;
+
+	const els = {
+		file: q<HTMLInputElement>('file'),
+		drop: q<HTMLElement>('drop'),
+		status: q<HTMLElement>('status'),
+		error: q<HTMLElement>('error'),
+		results: q<HTMLElement>('results'),
+		name: q<HTMLElement>('name'),
+		meta: q<HTMLElement>('meta'),
+		warnings: q<HTMLElement>('warnings'),
+		stats: q<HTMLElement>('stats'),
+		blockMap: q<HTMLElement>('block-map'),
+		mapWrap: q<HTMLElement>('map-wrap'),
+		map: q<HTMLElement>('map'),
+		mapNote: q<HTMLElement>('map-note'),
+		mapNoteText: q<HTMLElement>('map-note-text'),
+		mapRetry: q<HTMLButtonElement>('map-retry'),
+		mapFullscreen: q<HTMLButtonElement>('map-fullscreen'),
+		baseStandard: q<HTMLButtonElement>('base-standard'),
+		baseTopo: q<HTMLButtonElement>('base-topo'),
+		blockProfile: q<HTMLElement>('block-profile'),
+		profile: q<HTMLElement>('profile'),
+		profileLegend: q<HTMLElement>('profile-legend'),
+		tooltip: q<HTMLElement>('tooltip'),
+		blockHr: q<HTMLElement>('block-hr'),
+		hr: q<HTMLElement>('hr'),
+		hrNote: q<HTMLElement>('hr-note'),
+		blockSplits: q<HTMLElement>('block-splits'),
+		splitsBody: q<HTMLTableSectionElement>('splits-body'),
+		splitsNote: q<HTMLElement>('splits-note'),
+		unitMetric: q<HTMLButtonElement>('unit-metric'),
+		unitImperial: q<HTMLButtonElement>('unit-imperial'),
+	};
+
+	let unit: Unit = S.defaultUnit;
+	let loaded: { activity: Activity; computed: ComputedActivity; fileName: string } | null = null;
+	/** 剖面采样到的 points 下标；下标是整页联动的唯一主键（设计稿 §9.1） */
+	let profileIndex: number[] = [];
+	/** 与 profileIndex 一一对应的像素横坐标，用于鼠标命中判定 */
+	let profileX: number[] = [];
+	let distanceAt: number[] = [];
+
+	/** Leaflet 只在解析成功后出现；换文件时必须 remove，否则留下孤儿地图 */
+	let leaflet: typeof import('leaflet') | null = null;
+	let map: import('leaflet').Map | null = null;
+	let renderPoints: { lat: number; lon: number; index: number }[] = [];
+	let linkMarker: import('leaflet').CircleMarker | null = null;
+
+	const SVG_NS = 'http://www.w3.org/2000/svg';
+
+	/**
+	 * 地图矢量层的颜色只能靠 class 提供：Leaflet 把 color 选项写成 SVG 的
+	 * presentation attribute，而 stroke="var(--accent)" 在 presentation attribute 里不合法，
+	 * 浏览器会直接忽略 —— 写成 CSS 规则才认变量，深色切换也就不需要 JS 重绘。
+	 */
+	const CLASS = { line: 'track-line', start: 'track-marker-start', end: 'track-marker-end', link: 'track-marker-link' };
+
+	function setVisible(el: HTMLElement, visible: boolean) {
+		if (visible) el.removeAttribute('hidden');
+		else el.setAttribute('hidden', '');
+	}
+
+	function svgOf<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number> = {}) {
+		const el = document.createElementNS(SVG_NS, tag);
+		for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, String(value));
+		return el;
+	}
+
+	function textNode(content: string, attrs: Record<string, string | number> = {}) {
+		const el = svgOf('text', attrs);
+		el.textContent = content;
+		return el;
+	}
+
+	/* ===== 状态与错误 ===== */
+
+	function setStatus(text: string) {
+		els.status.textContent = text;
+	}
+
+	function showError(code: string, detail: string | null) {
+		// detail 可能带文件头字节或 SDK 原始报错：只进控制台，不回显到页面上
+		if (detail) console.warn('[track]', code, detail);
+		// 失败路径必须清掉「正在解析…」，否则它会一直挂在错误提示上方
+		setStatus('');
+		els.error.textContent = S.errors[code] ?? S.errors.decodeFailed;
+		setVisible(els.error, true);
+		setVisible(els.results, false);
+		destroyMap();
+	}
+
+	function destroyMap() {
+		map?.remove();
+		map = null;
+		leaflet = null;
+		linkMarker = null;
+		// 图层对象挂在已销毁的地图实例上，留着引用下次会加不上
+		tileLayer = null;
+		trackBounds = null;
+		renderPoints = [];
+		setVisible(els.mapNote, false);
+	}
+
+	/* ===== 文件读取 ===== */
+
+	async function loadFile(file: File) {
+		setVisible(els.error, false);
+		setVisible(els.results, false);
+		destroyMap();
+		setStatus(S.parsing);
+
+		let activity: Activity;
+		let computed: ComputedActivity;
+		try {
+			activity = await parseTrack(file);
+			computed = computeStats(activity);
+		} catch (error) {
+			loaded = null;
+			if (error instanceof TrackParseError) showError(error.code, error.detail);
+			else showError('decodeFailed', error instanceof Error ? error.message : String(error));
+			return;
+		}
+
+		loaded = { activity, computed, fileName: file.name };
+		setStatus('');
+		// 渲染出错不能报成「文件解码失败」：那是我们自己的问题，不该让访客怀疑自己的文件坏了
+		try {
+			renderAll();
+		} catch (error) {
+			console.error('[track] render failed', error);
+			showError('renderFailed', error instanceof Error ? error.message : String(error));
+		}
+	}
+
+	function handleFiles(list: FileList | File[]) {
+		const files = Array.from(list);
+		if (files.length === 0) {
+			showError('notAFile', null);
+			return;
+		}
+		if (files.length > 1) setStatus(S.multipleFiles.replace('%d', String(files.length - 1)));
+		else setStatus('');
+		void loadFile(files[0]);
+	}
+
+	/* ===== 渲染入口 ===== */
+
+	function renderAll() {
+		if (!loaded) return;
+		const { activity, computed, fileName } = loaded;
+		// 必须先显示结果区再渲染：display:none 的元素 clientWidth 恒为 0，
+		// 剖面图会量不到容器宽而退化成固定 640px，在窄屏上把整页撑出横向滚动
+		setVisible(els.results, true);
+		const splits = renderHeaderAndStats(activity, computed, fileName);
+		renderWarnings(activity.warnings, computed);
+		renderMap(activity);
+		renderProfile(activity, computed);
+		renderHr(activity, computed);
+		renderSplits(splits);
+	}
+
+	/** 只重渲染与单位有关的部分：地图与抽稀结果不受单位影响，切单位时不该重建 */
+	function renderUnitDependent() {
+		if (!loaded) return;
+		const splits = renderHeaderAndStats(loaded.activity, loaded.computed, loaded.fileName);
+		renderProfile(loaded.activity, loaded.computed);
+		renderSplits(splits);
+	}
+
+	function renderHeaderAndStats(activity: Activity, computed: ComputedActivity, fileName: string): Split[] {
+		els.name.textContent = activity.name || fileName;
+		const parts: string[] = [];
+		const date = F.formatDateTime(activity.startTime, S.locale);
+		if (date !== F.MISSING) parts.push(date);
+		if (activity.sport) parts.push(S.sportLabels[activity.sport.toLowerCase()] ?? activity.sport);
+		if (activity.device) parts.push(activity.device);
+		parts.push(activity.source.toUpperCase());
+		els.meta.textContent = parts.join(' · ');
+
+		const s = computed.stats;
+		const splits = computeSplits(activity, computed, unit);
+		const full = splits.filter((x) => !x.partial && x.durationS !== null);
+		const fastest = full.length > 0 ? full.reduce((a, b) => ((a.durationS ?? Infinity) <= (b.durationS ?? Infinity) ? a : b)) : null;
+		const slowest = full.length > 0 ? full.reduce((a, b) => ((a.durationS ?? -1) >= (b.durationS ?? -1) ? a : b)) : null;
+		const avgPace = F.formatPace(s.durationS, s.distanceM, unit);
+
+		setStat('distance', s.distanceM === null ? null : F.formatDistance(s.distanceM, unit, S.locale));
+		setStat('duration', F.formatDuration(s.durationS));
+		setStat('avgPace', avgPace === F.MISSING ? null : avgPace + F.paceUnitSuffix(unit, S.locale));
+		setStat('ascent', s.ascentM === null ? null : F.formatAscent(s.ascentM, S.locale));
+		setStat('descent', s.descentM === null ? null : F.formatAscent(s.descentM, S.locale));
+		setStat('bestPace', fastest ? F.formatPace(fastest.durationS, fastest.distanceM, unit) : null);
+		setStat('worstPace', slowest ? F.formatPace(slowest.durationS, slowest.distanceM, unit) : null);
+		setStat('avgHr', s.avgHr === null ? null : F.formatCount(s.avgHr, 'bpm'));
+		setStat('maxHr', s.maxHr === null ? null : F.formatCount(s.maxHr, 'bpm'));
+		setStat('avgCadence', s.avgCadence === null ? null : F.formatCount(s.avgCadence, S.cadenceUnit));
+		setStat('maxCadence', s.maxCadence === null ? null : F.formatCount(s.maxCadence, S.cadenceUnit));
+		setStat('avgPower', s.avgPower === null ? null : F.formatCount(s.avgPower, 'W'));
+
+		return splits;
+	}
+
+	/** 往统计项写值；null 就整项隐藏——缺失不画、不补零、不把 0 冒充「没有」 */
+	function setStat(field: string, text: string | null) {
+		const item = els.stats.querySelector<HTMLElement>(`[data-tv="stat-${field}"]`);
+		const value = item?.querySelector('dd');
+		if (!item || !value) return;
+		if (text === null || text === F.MISSING) {
+			item.setAttribute('hidden', '');
+			return;
+		}
+		value.textContent = text;
+		item.removeAttribute('hidden');
+	}
+
+	/**
+	 * 非致命问题的说明。来源有两处，都必须报：解析器记的（文件本身的问题）
+	 * 与统计层算出的（坐标缺失、高程漂移），后者不在 activity.warnings 里。
+	 */
+	function renderWarnings(warnings: Activity['warnings'], computed: ComputedActivity) {
+		const texts: string[] = [];
+		if (warnings.includes('nonMonotonicTime')) texts.push(S.warnings.nonMonotonicTime);
+		if (computed.distance.pointsWithoutCoords > 0) texts.push(S.warnings.pointSkippedNoCoord.replace('%d', String(computed.distance.pointsWithoutCoords)));
+		if (computed.elevation.anomaliesDropped > 0) texts.push(S.warnings.eleAnomalyDropped.replace('%d', String(computed.elevation.anomaliesDropped)));
+
+		els.warnings.textContent = texts.join(' ');
+		setVisible(els.warnings, texts.length > 0);
+	}
+
+	/* ===== 地图 ===== */
+
+	function canFullscreen(): boolean {
+		return typeof els.mapWrap.requestFullscreen === 'function' && document.fullscreenEnabled !== false;
+	}
+
+	function isMapFullscreen(): boolean {
+		return document.fullscreenElement === els.mapWrap;
+	}
+
+	function toggleMapFullscreen() {
+		if (isMapFullscreen()) {
+			void document.exitFullscreen?.();
+			return;
+		}
+		// 失败原因必须让访客看见。之前只写控制台，结果就是「点了没反应」而无从判断——
+		// 浏览器策略、缺少用户激活、iOS Safari 不支持元素全屏，全都走这条路
+		void els.mapWrap
+			.requestFullscreen()
+			.then(() => setVisible(els.mapNote, false))
+			.catch((error) => {
+				const reason = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+				console.warn('[track] 进入全屏失败', reason);
+				showMapNote(S.mapFullscreenFailed.replace('%s', reason), false);
+			});
+	}
+
+	/**
+	 * 底图图源配置点。
+	 *
+	 * 两个源都是 WGS84：GPX/FIT 的坐标可直接叠加，不需要任何纠偏。
+	 * 换源时最要命的一条是 GCJ-02（高德、天地图加密影像）——轨迹会整体偏移数百米
+	 * 且不会报任何错，所以图源只在这里增删，别处不出现 URL（设计稿 §9.3）。
+	 *
+	 * className 分开是因为深色处理不同：OSM 标准图是中性配色，反色可读；
+	 * 地形图的等高线与高程分层设色**本身携带语义**，反色会把信息变成误导，只做轻微降亮度。
+	 */
+	const TILE_SOURCES = {
+		standard: {
+			url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+			maxNativeZoom: 19,
+			attribution: '&copy; OpenStreetMap contributors',
+			className: 'track-tiles',
+		},
+		topo: {
+			// OpenTopoMap：OSM 数据 + SRTM 山体阴影，免 key；实测 z17 以上瓦片近乎空白
+			url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+			maxNativeZoom: 17,
+			attribution: '&copy; OpenStreetMap contributors, SRTM | &copy; OpenTopoMap (CC-BY-SA)',
+			className: 'track-tiles-topo',
+		},
+	} as const;
+
+	type TileKind = keyof typeof TILE_SOURCES;
+
+	/** 只在内存里记，不写 localStorage：这页承诺不留任何访客数据 */
+	let tileKind: TileKind = 'standard';
+	let tileLayer: import('leaflet').TileLayer | null = null;
+	/** 轨迹外接范围。容器尺寸变化（进出全屏）后要按新尺寸重新套合 */
+	let trackBounds: import('leaflet').LatLngBounds | null = null;
+
+	/**
+	 * 地图下方的提示行。两种失败共用一个位置，但只有瓦片失败才给「重试加载底图」按钮——
+	 * 全屏被拒时挂一个重试底图的按钮是误导。
+	 */
+	function showMapNote(text: string, withRetry: boolean) {
+		els.mapNoteText.textContent = text;
+		setVisible(els.mapRetry, withRetry);
+		setVisible(els.mapNote, true);
+	}
+
+	function addTileLayer() {
+		if (!map || !leaflet) return;
+		tileLayer?.remove();
+		const source = TILE_SOURCES[tileKind];
+		// maxZoom 固定 19、maxNativeZoom 按图源上限：超出上限时 Leaflet 放大已有瓦片，
+		// 而不是发一个不存在的请求拿回空白
+		tileLayer = leaflet
+			.tileLayer(source.url, {
+				maxZoom: 19,
+				maxNativeZoom: source.maxNativeZoom,
+				subdomains: 'abc',
+				className: source.className,
+				attribution: source.attribution,
+			})
+			.addTo(map);
+
+		let failures = 0;
+		tileLayer.on('tileerror', () => {
+			failures++;
+			// 阈值 6：一屏瓦片数就在这个量级，个别瓦片偶发失败不该弹提示
+			if (failures === 6) showMapNote(S.tileFailed, true);
+		});
+		tileLayer.on('tileload', () => {
+			if (failures === 0) return;
+			failures = 0;
+			setVisible(els.mapNote, false);
+		});
+	}
+
+	function syncBaseChips() {
+		els.baseStandard.classList.toggle('active', tileKind === 'standard');
+		els.baseTopo.classList.toggle('active', tileKind === 'topo');
+		els.baseStandard.setAttribute('aria-pressed', String(tileKind === 'standard'));
+		els.baseTopo.setAttribute('aria-pressed', String(tileKind === 'topo'));
+	}
+
+	function switchBaseLayer(next: TileKind) {
+		if (next === tileKind) return;
+		tileKind = next;
+		syncBaseChips();
+		addTileLayer();
+	}
+
+	/**
+	 * 「套合到完整轨迹」按钮，注册成 Leaflet 的 topleft 控件。
+	 *
+	 * 走 control API 而不是自己绝对定位，是为了让 Leaflet 负责同角控件的纵向堆叠——
+	 * 手写的 top 偏移量等于把缩放控件的高度写死，改一处就错位。
+	 */
+	function addFitControl() {
+		if (!map || !leaflet) return;
+
+		const btn = document.createElement('button');
+		btn.type = 'button';
+		btn.className = 'track-fit-ctl';
+		btn.setAttribute('aria-label', S.mapFit);
+		btn.title = S.mapFit;
+
+		const icon = svgOf('svg', {
+			viewBox: '0 0 24 24',
+			width: 18,
+			height: 18,
+			fill: 'none',
+			stroke: 'currentColor',
+			'stroke-width': 2,
+			'stroke-linecap': 'round',
+			'aria-hidden': 'true',
+		});
+		icon.appendChild(svgOf('path', { d: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5' }));
+		icon.appendChild(svgOf('circle', { cx: 12, cy: 12, r: 2.5 }));
+		btn.appendChild(icon);
+		btn.addEventListener('click', refitToTrack);
+
+		// @types/leaflet 只给 control 命名空间挂了 zoom/attribution/layers/scale 四个工厂，
+		// 通用控件要自己 new Control 再覆写 onAdd（运行时的 L.control 是同一个东西，只是没有类型）。
+		const control = new leaflet.Control({ position: 'topleft' });
+		control.onAdd = () => btn;
+		control.addTo(map);
+	}
+
+	/**
+	 * 把轨迹重新套合到当前容器尺寸。两个调用方：套合按钮，和 fullscreenchange
+	 * （后者必须调——invalidateSize 只保持原 center 与 zoom，不重算的话屏幕变成
+	 * 整屏时轨迹还是中间那一小坨）。
+	 *
+	 * padding 留 12px：这两个场景的意图都是「让轨迹尽量占满」。
+	 */
+	function refitToTrack() {
+		if (!map || !trackBounds) return;
+		map.invalidateSize({ animate: false });
+		map.fitBounds(trackBounds, { padding: [12, 12] });
+	}
+
+	async function renderMap(activity: Activity) {
+		if (!hasCoordinates(activity.points)) {
+			setVisible(els.blockMap, false);
+			return;
+		}
+		setVisible(els.blockMap, true);
+		// 全屏按钮只在浏览器真的支持时出现（部分移动浏览器不支持元素级全屏）
+		setVisible(els.mapFullscreen, canFullscreen());
+		renderPoints = resampleForRender(activity.points);
+		if (!leaflet) {
+			try {
+				leaflet = await import('leaflet');
+			} catch {
+				// Leaflet 是独立 chunk，拉不到（断网、缓存里的旧 chunk 已不存在）只该废掉地图这一块：
+				// 统计、剖面、分段、心率此时都已经画好，不能升级成整页错误把结果一起清掉
+				showMapNote(S.mapChunkFailed, false);
+				return;
+			}
+		}
+		map?.remove();
+
+		// scrollWheelZoom 开启：滚轮缩放是地图的基本预期。代价是指针停在地图上时
+		// 页面滚动会被接管制成缩放（地图有 380px 高，这个代价不算小）；
+		// 若觉得碍事，可以改成按住 Ctrl 才滚轮缩放。
+		//
+		// zoomSnap 0.5：默认只允许整数缩放级，而轨迹多是细长形，整数级会浪费掉大半屏
+		// （实测满屏时宽度只占 38%）。放开半级让 fitBounds 能贴得更紧；
+		// 代价是落在半级时瓦片会被轻微放大，略有软化。
+		map = leaflet.map(els.map, { scrollWheelZoom: true, zoomSnap: 0.5 });
+		addTileLayer();
+
+		const latlngs = renderPoints.map((p) => [p.lat, p.lon] as [number, number]);
+		leaflet.polyline(latlngs, { className: CLASS.line, weight: 4, opacity: 1 }).addTo(map);
+		leaflet.circleMarker(latlngs[0], { className: CLASS.start, radius: 6 }).addTo(map);
+		leaflet.circleMarker(latlngs[latlngs.length - 1], { className: CLASS.end, radius: 6 }).addTo(map);
+
+		trackBounds = leaflet.latLngBounds(latlngs);
+		addFitControl();
+		// 首帧就按当前尺寸套合；区块此前是 hidden，尺寸可能还没定下来，
+		// 所以再等一帧重测一次（两次都走同一个函数，视图不会不一致）。
+		refitToTrack();
+		window.requestAnimationFrame(refitToTrack);
+	}
+
+	/** 剖面下标 → 抽稀后最近的可绘制点（二分，抽稀上限内是有序的） */
+	function nearestRenderPoint(index: number) {
+		if (renderPoints.length === 0) return null;
+		let lo = 0;
+		let hi = renderPoints.length - 1;
+		while (lo < hi) {
+			const mid = (lo + hi) >> 1;
+			if (renderPoints[mid].index < index) lo = mid + 1;
+			else hi = mid;
+		}
+		const left = renderPoints[Math.max(0, lo - 1)];
+		const right = renderPoints[lo];
+		return Math.abs(left.index - index) <= Math.abs(right.index - index) ? left : right;
+	}
+
+	function moveLinkMarker(index: number | null) {
+		if (!map || !leaflet) return;
+		if (index === null || renderPoints.length === 0) {
+			linkMarker?.remove();
+			linkMarker = null;
+			return;
+		}
+		const target = nearestRenderPoint(index);
+		if (!target) return;
+		const latlng = leaflet.latLng(target.lat, target.lon);
+		if (linkMarker) linkMarker.setLatLng(latlng);
+		else linkMarker = leaflet.circleMarker(latlng, { className: CLASS.link, radius: 7 }).addTo(map);
+	}
+
+	/* ===== 海拔 / 配速剖面（手写 SVG，设计稿 §9.1） ===== */
+
+	/** 把刻度间隔取成「好看」的数（1/2/5 × 10^n） */
+	function niceStep(value: number): number {
+		if (!(value > 0)) return 1;
+		const exponent = Math.floor(Math.log10(value));
+		const base = 10 ** exponent;
+		const scaled = value / base;
+		const step = scaled <= 1 ? 1 : scaled <= 2 ? 2 : scaled <= 5 ? 5 : 10;
+		return step * base;
+	}
+
+	/**
+	 * 轴范围：先定间隔，再把上下界对齐到间隔的整数倍。
+	 * 直接 niceCeil(max) 会把轴撑到 5000 而数据只占下面三分之一，读数很难看出差异。
+	 */
+	function niceAxis(min: number, max: number) {
+		const step = niceStep(Math.max(1e-6, (max - min) / 5));
+		const bottom = Math.floor(min / step) * step;
+		const top = Math.ceil(max / step) * step;
+		const count = Math.min(8, Math.max(2, Math.round((top - bottom) / step)));
+		return { bottom, top, count };
+	}
+
+	/** 在采样点的像素横坐标里二分找离 vx 最近的一个（profileX 随下标单调递增） */
+	function nearestSample(vx: number): number {
+		if (profileX.length === 0) return 0;
+		let lo = 0;
+		let hi = profileX.length - 1;
+		while (lo < hi) {
+			const mid = (lo + hi) >> 1;
+			if (profileX[mid] < vx) lo = mid + 1;
+			else hi = mid;
+		}
+		const prev = Math.max(0, lo - 1);
+		return Math.abs(profileX[prev] - vx) <= Math.abs(profileX[lo] - vx) ? prev : lo;
+	}
+
+	function renderProfile(activity: Activity, computed: ComputedActivity) {
+		const points = activity.points;
+		distanceAt = computed.distance.values.map((v) => v ?? 0);
+		const elevations = computed.elevation.values;
+		const hasEle = elevations.some((v) => v !== null);
+		const pace = rollingPace(points, distanceAt);
+		const hasPace = pace.some((v) => v !== null);
+
+		// X 轴基准：有坐标用里程，否则退化到时间（设计稿 §6.2）
+		const useTimeAxis = !hasCoordinates(points);
+		const times = points.map((p) => p.time);
+		const anyTime = times.some((t) => t !== null);
+		if (useTimeAxis && !anyTime) {
+			setVisible(els.blockProfile, false);
+			return;
+		}
+
+		const xOf = (i: number) => (useTimeAxis ? (times[i] ?? times[0] ?? 0) : distanceAt[i]);
+		const xStart = xOf(0);
+		const xSpan = Math.max(1e-6, xOf(points.length - 1) - xStart);
+
+		// 采样上限固定，避免把十万个点直接塞进 DOM
+		const limit = Math.min(points.length, 2000);
+		profileIndex = [];
+		for (let k = 0; k < limit; k++) profileIndex.push(Math.round((k * (points.length - 1)) / Math.max(1, limit - 1)));
+		if (profileIndex[profileIndex.length - 1] !== points.length - 1) profileIndex.push(points.length - 1);
+		if (profileIndex.length < 2) {
+			setVisible(els.blockProfile, false);
+			return;
+		}
+
+		const eleValues = profileIndex.map((i) => elevations[i]).filter((v): v is number => v !== null);
+		const paceValues = profileIndex.map((i) => pace[i]).filter((v): v is number => v !== null);
+
+		// 先显示再量宽：容器处于 hidden 状态时 clientWidth 恒为 0，量不到真实宽度
+		setVisible(els.blockProfile, true);
+		const width = Math.max(320, els.profile.clientWidth);
+		const height = 240;
+		const pad = { top: 14, right: hasPace ? 58 : 16, bottom: 26, left: hasEle ? 52 : 16 };
+		const plotW = width - pad.left - pad.right;
+		const plotH = height - pad.top - pad.bottom;
+
+		const ele = hasEle ? niceAxis(Math.min(...eleValues), Math.max(...eleValues)) : null;
+		// 配速轴：范围取 2%–98% 分位并贴住数据，不复用 niceAxis——
+		// 把下界地板到「好看的整数」会落到 0（配速 0 秒/公里毫无意义），白扔掉半张画布。
+		// 等分数跟随海拔轴的网格线，两条曲线共用同一套横线，标签才不会和网格错位。
+		const sortedPace = [...paceValues].sort((a, b) => a - b);
+		const paceAxis = hasPace
+			? {
+					bottom: Math.max(30, Math.floor(percentile(sortedPace, 0.02) / 30) * 30),
+					top: Math.ceil(percentile(sortedPace, 0.98) / 30) * 30,
+				}
+			: null;
+
+		const yEle = (v: number) => (ele ? pad.top + (1 - (v - ele.bottom) / (ele.top - ele.bottom)) * plotH : pad.top + plotH);
+		const yPace = (v: number) => (paceAxis ? pad.top + ((v - paceAxis.bottom) / (paceAxis.top - paceAxis.bottom)) * plotH : pad.top);
+		const x = (i: number) => pad.left + ((xOf(i) - xStart) / xSpan) * plotW;
+		/**
+		 * 采样点的像素位置。x 轴是里程，采样点按「下标」等距、按「像素」并不等距
+		 * （走得快的段落两点间像素更宽），所以鼠标命中必须按像素最近取点，
+		 * 不能拿像素占比去按下标索引——那会让竖线偏离光标。
+		 */
+		profileX = profileIndex.map((i) => x(i));
+
+		// 网格线数量由海拔轴决定；没有海拔时退回 4 等分
+		const gridCount = ele?.count ?? 4;
+		const diagram = svgOf('svg', {
+			width,
+			height,
+			viewBox: `0 0 ${width} ${height}`,
+			class: 'track-svg',
+			role: 'img',
+			'aria-label': ele ? buildEleLabel(eleValues) : S.noEle,
+		});
+
+		// 只裁配速线：海拔轴本来就是按实际数据范围算的，不需要裁
+		const defs = svgOf('defs');
+		const clip = svgOf('clipPath', { id: 'track-pace-clip' });
+		clip.appendChild(svgOf('rect', { x: pad.left, y: pad.top - 1, width: plotW, height: plotH + 2 }));
+		defs.appendChild(clip);
+		diagram.appendChild(defs);
+
+		for (let g = 0; g <= gridCount; g++) {
+			const y = pad.top + (plotH * g) / gridCount;
+			diagram.appendChild(svgOf('line', { x1: pad.left, x2: pad.left + plotW, y1: y, y2: y, class: 'track-grid' }));
+		}
+
+		if (ele) {
+			let d = '';
+			for (const index of profileIndex) {
+				const v = elevations[index];
+				if (v === null) continue;
+				d += `${d === '' ? 'M' : 'L'}${x(index).toFixed(1)} ${yEle(v).toFixed(1)} `;
+			}
+			if (d !== '') {
+				const first = x(profileIndex.find((i) => elevations[i] !== null) as number);
+				const last = x([...profileIndex].reverse().find((i) => elevations[i] !== null) as number);
+				const base = pad.top + plotH;
+				diagram.appendChild(svgOf('path', { d: `${d} L${last.toFixed(1)} ${base} L${first.toFixed(1)} ${base} Z`, class: 'track-area' }));
+				diagram.appendChild(svgOf('path', { d, class: 'track-ele-line' }));
+			}
+			for (let g = 0; g <= gridCount; g++) {
+				const value = ele.top - ((ele.top - ele.bottom) * g) / gridCount;
+				const y = pad.top + (plotH * g) / gridCount;
+				diagram.appendChild(textNode(Math.round(value).toLocaleString(S.locale === 'zh' ? 'zh-CN' : 'en-US'), { x: pad.left - 8, y: y + 4, 'text-anchor': 'end', class: 'track-axis-label track-axis-ele' }));
+			}
+		}
+
+		if (paceAxis) {
+			let d = '';
+			for (const index of profileIndex) {
+				const v = pace[index];
+				if (v === null) continue;
+				d += `${d === '' ? 'M' : 'L'}${x(index).toFixed(1)} ${yPace(v).toFixed(1)} `;
+			}
+			diagram.appendChild(svgOf('path', { d, class: 'track-pace-line', 'clip-path': 'url(#track-pace-clip)' }));
+			for (let g = 0; g <= gridCount; g++) {
+				// 配速轴是反向的：yPace 把最小的秒数（最快）画在顶部，所以顶部刻度印的是 bottom
+				const value = paceAxis.bottom + ((paceAxis.top - paceAxis.bottom) * g) / gridCount;
+				const y = pad.top + (plotH * g) / gridCount;
+				diagram.appendChild(textNode(F.formatPace(value, 1000, unit), { x: pad.left + plotW + 8, y: y + 4, class: 'track-axis-label track-axis-pace' }));
+			}
+		}
+
+		for (let g = 0; g <= 4; g++) {
+			const ratio = g / 4;
+			const label = useTimeAxis ? F.formatDuration(ratio * (xSpan / 1000)) : F.formatDistance(ratio * xSpan, unit, S.locale);
+			diagram.appendChild(
+				textNode(label, {
+					x: pad.left + plotW * ratio,
+					y: height - 8,
+					'text-anchor': g === 0 ? 'start' : g === 4 ? 'end' : 'middle',
+					class: 'track-axis-label',
+				}),
+			);
+		}
+
+		const cursor = svgOf('line', { x1: 0, x2: 0, y1: pad.top, y2: pad.top + plotH, class: 'track-cursor', opacity: 0 });
+		diagram.appendChild(cursor);
+
+		els.profile.querySelectorAll('svg').forEach((old) => old.remove());
+		els.profile.prepend(diagram);
+		renderLegend(hasEle, hasPace);
+
+		diagram.addEventListener('pointermove', (event) => {
+			const rect = diagram.getBoundingClientRect();
+			// clientX 是 CSS 像素、x() 是 viewBox 单位：缩放或容器宽度取整会让两者不相等，
+			// 不换算就越靠右偏得越多
+			const vx = (event.clientX - rect.left) * (width / Math.max(1, rect.width));
+			const k = nearestSample(vx);
+			const index = profileIndex[k];
+			const at = profileX[k];
+			cursor.setAttribute('x1', String(at));
+			cursor.setAttribute('x2', String(at));
+			cursor.setAttribute('opacity', '1');
+			showTooltip(index, at * (rect.width / width));
+			moveLinkMarker(index);
+		});
+		diagram.addEventListener('pointerleave', () => {
+			cursor.setAttribute('opacity', '0');
+			setVisible(els.tooltip, false);
+			moveLinkMarker(null);
+		});
+	}
+
+	/**
+	 * 图例用与曲线同色的色块，文案里写明「左轴 / 右轴」。
+	 * 光靠文字说明不够：两条曲线共用一张图、两套纵轴，读者需要先知道哪根刻度属于哪条线；
+	 * 同时轴标签也按各自曲线的颜色着色，颜色本身就是归属标记。
+	 */
+	function renderLegend(hasEle: boolean, hasPace: boolean) {
+		els.profileLegend.textContent = '';
+		if (!hasEle) {
+			els.profileLegend.textContent = S.noEle;
+			return;
+		}
+		const items: Array<['ele' | 'pace', string]> = [];
+		if (hasEle) items.push(['ele', S.legendEle]);
+		if (hasPace) items.push(['pace', S.legendPace]);
+		for (const [kind, label] of items) {
+			const item = document.createElement('span');
+			item.className = 'track-legend-item';
+			const swatch = document.createElement('i');
+			swatch.className = `track-swatch track-swatch-${kind}`;
+			swatch.setAttribute('aria-hidden', 'true');
+			const text = document.createElement('span');
+			text.textContent = label;
+			item.append(swatch, text);
+			els.profileLegend.appendChild(item);
+		}
+	}
+
+	function buildEleLabel(values: number[]): string {
+		if (values.length === 0) return S.noEle;
+		const min = Math.min(...values);
+		const max = Math.max(...values);
+		return S.locale === 'zh'
+			? `海拔剖面，最低 ${Math.round(min)} 米，最高 ${Math.round(max)} 米`
+			: `Elevation profile from ${Math.round(min)} m to ${Math.round(max)} m`;
+	}
+
+	function showTooltip(index: number, at: number) {
+		if (!loaded) return;
+		const point = loaded.activity.points[index];
+		// 标签与值分格对齐，理由同 .track-hr-value：拼成一整串时英文标签
+		// Distance / Elevation / HR 长短差三倍，三行数字根本对不上
+		const rows: Array<[string, string]> = [[S.tip.distance, F.formatDistance(distanceAt[index], unit, S.locale)]];
+		if (point?.ele !== null && point?.ele !== undefined) rows.push([S.tip.ele, F.formatAscent(point.ele, S.locale)]);
+		if (point?.hr !== null && point?.hr !== undefined) rows.push([S.tip.hr, F.formatCount(point.hr, 'bpm')]);
+		els.tooltip.textContent = '';
+		for (const [label, value] of rows) {
+			const cell = document.createElement('span');
+			cell.className = 'track-tip-label';
+			cell.textContent = label;
+			const num = document.createElement('span');
+			num.className = 'track-tip-value';
+			num.textContent = value;
+			els.tooltip.append(cell, num);
+		}
+		els.tooltip.style.setProperty('--x', `${Math.round(at)}px`);
+		setVisible(els.tooltip, true);
+	}
+
+	/* ===== 心率区间（纯 div + 百分比宽度，零图表代码） ===== */
+
+	function renderHr(activity: Activity, computed: ComputedActivity) {
+		const zones = computeHrZones(activity, computed.stats.durationS);
+		if (!zones) {
+			setVisible(els.blockHr, false);
+			return;
+		}
+		setVisible(els.blockHr, true);
+		els.hr.textContent = '';
+
+		for (const zone of zones.zones) {
+			const row = document.createElement('div');
+			row.className = 'track-hr-row';
+
+			const label = document.createElement('span');
+			label.className = 'track-hr-label';
+			label.textContent = `Z${zone.index}`;
+
+			const bar = document.createElement('div');
+			bar.className = 'track-hr-bar';
+			const fill = document.createElement('div');
+			fill.className = 'track-hr-fill';
+			// 宽度只由算出的百分比得来并夹在 0–100，不接受任何文件里的原始内容
+			fill.style.width = `${Math.min(100, Math.max(0, zone.pct)).toFixed(1)}%`;
+			bar.appendChild(fill);
+
+			const value = document.createElement('span');
+			value.className = 'track-hr-value';
+			// 百分比与时长各占一格，见下方 .track-hr-value 的注释
+			const pct = document.createElement('span');
+			pct.className = 'track-hr-pct';
+			pct.textContent = F.formatPercent(zone.pct);
+			const time = document.createElement('span');
+			time.className = 'track-hr-time';
+			time.textContent = F.formatDuration(zone.seconds);
+			value.append(pct, time);
+
+			row.append(label, bar, value);
+			els.hr.appendChild(row);
+		}
+
+		const notes = [S.hrBasis.replace('%s', F.formatCount(zones.maxHr, 'bpm')), S.hrCoverageNote.replace('%s', F.formatPercent(zones.coveragePct))];
+		if (zones.belowZ1S > 0) notes.push(S.hrBelowZ1.replace('%s', F.formatDuration(zones.belowZ1S)));
+		els.hrNote.textContent = notes.join(' ');
+	}
+
+	/* ===== 分段表 ===== */
+
+	function renderSplits(splits: Split[]) {
+		if (splits.length === 0) {
+			setVisible(els.blockSplits, false);
+			return;
+		}
+		setVisible(els.blockSplits, true);
+		els.splitsBody.textContent = '';
+
+		for (const split of splits) {
+			const row = document.createElement('tr');
+			const cells = [
+				`${split.index}${split.partial ? '*' : ''}`,
+				F.formatDuration(split.durationS),
+				F.formatPace(split.durationS, split.distanceM, unit),
+				split.ascentM === null ? F.MISSING : F.formatAscent(split.ascentM, S.locale),
+				split.avgHr === null ? F.MISSING : F.formatCount(split.avgHr, 'bpm'),
+			];
+			cells.forEach((text, column) => {
+				const cell = document.createElement(column === 0 ? 'th' : 'td');
+				if (column === 0) cell.setAttribute('scope', 'row');
+				cell.textContent = text;
+				row.appendChild(cell);
+			});
+			els.splitsBody.appendChild(row);
+		}
+
+		// 粒度被放大时必须说明，否则访客会把每段都当一公里读
+		const standard = unit === 'metric' ? 1000 : 1609.344;
+		const actual = splits[0].distanceM;
+		if (actual > standard + 1) {
+			els.splitsNote.textContent = S.splitGranularity.replace('%s', F.formatDistance(actual, unit, S.locale));
+			setVisible(els.splitsNote, true);
+		} else {
+			setVisible(els.splitsNote, false);
+		}
+	}
+
+	/* ===== 事件绑定 ===== */
+
+	els.file.addEventListener('change', () => {
+		if (els.file.files?.length) handleFiles(els.file.files);
+	});
+
+	for (const type of ['dragenter', 'dragover'] as const) {
+		els.drop.addEventListener(type, (event) => {
+			event.preventDefault();
+			els.drop.classList.add('is-over');
+		});
+	}
+	for (const type of ['dragleave', 'dragend'] as const) {
+		els.drop.addEventListener(type, () => els.drop.classList.remove('is-over'));
+	}
+	els.drop.addEventListener('drop', (event) => {
+		event.preventDefault();
+		els.drop.classList.remove('is-over');
+		const files = event.dataTransfer?.files;
+		if (files && files.length > 0) handleFiles(files);
+		else showError('notAFile', null);
+	});
+
+	function syncUnitChips() {
+		els.unitMetric.classList.toggle('active', unit === 'metric');
+		els.unitImperial.classList.toggle('active', unit === 'imperial');
+		els.unitMetric.setAttribute('aria-pressed', String(unit === 'metric'));
+		els.unitImperial.setAttribute('aria-pressed', String(unit === 'imperial'));
+	}
+
+	function switchUnit(next: Unit) {
+		if (!loaded || next === unit) return;
+		unit = next;
+		syncUnitChips();
+		renderUnitDependent();
+	}
+
+	els.unitMetric.addEventListener('click', () => switchUnit('metric'));
+	els.unitImperial.addEventListener('click', () => switchUnit('imperial'));
+	els.mapRetry.addEventListener('click', () => loaded && void renderMap(loaded.activity));
+
+	els.baseStandard.addEventListener('click', () => switchBaseLayer('standard'));
+	els.baseTopo.addEventListener('click', () => switchBaseLayer('topo'));
+
+	els.mapFullscreen.addEventListener('click', toggleMapFullscreen);
+	// 进出全屏后按新容器尺寸重新套合。这里用 setTimeout 而不是 rAF：rAF 在页面
+	// 不可见时不触发，挂在它上面的话后台标签页里这次套合永远不会发生。
+	// 调两次是为了兜住 fullscreenchange 早于最终布局确定的浏览器。
+	document.addEventListener('fullscreenchange', () => {
+		els.mapFullscreen.textContent = isMapFullscreen() ? S.mapExitFullscreen : S.mapFullscreen;
+		refitToTrack();
+		window.setTimeout(refitToTrack, 80);
+	});
+
+	// 剖面图宽度靠测量容器得出，resize 后要重画；rAF 合并连续事件，避免每次拖动都重算
+	let resizeQueued = false;
+	window.addEventListener('resize', () => {
+		if (resizeQueued || !loaded) return;
+		resizeQueued = true;
+		window.requestAnimationFrame(() => {
+			resizeQueued = false;
+			if (!loaded) return;
+			renderProfile(loaded.activity, loaded.computed);
+			// Leaflet 不会自己发现容器变了尺寸，不重新测量的话地图边缘会留灰块
+			map?.invalidateSize();
+		});
+	});
+
+	syncUnitChips();
+	syncBaseChips();
+</script>
+
+<style is:global>
+	/* ===== 组件外观：颜色一律取站内既有变量，深浅色切换不需要任何 JS 参与 ===== */
+	[data-tv-root] [hidden] {
+		display: none !important;
+	}
+
+	.track-drop {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		align-items: center;
+		justify-content: center;
+		padding: 2.5rem 1.25rem;
+		border: 2px dashed var(--border);
+		border-radius: var(--radius-card);
+		background: var(--bg-soft);
+		cursor: pointer;
+		text-align: center;
+		transition: border-color 150ms ease;
+	}
+	.track-drop:hover,
+	.track-drop.is-over {
+		border-color: var(--accent);
+	}
+	.track-file-input:focus-visible + .track-drop {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+	.track-drop-title {
+		font-weight: 600;
+		color: var(--text);
+	}
+	.track-drop-sub {
+		font-size: 0.85rem;
+		color: var(--text-faint);
+	}
+
+	.track-status {
+		min-height: 1.25rem;
+		color: var(--text-faint);
+	}
+	.track-error {
+		padding: 0.75rem 1rem;
+		border: 1px solid var(--border);
+		border-left: 4px solid #cf222e;
+		border-radius: var(--radius);
+		background: var(--bg-soft);
+		color: var(--text);
+		font-size: 0.92rem;
+	}
+	.track-warnings {
+		margin-top: 0.5rem;
+		font-size: 0.85rem;
+		color: var(--text-faint);
+	}
+
+	.track-head {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
+	.track-name {
+		font-size: 1.35rem;
+		font-weight: 700;
+		color: var(--text);
+	}
+	.track-meta {
+		margin-top: 0.2rem;
+		font-size: 0.88rem;
+		color: var(--text-soft);
+	}
+	.track-units {
+		display: flex;
+		gap: 0.4rem;
+	}
+
+	.track-stats {
+		display: grid;
+		/* auto-fill + 独立卡片：缺字段的项会被整项隐藏，用共享边框的连排表格在末行必然留下
+		   残缺空格（看着像少了分隔线）。改成带间隙的卡片后，数量不定也是整齐的一组。 */
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		gap: 0.75rem;
+		margin: 1.5rem 0 0;
+		padding: 0;
+	}
+	.track-stat {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		padding: 0.9rem 1rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-card);
+		background: var(--bg);
+	}
+	.track-stat dt {
+		font-size: 0.78rem;
+		color: var(--text-faint);
+	}
+	.track-stat dd {
+		margin: 0;
+		font-size: 1.25rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		color: var(--text);
+	}
+
+	.track-block {
+		margin-top: 2rem;
+	}
+	.track-heading {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		align-items: baseline;
+		margin-bottom: 0.6rem;
+		font-size: 1.05rem;
+		font-weight: 700;
+		color: var(--text);
+	}
+	.track-legend {
+		font-size: 0.78rem;
+		font-weight: 400;
+		color: var(--text-faint);
+	}
+	.track-note {
+		margin-top: 0.5rem;
+		font-size: 0.82rem;
+		color: var(--text-faint);
+	}
+	.track-pill {
+		padding: 0.15rem 0.6rem;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--bg);
+		color: var(--accent);
+		font-size: 0.8rem;
+		cursor: pointer;
+	}
+	.track-pill:hover {
+		border-color: var(--accent);
+	}
+
+	/* 全屏：整个 wrap 进全屏，地图撑满、控件仍然可见可点 */
+	.track-map-wrap:fullscreen {
+		width: 100vw;
+		height: 100vh;
+		background: var(--bg);
+	}
+	.track-map-wrap:fullscreen .track-map {
+		width: 100%;
+		height: 100%;
+		border: 0;
+		border-radius: 0;
+	}
+	.track-map-wrap:-webkit-full-screen {
+		width: 100vw;
+		height: 100vh;
+		background: var(--bg);
+	}
+	.track-map-wrap:-webkit-full-screen .track-map {
+		width: 100%;
+		height: 100%;
+		border: 0;
+		border-radius: 0;
+	}
+
+	.track-map-wrap {
+		position: relative;
+		/* Leaflet 给内部各 pane 写的是 z-index 400~700、控件 800，而站点导航栏是
+		   sticky + z-50。这里若不成层叠上下文，那些四位数会直接跟 50 比大小并赢，
+		   页面往上滚时地图就会盖住导航栏。isolate 把 Leaflet 的层级全部关在容器内部。 */
+		isolation: isolate;
+	}
+	.track-map {
+		height: 380px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-card);
+		background: var(--bg-soft);
+	}
+	/* 叠在地图内部的控件：z-index 必须高于 Leaflet 自己的控件（它是 800），
+	   否则会被缩放按钮压住或抢走点击 */
+	.track-map-controls {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		z-index: 1000;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		align-items: center;
+	}
+	.track-basemap {
+		display: flex;
+		gap: 0.3rem;
+		padding: 3px;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--bg);
+		box-shadow: var(--shadow);
+	}
+	.track-ctl {
+		padding: 0.2rem 0.7rem;
+		border: 1px solid transparent;
+		border-radius: 999px;
+		background: transparent;
+		color: var(--text-soft);
+		font-size: 0.8rem;
+		cursor: pointer;
+		transition: color 150ms ease, background 150ms ease;
+	}
+	.track-ctl:hover {
+		color: var(--text);
+	}
+	.track-ctl.active {
+		background: var(--bg-hover);
+		color: var(--accent);
+	}
+	.track-map-controls > .track-ctl {
+		padding: 0.25rem 0.7rem;
+		border-color: var(--border);
+		border-radius: 999px;
+		background: var(--bg);
+		box-shadow: var(--shadow);
+	}
+	.track-profile {
+		position: relative;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-card);
+		background: var(--bg);
+		overflow: hidden;
+	}
+	.track-svg {
+		display: block;
+		/* 兜底：宽度按容器实测，万一某条路径量歪了也不该把整页撑出横向滚动 */
+		max-width: 100%;
+		touch-action: none;
+	}
+
+	.track-grid {
+		stroke: var(--border);
+		stroke-width: 1;
+	}
+	.track-area {
+		fill: var(--bg-hover);
+		opacity: 0.8;
+	}
+	.track-ele-line {
+		fill: none;
+		stroke: var(--text-soft);
+		stroke-width: 1.75;
+		stroke-linejoin: round;
+	}
+	.track-pace-line {
+		fill: none;
+		stroke: var(--accent);
+		stroke-width: 1.75;
+		stroke-linejoin: round;
+	}
+	.track-axis-label {
+		fill: var(--text-faint);
+		font-size: 11px;
+		font-variant-numeric: tabular-nums;
+	}
+	/* 轴标签按各自曲线的颜色着色：两套纵轴共用一张图时，颜色就是归属标记 */
+	.track-axis-ele {
+		fill: var(--text-soft);
+	}
+	.track-axis-pace {
+		fill: var(--accent);
+	}
+	.track-legend-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	.track-swatch {
+		display: inline-block;
+		width: 16px;
+		height: 2px;
+		border-radius: 1px;
+	}
+	.track-swatch-ele {
+		background: var(--text-soft);
+	}
+	.track-swatch-pace {
+		background: var(--accent);
+	}
+	.track-cursor {
+		stroke: var(--text);
+		stroke-width: 1;
+		stroke-dasharray: 3 3;
+	}
+
+	.track-tooltip {
+		position: absolute;
+		top: 0.5rem;
+		left: var(--x, 0);
+		display: grid;
+		grid-template-columns: auto auto;
+		gap: 0 0.55rem;
+		padding: 0.4rem 0.6rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--bg);
+		box-shadow: var(--shadow);
+		color: var(--text);
+		font-size: 0.78rem;
+		line-height: 1.45;
+		pointer-events: none;
+		transform: translateX(-50%);
+	}
+	.track-tip-label {
+		white-space: nowrap;
+		color: var(--text-soft);
+	}
+	.track-tip-value {
+		white-space: nowrap;
+		font-variant-numeric: tabular-nums;
+		text-align: right;
+	}
+
+	.track-hr {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+	.track-hr-row {
+		display: grid;
+		grid-template-columns: 2.2rem 1fr 8.2rem;
+		gap: 0.6rem;
+		align-items: center;
+	}
+	.track-hr-label {
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--text-soft);
+	}
+	.track-hr-bar {
+		height: 0.85rem;
+		border-radius: 999px;
+		background: var(--bg-soft);
+		overflow: hidden;
+	}
+	.track-hr-fill {
+		height: 100%;
+		border-radius: 999px;
+		background: var(--accent);
+	}
+	/* 百分比与时长分列右对齐，而不是拼成「18% · 11:22」一整串：
+	   一整串只能对齐最后一个字符，某个区间一旦跨过一小时（1:11:42），
+	   右边就长短不齐，靠左的百分比跟着整列漂移。格宽按最长内容给：
+	   百分比 100%、时长 12:34:56。 */
+	.track-hr-value {
+		display: grid;
+		grid-template-columns: 2.6rem 5rem;
+		gap: 0.6rem;
+		font-size: 0.8rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--text-soft);
+	}
+	.track-hr-pct,
+	.track-hr-time {
+		text-align: right;
+	}
+
+	.track-table-wrap {
+		overflow-x: auto;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-card);
+	}
+	.track-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.9rem;
+	}
+	.track-table th,
+	.track-table td {
+		padding: 0.55rem 0.9rem;
+		border-bottom: 1px solid var(--border);
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+		color: var(--text);
+	}
+	.track-table thead th {
+		background: var(--bg-soft);
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--text-faint);
+	}
+	.track-table tbody th {
+		color: var(--text-soft);
+		font-weight: 600;
+		text-align: left;
+	}
+	.track-table tbody tr:last-child th,
+	.track-table tbody tr:last-child td {
+		border-bottom: 0;
+	}
+
+	/* ===== Leaflet 矢量层：颜色必须由 CSS 提供，见脚本里的 CLASS 注释 ===== */
+	.track-line {
+		stroke: var(--accent);
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.track-marker-start {
+		fill: var(--color-green);
+		stroke: var(--text);
+		stroke-width: 1.5;
+	}
+	.track-marker-end {
+		fill: var(--bg);
+		stroke: var(--text);
+		stroke-width: 2;
+	}
+	.track-marker-link {
+		fill: var(--accent);
+		stroke: var(--bg);
+		stroke-width: 2;
+	}
+
+	/* ===== Leaflet 自带控件（白底 DOM）的主题覆盖 ===== */
+	.track-map .leaflet-control-zoom a {
+		background: var(--bg);
+		color: var(--text);
+		border-color: var(--border);
+	}
+	.track-map .leaflet-control-zoom a:hover {
+		background: var(--bg-hover);
+	}
+	/* 自定义的「缩放到完整轨迹」按钮是自注册的 Leaflet 控件，落在缩放条下方。
+	   尺寸/圆角/阴影对齐缩放条，否则同角两个方块看着不像一组；
+	   .leaflet-control 由 Leaflet 的 addTo 负责加，间距规则才生效。
+	   颜色取 CSS 变量，深浅色跟随主题翻转，不需要额外写深色选择器。 */
+	.track-map .leaflet-control.track-fit-ctl {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 30px;
+		height: 30px;
+		padding: 0;
+		border: 1px solid var(--border);
+		border-radius: 4px;
+		background: var(--bg);
+		color: var(--text);
+		box-shadow: 0 1px 5px rgb(0 0 0 / 0.4);
+		cursor: pointer;
+	}
+	.track-map .leaflet-control.track-fit-ctl:hover,
+	.track-map .leaflet-control.track-fit-ctl:active {
+		background: var(--bg-hover);
+	}
+	.track-map .leaflet-control-attribution {
+		background: var(--nav-bg);
+		color: var(--text-faint);
+	}
+	.track-map .leaflet-control-attribution a {
+		color: var(--text-soft);
+	}
+
+	/* ===== 瓦片层的深色适配：两个图源待遇不同 =====
+	   站点主题有两条翻转路径：跟随系统偏好（color-scheme: light dark + light-dark()）与手动
+	   data-theme 覆盖。CSS 查询不到「现在是深色吗」，所以每条路径都要各写一遍选择器。
+
+	   OSM 标准图是中性配色，整层反色后可读；地形图**不行**——等高线、高程分层设色与山体阴影
+	   的颜色本身携带语义，invert + hue-rotate 会把「绿=低地/植被」变成误导信息，
+	   所以地形层只做轻微压暗，颜色一律保留。 */
+	@media (prefers-color-scheme: dark) {
+		:root:not([data-theme='light']) .track-tiles {
+			filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9);
+		}
+		:root:not([data-theme='light']) .track-tiles-topo {
+			filter: brightness(0.72) saturate(0.9);
+		}
+	}
+	:root[data-theme='dark'] .track-tiles {
+		filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9);
+	}
+	:root[data-theme='dark'] .track-tiles-topo {
+		filter: brightness(0.72) saturate(0.9);
+	}
+</style>

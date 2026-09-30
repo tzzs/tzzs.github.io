@@ -1,0 +1,85 @@
+---
+/**
+ * 工具列表卡片。
+ * 视觉语法全部来自 global.css 的 .app-card 一族——与 ProjectCard 同一套，不再退回旧的 .app-card 简版。
+ * 差别只在内容：项目卡右侧是状态徽章（开发中/测试中/已发布），工具卡右侧是「本地运行 · 不上传」，
+ * 因为整站只有 /tools/ 对访客许下这个承诺。
+ */
+import { t, type Locale } from '../../i18n/strings';
+import { toolHref, type Tool } from '../../data/tools';
+
+interface Props {
+	tool: Tool;
+	locale: Locale;
+	/** 特色卡：跨满整行、右侧带轨迹示意图。列表页把第一项交给自己 */
+	featured?: boolean;
+}
+
+const { tool, locale, featured = false } = Astro.props;
+const href = toolHref(locale, tool.slug);
+const localBadge = t(locale, 'tool.localBadge', '本地运行 · 不上传');
+const cta = t(locale, 'tool.openCta', '打开工具');
+---
+
+<a href={href} class:list={['app-card', featured && 'app-card--featured col-span-full']}>
+	<div class="app-card-main">
+		<div class="app-card-head">
+			<!-- 字形与项目 logo 共用同一个框；这里用内联 SVG 而不是 png：
+			     描边靠 currentColor 走 CSS 变量，深浅色不需要第二套资产 -->
+			<span class="app-card-icon text-green-strong" aria-hidden="true">
+				<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M5 18.5c0-4 5-4.5 5-8a3 3 0 1 1 3 3c2.5 0 3-2.5 6-2.5" />
+					<circle cx="5" cy="19.5" r="1.6" fill="currentColor" stroke="none" />
+					<circle cx="19" cy="10" r="1.6" fill="currentColor" stroke="none" />
+				</svg>
+			</span>
+			<h3 class="app-card-title">
+				<span class="app-card-mark">{t(locale, `tool.${tool.slug}.name`, tool.name)}</span>
+			</h3>
+			<span class="badge badge-local">{localBadge}</span>
+		</div>
+		<p class="app-card-desc">{t(locale, `tool.${tool.slug}.description`, tool.description)}</p>
+		<div class="app-card-foot">
+			<ul class="tag-list" aria-label={t(locale, 'tool.formatsAria', '支持的文件格式')}>
+				{tool.formats.map((format) => <li><span class="tag-pill">{format}</span></li>)}
+			</ul>
+			<span class="app-card-cta">
+				{cta}
+				<svg viewBox="0 0 16 16" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M2.5 8h11M9.5 4l4 4-4 4" />
+				</svg>
+			</span>
+		</div>
+	</div>
+
+	{
+		featured && (
+			<div class="app-card-visual text-green-strong">
+				<!-- 装饰性示意图：画的就是这个工具自己的输出（底图网格 + 轨迹 + 起终点标记），
+				     起终点的配色与 TrackViewer 地图上的 .track-marker-start / -end 一致。
+				     不携带文字之外的信息，所以对读屏隐藏 -->
+				<svg viewBox="0 0 260 128" class="h-auto w-60 lg:w-64" role="presentation" aria-hidden="true">
+					<rect x="1.5" y="1.5" width="257" height="125" rx="12" fill="var(--bg-soft)" stroke="var(--border)" />
+					<g stroke="var(--border-strong)" stroke-dasharray="3 5" opacity="0.55">
+						<path d="M95 12v104M172 12v104M12 52h236" />
+					</g>
+					<path
+						d="M12 116V108l28-8 26 6 30-12 32 8 30-12 32 10 30-8 26 12v12z"
+						fill="currentColor"
+						opacity="0.12"
+					/>
+					<path
+						d="M34 96c18 0 24-26 44-30 14-3 24 8 40 2 18-7 26-30 48-26 20 4 30 22 60 4"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="3"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<circle cx="34" cy="96" r="4.5" fill="var(--color-green)" stroke="var(--text)" stroke-width="1.5" />
+					<circle cx="226" cy="46" r="4.5" fill="var(--bg)" stroke="var(--text)" stroke-width="2" />
+				</svg>
+			</div>
+		)
+	}
+</a>
