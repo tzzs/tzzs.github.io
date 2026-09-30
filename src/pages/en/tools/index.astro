@@ -22,9 +22,10 @@ const locale = resolveLocale(Astro.currentLocale);
 
 	{
 		tools.length > 0 ? (
-			<div class="grid gap-6 pb-12 md:grid-cols-2">
-				{tools.map((tool) => (
-					<ToolCard tool={tool} locale={locale} />
+			// 与中文版同结构：第一项恒为特色卡（col-span-full），只有一个工具时独占整行不留空洞
+			<div class="grid grid-cols-1 gap-6 pb-12 lg:grid-cols-2">
+				{tools.map((tool, index) => (
+					<ToolCard tool={tool} locale={locale} featured={index === 0} />
 				))}
 			</div>
 		) : (

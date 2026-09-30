@@ -198,7 +198,9 @@ export const STRINGS: Record<string, string> = {
 
 	// 工具列表页与工具卡片（页头标题/描述按站里惯例在各语言页面里写成字面文本，不建 key）
 	'tool.formatsAria': 'Supported file formats',
-	'tool.openCta': 'Open tool →',
+	// 箭头改由 SVG 画（hover 时能平移），文案里不再带 →
+	'tool.openCta': 'Open tool',
+	'tool.localBadge': 'Runs locally · no upload',
 	'tool.track-viewer.name': 'Track Viewer',
 	'tool.track-viewer.description':
 		'Preview a GPX or FIT activity file in the browser: track map, elevation and pace profile, per-unit splits and heart-rate zones.',

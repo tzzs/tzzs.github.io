@@ -7,6 +7,10 @@
   --color-green: #b9ff66;
   /* 强调绿：白天用深绿保证浅底上可见，夜间用品牌浅绿 */
   --color-green-strong: light-dark(#65a30d, #b9ff66);
+  /* 品牌绿的「可当正文色」一档：--color-green-strong 在白底只有 3.1:1，只配画边框与图标，
+     当文字用会跌破 WCAG AA。这里深一档到 #4d7002（白底 5.8:1、浅绿徽章底 5.0:1），
+     夜间仍用品牌亮绿（深绿底 7.5:1）。徽章与卡片 CTA 文字统一取这一档 */
+  --color-green-text: light-dark(#4d7002, #b9ff66);
   --color-black: light-dark(#191a23, #21262d);
   --color-dark: light-dark(#292a32, #21262d);
   --color-gray: #f3f3f3;
@@ -58,6 +62,12 @@
   --code-bg: light-dark(#f6f8fa, #21262d);
   --code-text: light-dark(#24292f, #e6edf3);
   --shadow: light-dark(0 1px 3px rgba(31, 35, 40, 0.08), 0 1px 3px rgba(1, 4, 9, 0.6));
+  /* 抬升阴影：卡片 hover 时用这一档。--shadow 只有 1px/3px，配不上 translate 抬升，
+     抬起来反而显得扁平；颜色取各自主题下的近中性 hue（浅底取站点的暖灰文字色，深底取夜蓝） */
+  --shadow-lift: light-dark(
+    0 14px 30px -14px rgba(31, 35, 40, 0.3),
+    0 18px 34px -16px rgba(1, 4, 9, 0.8)
+  );
   --radius: 8px;
   /* 描边文字 / 滚动后导航浮层 */
   --outline-color: light-dark(#191a23, #e6edf3);
@@ -142,6 +152,15 @@ body {
   .badge-released {
     @apply bg-status-released-bg text-status-released;
   }
+  /* 「纯本地 · 不上传」徽章：形态跟状态徽章一致，配色用品牌绿的浅底 + 深字。
+     整站只有 /tools/ 许诺这件事，所以它属于工具卡而不是通用状态。
+     浅底用 color-mix 现调，不再新增一组写死的浅色十六进制（状态徽章那组在深色下是亮块，
+     属于既有历史包袱，这轮不动它） */
+  .badge-local {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+    background: color-mix(in oklab, var(--color-green) 26%, var(--bg));
+    color: var(--color-green-text);
+  }
 
   /* 文章卡片 */
   .post-card {
@@ -163,24 +182,99 @@ body {
     color: var(--text-soft);
   }
 
-  /* 应用卡片 */
+  /* ===== 展示卡：项目页与工具页唯一的卡片语法 =====
+     原来 ProjectCard 用内联 Tailwind、ToolCard 用这里的 .app-card，同一个 hover 动作
+     一张卡变绿底黑字、另一张变蓝色文字——一个界面里两套语言。语法只留这一份：
+     边框、抬升、内部槽位都在此定义；跨列与网格归属交给调用点的 Tailwind 工具类
+     （utilities 层声明在 components 层之后，可以覆盖）。 */
   .app-card {
-    @apply block rounded-[var(--radius-card)] border border-border bg-bg p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:shadow-[var(--shadow)];
+    @apply flex h-full flex-col rounded-[var(--radius-card)] border border-[var(--border-strong)] bg-bg p-6 transition-all duration-200;
     text-decoration: none;
   }
   .app-card:hover {
+    @apply -translate-y-1 border-green-strong;
+    box-shadow: var(--shadow-lift);
     text-decoration: none;
   }
-  .app-card-title {
-    @apply text-lg font-bold;
-    color: var(--text);
+  /* 按下回弹：位移收回、阴影降回常态档位，让人知道这一下被接住了 */
+  .app-card:active {
+    @apply translate-y-0;
+    box-shadow: var(--shadow);
   }
-  .app-card:hover .app-card-title {
-    color: var(--accent);
+  /* 整张卡就是一个链接，键盘焦点必须可见（浏览器默认描边会被自定义边框盖住） */
+  .app-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  /* 动效偏好：保留边框与阴影的变化，只取消位移 */
+  @media (prefers-reduced-motion: reduce) {
+    .app-card,
+    .app-card:hover,
+    .app-card:active {
+      @apply translate-y-0;
+    }
+  }
+
+  /* 内容主栏：非特色卡是它单独撑满，特色卡与 .app-card-visual 左右并排 */
+  .app-card-main {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+  .app-card-head {
+    @apply flex items-start gap-2.5;
+  }
+  /* 图标框：项目放产品 logo（png），工具放站内自绘字形（svg），但框必须是同一个 */
+  .app-card-icon {
+    @apply flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-border bg-bg-soft;
+  }
+  .app-card-title {
+    @apply min-w-0 flex-1 text-lg leading-snug font-bold;
+    color: var(--text);
+    text-wrap: balance;
+  }
+  /* 标题色块只包住文字，不撑满整行（与 Hero 徽章同款） */
+  .app-card-mark {
+    @apply inline-block rounded-md px-1.5;
+    transition: background-color 200ms ease;
+  }
+  .app-card:hover .app-card-mark {
+    @apply bg-green;
+    color: var(--color-black);
   }
   .app-card-desc {
     @apply mt-2 text-sm leading-relaxed;
     color: var(--text-soft);
+    text-wrap: pretty;
+  }
+  /* 标签与 CTA 贴底：网格会把同行卡片拉成等高，描述长短不一时这一行仍要在同一条基线上 */
+  .app-card-foot {
+    @apply mt-auto flex flex-wrap items-center gap-2 pt-4;
+  }
+  .app-card-cta {
+    @apply ml-auto inline-flex items-center gap-1 text-sm font-semibold;
+    color: var(--color-green-text);
+  }
+  .app-card-cta svg {
+    @apply transition-transform duration-200;
+  }
+  .app-card:hover .app-card-cta svg {
+    @apply translate-x-1;
+  }
+
+  /* 特色卡：每组第一张，跨满整行、信息放大一档，右侧允许放示意图 */
+  .app-card--featured {
+    @apply gap-8 p-7 md:flex-row md:items-center md:p-8;
+  }
+  .app-card--featured .app-card-icon {
+    @apply h-11 w-11 rounded-xl;
+  }
+  .app-card--featured .app-card-title {
+    @apply text-xl md:text-2xl;
+  }
+  .app-card--featured .app-card-desc {
+    @apply max-w-[65ch] text-base;
+  }
+  .app-card-visual {
+    @apply hidden shrink-0 md:block;
   }
 
   /* 标签 */
