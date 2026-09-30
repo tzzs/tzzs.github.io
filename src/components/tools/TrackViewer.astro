@@ -64,6 +64,7 @@ const clientStrings = {
 	hrBasis: tr('track.hrBasis', '区间以文件内观测到的最大心率 %s 为基准；间歇训练里该值偏低，各区会整体偏高。'),
 	hrBelowZ1: tr('track.hrBelowZ1', '另有 %s 低于最大心率的 50%，未计入区间。'),
 	tileFailed: tr('track.map.tileFailed', '底图瓦片加载失败，轨迹线仍然可见。'),
+	mapChunkFailed: tr('track.map.chunkFailed', '地图脚本没能加载，通常是网络问题；轨迹线以外的视图都正常，刷新页面即可重试。'),
 	tileRetry: tr('track.map.tileRetry', '重试加载底图'),
 	legendEle: tr('track.profile.legendEle', '海拔（左轴 · 米）'),
 	legendPace: tr('track.profile.legendPace', '配速（右轴 · 每单位距离用时，越靠上越快）'),
@@ -227,6 +228,7 @@ const clientStrings = {
 		hrBelowZ1: string;
 		tileFailed: string;
 		tileRetry: string;
+		mapChunkFailed: string;
 		legendEle: string;
 		legendPace: string;
 		noEle: string;
@@ -652,7 +654,16 @@ const clientStrings = {
 		// 全屏按钮只在浏览器真的支持时出现（部分移动浏览器不支持元素级全屏）
 		setVisible(els.mapFullscreen, canFullscreen());
 		renderPoints = resampleForRender(activity.points);
-		if (!leaflet) leaflet = await import('leaflet');
+		if (!leaflet) {
+			try {
+				leaflet = await import('leaflet');
+			} catch {
+				// Leaflet 是独立 chunk，拉不到（断网、缓存里的旧 chunk 已不存在）只该废掉地图这一块：
+				// 统计、剖面、分段、心率此时都已经画好，不能升级成整页错误把结果一起清掉
+				showMapNote(S.mapChunkFailed, false);
+				return;
+			}
+		}
 		map?.remove();
 
 		// scrollWheelZoom 开启：滚轮缩放是地图的基本预期。代价是指针停在地图上时

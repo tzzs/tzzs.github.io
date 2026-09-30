@@ -222,6 +222,7 @@ export const STRINGS: Record<string, string> = {
 	'track.mapHeading': 'Track map',
 	'track.mapAria': 'Track map: the line shows the route, the dots mark the start and finish',
 	'track.map.tileFailed': 'Basemap tiles failed to load — the track line is still visible.',
+	'track.map.chunkFailed': 'The map script could not be loaded, usually a network issue. Everything except the map works fine — reload the page to retry.',
 	'track.map.tileRetry': 'Retry basemap',
 	'track.map.fit': 'Zoom to fit track',
 	'track.map.fullscreen': 'Fullscreen',
